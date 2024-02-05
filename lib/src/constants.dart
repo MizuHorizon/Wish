@@ -10,3 +10,5 @@ class AppColors {
   static const inputFieldGradient = [appBackgroundColor, appActiveColor];
   static const dividerColor = Color.fromARGB(255, 73, 72, 72);
 }
+
+const String baseUrl = "http://10.0.0.20:4000/api/v1/";
