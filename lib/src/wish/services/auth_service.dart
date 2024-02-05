@@ -5,7 +5,7 @@ abstract class AuthService {
   Future signInWithGoogle();
   Future signInWithEmailAndPassword(String email, String password);
   Future<dynamic> createUserWithEmailAndPassword(
-      String email, String name, String password);
+      String email, String name, String password, String phone);
   Future<void> signOut();
   //Stream<MyAppUser> get onAuthStateChanged;
   void dispose();

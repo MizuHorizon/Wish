@@ -6,15 +6,20 @@ class UserRepository {
   final dio = Dio();
   //login
   Future<dynamic> signUp(
-      String name, String password, String email, bool googleUser) async {
-    final Response response = await dio.post("${baseUrl}user/", data: {
-      'name': name,
-      'password': password,
-      'email': email,
-      'goole': googleUser
-    });
-    if (response.statusCode == 200) {
-      return 200;
+      String name, String password, String email, String phone) async {
+    try {
+      print("${baseUrl}user/");
+      final Response response = await dio.post("${baseUrl}user/", data: {
+        'name': name,
+        'password': password,
+        'email': email,
+        'phone': phone
+      });
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+    } catch (error) {
+      rethrow;
     }
   }
 

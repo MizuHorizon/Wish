@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 
@@ -19,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController mobile = TextEditingController();
+  final UserController _userController = UserController();
   Country _selectedCountry = Country.worldWide;
   bool validateFields() {
     return fname.text.isNotEmpty &&
@@ -38,12 +40,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return mobileRegex.hasMatch(mobile);
   }
 
-  void doSignUp() {
+  Future<void> doSignUp() async {
     String name = fname.text.trim() + " " + lname.text.trim();
     String emailInput = email.text.trim();
     String pass = password.text.trim();
     String phone = "(${_selectedCountry.phoneCode})${mobile.text.trim()}";
     print("$name,$emailInput,$pass,$phone");
+
+    await _userController.doSignUp(name, emailInput, phone, pass);
   }
 
   @override

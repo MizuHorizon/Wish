@@ -20,8 +20,8 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<dynamic> createUserWithEmailAndPassword(
-      String name, String password, String email) async {
-    return await userRepository.signUp(name, password, email, false);
+      String name, String password, String email, String phone) async {
+    return await userRepository.signUp(name, password, email, phone);
   }
 
   @override
@@ -78,7 +78,7 @@ class FirebaseAuthService implements AuthService {
               userdata.displayName as String,
               randomHexString(16),
               userdata.email as String,
-              true);
+              "12");
           //
 
           //save the token to the local storage;
