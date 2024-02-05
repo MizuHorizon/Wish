@@ -5,6 +5,7 @@ import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Wish_LoadingScreen.dart';
+import 'package:wish/src/wish/routes/router.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
+      onGenerateRoute: (settings) => generateRoute(settings),
       home: const SignInScreen(),
     );
   }
