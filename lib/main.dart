@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Wish_LoadingScreen.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const SignInScreen(),
+      home: const WishLoadingScreen(),
     );
   }
 }

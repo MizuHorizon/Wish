@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/user_model.dart';
+import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
+import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   static const routeName = "/signin-screen";
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  UserController userController = UserController();
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void doSignIn(String email, String password, BuildContext context) async {
+    MyAppUser? user = await userController.signIn(email, password, context);
+    ref.read(userModelProvider.notifier).update((state) => user);
+    Navigator.pushNamed(context, HomeScreen.routeName);
+  }
+
+  void doGoogleSignIn(BuildContext context) async {
+    MyAppUser? user = await userController.googleSigin(context);
+    ref.read(userModelProvider.notifier).update((state) => user);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   bool _isValidEmail(String email) {
@@ -108,6 +124,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         "Email and password can't be empty.",
                         Colors.red, // Red neon color for warning
                       );
+                    } else {
+                      print("signIn");
+                      doSignIn(_emailController.text.trim(),
+                          _passwordController.text.trim(), context);
                     }
                   },
                   child: Container(
@@ -130,7 +150,9 @@ class _SignInScreenState extends State<SignInScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    doGoogleSignIn(context);
+                  },
                   child: Container(
                     height: 65,
                     width: width,

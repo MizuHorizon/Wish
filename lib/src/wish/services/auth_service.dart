@@ -1,4 +1,3 @@
-import '../models/User_model.dart';
 
 abstract class AuthService {
   //Future<MyAppUser> currentUser();

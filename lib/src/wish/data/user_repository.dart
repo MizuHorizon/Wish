@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/user_model.dart';
 
 class UserRepository {
   final dio = Dio();
@@ -8,18 +9,30 @@ class UserRepository {
   Future<dynamic> signUp(
       String name, String password, String email, String phone) async {
     try {
-      print("${baseUrl}user/");
       final Response response = await dio.post("${baseUrl}user/", data: {
         'name': name,
         'password': password,
         'email': email,
         'phone': phone
       });
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
+        print("in the repo ${response.data}");
         return response.data;
+      } else {
+        throw response.data;
       }
-    } catch (error) {
-      rethrow;
+    } catch (e) {
+      if (e is DioException) {
+        if (e.error is SocketException) {
+          throw ('Server is not reachable.');
+        } else {
+          print('Dio error: ${e.message}');
+          throw 'Dio error: ${e.message}';
+        }
+      } else {
+        print('Error: $e');
+        throw '$e';
+      }
     }
   }
 
@@ -28,10 +41,10 @@ class UserRepository {
       'email': email,
       'password': password,
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return response.data;
     } else {
-      return "Something Went wrong";
+      throw response.data;
     }
   }
 
@@ -53,9 +66,33 @@ class UserRepository {
     }
   }
 
-  // Future<MyAppUser> updateUserById(MyAppUser user) async{
-  //     final Reponse reponse = await dio.patch("${baseUrl}user/",data:{
-
-  //     })
-  // }
+  Future<dynamic> googlesSignUp(
+      String name, String email, String phone, String photo) async {
+    try {
+      final Response response = await dio.post("${baseUrl}user/google", data: {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'profile_pic': photo
+      });
+      if (response.statusCode == 201) {
+        print("in the repo ${response.data}");
+        return response.data;
+      } else {
+        throw response.data;
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.error is SocketException) {
+          throw ('Server is not reachable.');
+        } else {
+          print('Dio error: ${e.message}');
+          throw 'Dio error: ${e.message}';
+        }
+      } else {
+        print('Error: $e');
+        throw '$e';
+      }
+    }
+  }
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:wish/src/wish/models/product_model.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final userModelProvider = StateProvider<MyAppUser?>((ref) => null);
 
 class MyAppUser {
   final String id;
@@ -47,7 +49,7 @@ class MyAppUser {
       id: map['id'] as String,
       name: map['name'] as String,
       username: map['username'] as String,
-      profilePic: map['profilePic'] as String,
+      profilePic: map['profile_pic'] as String,
       email: map['email'] as String,
     );
   }

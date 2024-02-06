@@ -1,20 +1,23 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/user_model.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
+import 'package:wish/src/wish/presentation/utils/send_mail_success.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   static const routeName = "/signup-screen";
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController fname = TextEditingController();
   final TextEditingController lname = TextEditingController();
   final TextEditingController email = TextEditingController();
@@ -40,14 +43,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return mobileRegex.hasMatch(mobile);
   }
 
-  Future<void> doSignUp() async {
+  Future<void> doSignUp(BuildContext context) async {
     String name = fname.text.trim() + " " + lname.text.trim();
     String emailInput = email.text.trim();
     String pass = password.text.trim();
     String phone = "(${_selectedCountry.phoneCode})${mobile.text.trim()}";
     print("$name,$emailInput,$pass,$phone");
 
-    await _userController.doSignUp(name, emailInput, phone, pass);
+    MyAppUser? user =
+        await _userController.doSignUp(name, emailInput, phone, pass, context);
+    showMailGradientDialog(
+        context,
+        "Verification Email Sent",
+        "We have sent you an email. Please verify your email to use our services and get updates about new products.",
+        Colors.white70);
   }
 
   @override
@@ -303,7 +312,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Colors.red, // Red neon color for warning
                       );
                     } else {
-                      doSignUp();
+                      doSignUp(context);
                     }
                   },
                   child: Container(

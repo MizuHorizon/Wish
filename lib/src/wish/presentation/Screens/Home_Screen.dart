@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
+import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
+  static const routeName = "/home-screen";
   const HomeScreen({super.key});
 
   @override
@@ -12,23 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
+  UserController userController = UserController();
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -134,8 +121,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onTap: () {
                 // Update the state of the app
                 _onItemTapped(2);
+                userController.logout(context);
                 // Then close the drawer
-                Navigator.pop(context);
+                Navigator.pushNamed(context, SignInScreen.routeName);
               },
             ),
           ],

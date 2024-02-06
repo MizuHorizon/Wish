@@ -1,6 +1,7 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/services.dart";
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:wish/src/wish/models/user_model.dart";
@@ -13,15 +14,35 @@ class FirebaseAuthService implements AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final UserRepository userRepository = UserRepository();
 
-  MyAppUser? _userFromFirebase(User user) {
-    // here we will our Database
-    return null;
+  static Future<void> saveTokenAndId(String token, String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwtToken', token);
+    await prefs.setString('userId', userId);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwtToken');
+  }
+
+  static Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
   }
 
   @override
   Future<dynamic> createUserWithEmailAndPassword(
       String name, String password, String email, String phone) async {
-    return await userRepository.signUp(name, password, email, phone);
+    try {
+      final userData =
+          await userRepository.signUp(name, password, email, phone);
+      print(userData);
+      MyAppUser user = MyAppUser.fromMap(userData['data']);
+      return user;
+    } catch (e) {
+      print(e);
+      throw '$e';
+    }
   }
 
   @override
@@ -46,62 +67,61 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<MyAppUser> signInWithEmailAndPassword(
       String email, String password) async {
-    final userData = await userRepository.signIn(email, password);
-
-    //save this token to local
-    var jwtToken = userData.token;
-
-    MyAppUser user = MyAppUser.fromJson(userData.data);
-    return user;
+    try {
+      final userData = await userRepository.signIn(email, password);
+      print(userData);
+      String token = userData['data']['token'];
+      String userId = userData['data']['userId'];
+      print("$token, $userId");
+      await saveTokenAndId(token, userId);
+      MyAppUser user = MyAppUser.fromMap(userData['data']['userData']);
+      print("Serialized $user");
+      return user;
+    } catch (e) {
+      print(e);
+      throw '$e';
+    }
   }
 
   @override
-  Future<MyAppUser> signInWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+  Future<MyAppUser?> signInWithGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-    if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      if (googleAuth.accessToken != null && googleAuth.idToken != null) {
         final UserCredential userCredential = await _firebaseAuth
             .signInWithCredential(GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         ));
         var userdata = userCredential.user;
-        var userFromBackend =
-            await userRepository.getUserByEmail(userdata!.email as String);
+        print("  ${userdata!.displayName}");
+        print("  ${userdata!.email}");
+        print("  ${userdata!.phoneNumber}");
+        print("  ${userdata!.photoURL}");
 
-        if (userFromBackend == null) {
-          final dynamic newUser = await userRepository.signUp(
-              userdata.displayName as String,
-              randomHexString(16),
-              userdata.email as String,
-              "12");
-          //
+        final userDataFromBackend = await userRepository.googlesSignUp(
+            userdata!.displayName as String,
+            userdata.email as String,
+            userdata.phoneNumber ?? "null",
+            userdata.photoURL as String);
 
-          //save the token to the local storage;
-
-          return MyAppUser.fromJson(newUser);
-        } else {
-          final dynamic newUser = await userRepository.signIn(
-              userFromBackend.email as String,
-              userFromBackend.password as String);
-
-          var jwtToken = newUser.token;
-
-          MyAppUser user = MyAppUser.fromJson(newUser);
-          return user;
-        }
-      } else {
-        throw PlatformException(
-            code: 'ERROR_MISSING_GOOGLE_AUTH_TOKEN',
-            message: 'Missing Google Auth Token');
+        // print("user from back $userDataFromBackend");
+        String token = userDataFromBackend['data']['token'];
+        String userId = userDataFromBackend['data']['userId'];
+        // print("$token, $userId");
+        await saveTokenAndId(token, userId);
+        MyAppUser user =
+            MyAppUser.fromMap(userDataFromBackend['data']['userData']);
+        //print("Serialized $user");
+        return user;
       }
-    } else {
-      throw PlatformException(
-          code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
+    } catch (e) {
+      print(e);
+      throw "$e";
     }
   }
 
@@ -109,6 +129,8 @@ class FirebaseAuthService implements AuthService {
   Future<void> signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     return _firebaseAuth.signOut();
   }
 }
