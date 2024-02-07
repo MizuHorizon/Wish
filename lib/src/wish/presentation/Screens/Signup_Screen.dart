@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/user_model.dart';
+import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
@@ -23,8 +24,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController mobile = TextEditingController();
-  final UserController _userController = UserController();
+  //final UserController _userController = UserController();
   Country _selectedCountry = Country.worldWide;
+
+  bool _isGoogleLoading = true;
+  bool _isSignUpLoading = true;
+
   bool validateFields() {
     return fname.text.isNotEmpty &&
         lname.text.isNotEmpty &&
@@ -43,15 +48,24 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return mobileRegex.hasMatch(mobile);
   }
 
-  Future<void> doSignUp(BuildContext context) async {
+  Future<void> doGoogleSignUp() async {
+    MyAppUser? user =
+        await ref.read(userControllerProvider.notifier).googleSigin();
+    ref.read(userModelProvider.notifier).update((state) => user);
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamed(context, HomeScreen.routeName);
+  }
+
+  Future<void> doSignUp() async {
     String name = fname.text.trim() + " " + lname.text.trim();
     String emailInput = email.text.trim();
     String pass = password.text.trim();
     String phone = "(${_selectedCountry.phoneCode})${mobile.text.trim()}";
     print("$name,$emailInput,$pass,$phone");
-
-    MyAppUser? user =
-        await _userController.doSignUp(name, emailInput, phone, pass, context);
+    MyAppUser? user = await ref
+        .read(userControllerProvider.notifier)
+        .doSignUp(name, emailInput, phone, pass);
+    ref.read(userModelProvider.notifier).update((state) => user);
     showMailGradientDialog(
         context,
         "Verification Email Sent",
@@ -62,7 +76,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    final userController = ref.watch(userControllerProvider);
+    ref.listen(userControllerProvider, (previous, next) {
+      if (!next.isLoading && next.hasError) {
+        if (next.error.toString() != "Wrong Password or Email!!") {
+          showGradientDialog(
+              context, "Error", next.error.toString(), Colors.red);
+        }
+        setState(() {
+          _isSignUpLoading = true;
+        });
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -277,44 +303,53 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: MaterialButton(
-                  onPressed: () {
-                    if (!validateFields()) {
-                      // Show warning dialog for empty fields
-                      String errorMessage =
-                          "Please fill in all required fields:\n";
-                      if (fname.text.isEmpty) errorMessage += "- First Name\n";
-                      if (lname.text.isEmpty) errorMessage += "- Last Name\n";
-                      if (email.text.isEmpty) errorMessage += "- Email\n";
-                      if (password.text.isEmpty) errorMessage += "- Password\n";
-                      if (mobile.text.isEmpty)
-                        errorMessage += "- Mobile Number\n";
+                  onPressed: !_isSignUpLoading
+                      ? null
+                      : () {
+                          if (!validateFields()) {
+                            // Show warning dialog for empty fields
+                            String errorMessage =
+                                "Please fill in all required fields:\n";
+                            if (fname.text.isEmpty)
+                              errorMessage += "- First Name\n";
+                            if (lname.text.isEmpty)
+                              errorMessage += "- Last Name\n";
+                            if (email.text.isEmpty) errorMessage += "- Email\n";
+                            if (password.text.isEmpty)
+                              errorMessage += "- Password\n";
+                            if (mobile.text.isEmpty)
+                              errorMessage += "- Mobile Number\n";
 
-                      showGradientDialog(
-                        context,
-                        "Fields Required",
-                        errorMessage,
-                        Colors.red, // Red neon color for warning
-                      );
-                    } else if (!isValidEmail(email.text)) {
-                      // Show warning dialog for invalid email
-                      showGradientDialog(
-                        context,
-                        "Invalid Email",
-                        "Please enter a valid email address.",
-                        Colors.red, // Red neon color for warning
-                      );
-                    } else if (!isValidMobile(mobile.text)) {
-                      // Show warning dialog for invalid mobile number
-                      showGradientDialog(
-                        context,
-                        "Invalid Mobile Number",
-                        "Please enter a valid mobile number.",
-                        Colors.red, // Red neon color for warning
-                      );
-                    } else {
-                      doSignUp(context);
-                    }
-                  },
+                            showGradientDialog(
+                              context,
+                              "Fields Required",
+                              errorMessage,
+                              Colors.red, // Red neon color for warning
+                            );
+                          } else if (!isValidEmail(email.text)) {
+                            // Show warning dialog for invalid email
+                            showGradientDialog(
+                              context,
+                              "Invalid Email",
+                              "Please enter a valid email address.",
+                              Colors.red, // Red neon color for warning
+                            );
+                          } else if (!isValidMobile(mobile.text)) {
+                            // Show warning dialog for invalid mobile number
+                            showGradientDialog(
+                              context,
+                              "Invalid Mobile Number",
+                              "Please enter a valid mobile number.",
+                              Colors.red, // Red neon color for warning
+                            );
+                          } else {
+                            _isSignUpLoading = false;
+                            setState(() {
+                              _isSignUpLoading = userController.isLoading;
+                            });
+                            doSignUp();
+                          }
+                        },
                   child: Container(
                     height: 65,
                     width: width,
@@ -322,13 +357,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       color: Color.fromRGBO(19, 19, 21, 1),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor, fontSize: 20),
-                      ),
-                    ),
+                    child: !_isSignUpLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                                color: AppColors.appActiveColor),
+                          )
+                        : const Center(
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  color: AppColors.appActiveColor,
+                                  fontSize: 20),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -360,7 +401,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: !_isGoogleLoading
+                      ? null
+                      : () {
+                          _isGoogleLoading = false;
+                          setState(() {
+                            _isGoogleLoading = userController.isLoading;
+                          });
+                          doGoogleSignUp();
+                        },
                   child: Container(
                     height: 65,
                     width: width,
@@ -370,24 +419,31 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       border:
                           Border.all(color: AppColors.dividerColor, width: 1.5),
                     ),
-                    child: const Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image(
-                                  image:
-                                      AssetImage("assets/images/google.png"))),
-                          Text(
-                            "Continue With Google",
-                            style: TextStyle(
-                                color: AppColors.appActiveColor, fontSize: 20),
+                    child: !_isGoogleLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.appActiveColor,
+                            ),
+                          )
+                        : const Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: Image(
+                                        image: AssetImage(
+                                            "assets/images/google.png"))),
+                                Text(
+                                  "Continue With Google",
+                                  style: TextStyle(
+                                      color: AppColors.appActiveColor,
+                                      fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),

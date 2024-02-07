@@ -19,7 +19,9 @@ class SignInScreen extends ConsumerStatefulWidget {
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  UserController userController = UserController();
+
+  bool _loginWithGoogle = true;
+  bool _normalLogin = true;
 
   @override
   void dispose() {
@@ -28,33 +30,51 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     _passwordController.dispose();
   }
 
-  void doSignIn(String email, String password, BuildContext context) async {
-    MyAppUser? user = await userController.signIn(email, password, context);
+  void doSignIn(String email, String password) async {
+    MyAppUser? user =
+        await ref.read(userControllerProvider.notifier).signIn(email, password);
     ref.read(userModelProvider.notifier).update((state) => user);
+
+    Future.delayed(const Duration(milliseconds: 3000));
+
     Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
-  void doGoogleSignIn(BuildContext context) async {
-    MyAppUser? user = await userController.googleSigin(context);
+  void doGoogleSignIn() async {
+    MyAppUser? user =
+        await ref.read(userControllerProvider.notifier).googleSigin();
     ref.read(userModelProvider.notifier).update((state) => user);
     Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   bool _isValidEmail(String email) {
-    // Add your email validation logic here
-    // You can use a regular expression or any other method
-    // Here's a simple example using a regular expression
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
   }
 
   @override
   Widget build(BuildContext context) {
+    final userController = ref.watch(userControllerProvider);
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    ref.listen(userControllerProvider, (previous, next) {
+      if (!next.isLoading && next.hasError) {
+        if (next.error.toString() == "Account with Email Doesn't Exists!") {
+          showGradientDialog(
+              context, "Error", next.error.toString(), Colors.red);
+        } else if (next.error.toString() !=
+            "Account with Email Exists already!") {
+          showGradientDialog(
+              context, "Error", next.error.toString(), Colors.red);
+        }
+        setState(() {
+          _normalLogin = true;
+        });
+      }
+    });
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.appBackgroundColor,
         title: const Text(
           "Log In",
@@ -110,74 +130,103 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: MaterialButton(
-                  onPressed: () {
-                    if (!_isValidEmail(_emailController.text)) {
-                      // Show a warning or error message
-                      showGradientDialog(context, "Check Email",
-                          "Malformed Email Address", AppColors.appActiveColor);
-                    } else if (_emailController.text.isEmpty ||
-                        _passwordController.text.isEmpty) {
-                      // Show warning dialog for empty email or password
-                      showGradientDialog(
-                        context,
-                        "Fields Required",
-                        "Email and password can't be empty.",
-                        Colors.red, // Red neon color for warning
-                      );
-                    } else {
-                      print("signIn");
-                      doSignIn(_emailController.text.trim(),
-                          _passwordController.text.trim(), context);
-                    }
-                  },
+                  onPressed: !_normalLogin
+                      ? null
+                      : () {
+                          if (!_isValidEmail(_emailController.text)) {
+                            // Show a warning or error message
+                            showGradientDialog(
+                                context,
+                                "Check Email",
+                                "Malformed Email Address",
+                                AppColors.appActiveColor);
+                          } else if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            // Show warning dialog for empty email or password
+                            showGradientDialog(
+                              context,
+                              "Fields Required",
+                              "Email and password can't be empty.",
+                              Colors.red, // Red neon color for warning
+                            );
+                          } else {
+                            print("signIn");
+                            _normalLogin = false;
+                            setState(() {
+                              _normalLogin = userController.isLoading;
+                            });
+                            doSignIn(_emailController.text.trim(),
+                                _passwordController.text.trim());
+                          }
+                        },
                   child: Container(
-                    height: 65,
+                    height: 55,
                     width: width,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(19, 19, 21, 1),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor, fontSize: 20),
-                      ),
-                    ),
+                    child: !_normalLogin
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                            color: AppColors.appActiveColor,
+                          ))
+                        : const Center(
+                            child: Text(
+                              "Log In",
+                              style: TextStyle(
+                                  color: AppColors.appActiveColor,
+                                  fontSize: 20),
+                            ),
+                          ),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: MaterialButton(
-                  onPressed: () {
-                    doGoogleSignIn(context);
-                  },
+                  onPressed: !_loginWithGoogle
+                      ? null
+                      : () {
+                          _loginWithGoogle = false;
+                          setState(() {
+                            _loginWithGoogle = userController.isLoading;
+                          });
+
+                          doGoogleSignIn();
+                        },
                   child: Container(
-                    height: 65,
+                    height: 55,
                     width: width,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(19, 19, 21, 1),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: const Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image(
-                                  image:
-                                      AssetImage("assets/images/google.png"))),
-                          Text(
-                            "Log In With Google",
-                            style: TextStyle(
-                                color: AppColors.appActiveColor, fontSize: 20),
+                    child: !_loginWithGoogle
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.appActiveColor,
+                            ),
+                          )
+                        : const Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: Image(
+                                        image: AssetImage(
+                                            "assets/images/google.png"))),
+                                Text(
+                                  "Log In With Google",
+                                  style: TextStyle(
+                                      color: AppColors.appActiveColor,
+                                      fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),

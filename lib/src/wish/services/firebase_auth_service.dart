@@ -40,7 +40,7 @@ class FirebaseAuthService implements AuthService {
       MyAppUser user = MyAppUser.fromMap(userData['data']);
       return user;
     } catch (e) {
-      print(e);
+      print(e.toString());
       throw '$e';
     }
   }

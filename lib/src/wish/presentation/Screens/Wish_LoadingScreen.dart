@@ -21,7 +21,6 @@ class _WishLoadingScreenState extends State<WishLoadingScreen> {
   Future<void> _checkTokenAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
     final jwtToken = prefs.getString('jwtToken');
-    await Future.delayed(const Duration(seconds: 2));
     // If JWT token is saved, navigate to home screen
     if (jwtToken != null && jwtToken.isNotEmpty) {
       Navigator.pushNamed(context, HomeScreen.routeName);

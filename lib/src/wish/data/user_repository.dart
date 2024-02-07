@@ -25,6 +25,8 @@ class UserRepository {
       if (e is DioException) {
         if (e.error is SocketException) {
           throw ('Server is not reachable.');
+        } else if (e.response!.statusCode == 404) {
+          throw e.response!.data['message'];
         } else {
           print('Dio error: ${e.message}');
           throw 'Dio error: ${e.message}';
@@ -37,14 +39,39 @@ class UserRepository {
   }
 
   Future<dynamic> signIn(String email, String password) async {
-    final Response response = await dio.post("${baseUrl}user/signin", data: {
-      'email': email,
-      'password': password,
-    });
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw response.data;
+    try {
+      final Response response = await dio.post("${baseUrl}user/signin", data: {
+        'email': email,
+        'password': password,
+      });
+      if (response.statusCode == 201) {
+        return response.data;
+      } else if (response.statusCode == 404) {
+        print("hellloo");
+        print(response.data);
+        throw response.data;
+      }
+    } catch (e) {
+      print("hellloo1");
+      if (e is DioException) {
+        if (e.response!.data['message'] ==
+                "Account with Email Doesn't Exists!" &&
+            e.response!.statusCode == 404) {
+          throw "Account with Email Doesn't Exists!";
+        } else if (e.response!.statusCode == 501) {
+          throw "Wrong Password or Email!!";
+        }
+        if (e.response != null) {
+          print(e.response!.data); // Server error response data
+          print(e.response!.statusCode); // Server error status code
+          print(e.response!.statusMessage); // Server error status message
+        } else {
+          print(e.message); // Error message when no response is received
+        }
+      } else {
+        print(e.toString()); // Other types of errors
+      }
+      throw '$e';
     }
   }
 
@@ -53,7 +80,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       return response.data;
     } else {
-      return "Something went wrong";
+      throw "Something went wrong";
     }
   }
 
