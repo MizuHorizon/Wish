@@ -19,6 +19,28 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductState extends State<ProductItem> {
+  List<Widget> _genrateTags() {
+    List<Widget> tags = [];
+
+    for (var tag in widget.tags) {
+      tags.add(
+        Padding(
+          padding: const EdgeInsets.only(right: 5, top: 3, bottom: 3),
+          child: Container(
+              height: 22,
+              padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+              child: Text(
+                tag,
+                style: const TextStyle(color: Colors.grey),
+              )),
+        ),
+      );
+    }
+
+    return tags;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,24 +81,51 @@ class _ProductState extends State<ProductItem> {
           ],
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 1, // Spacing between tags
-          children: List.generate(
-            widget.tags.length,
-            (index) => Container(
-              alignment: Alignment.center, // Center the content vertically
-              child: Chip(
-                label: Text(
-                  widget.tags[index],
-                  style: TextStyle(fontSize: 10), // Adjust font size as needed
+        Wrap(runSpacing: 3, spacing: 3, children: _genrateTags()),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color.fromARGB(255, 66, 63, 63),
+                          Colors.black
+                        ]),
+                    borderRadius: BorderRadius.circular(7),
+                    border: Border.all(color: Colors.grey)),
+                height: 25,
+                width: 70,
+                child: const Center(
+                  child: Text(
+                    "View",
+                    style: TextStyle(color: AppColors.appActiveColor),
+                  ),
                 ),
-                labelPadding:
-                    EdgeInsets.symmetric(horizontal: 8), // Adjust padding
-                materialTapTargetSize: MaterialTapTargetSize
-                    .shrinkWrap, // Make the tap target size smaller
               ),
             ),
-          ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    border: Border.all(color: Colors.grey)),
+                height: 25,
+                width: 70,
+                child: Center(
+                  child: Text(
+                    "Tracker",
+                    style: TextStyle(color: AppColors.appActiveColor),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

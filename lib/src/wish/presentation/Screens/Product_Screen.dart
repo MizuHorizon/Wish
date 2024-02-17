@@ -39,7 +39,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   name: '',
                   imageUrl: '',
                   price: 78,
-                  tags: ["tshirt", "myntra", "love"],
+                  tags: ["tshirt", "myntra", "love", "ok", "shirt thsirt"],
                 );
               },
             ),
