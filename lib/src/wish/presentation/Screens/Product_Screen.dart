@@ -111,11 +111,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   itemBuilder: (context, index) {
                     return productController.isLoading || isLoading
                         ? Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: ShimmerProductItem()),
+                            padding: const EdgeInsets.all(10),
+                            child: ShimmerProductItem(),
                           )
                         : Padding(
                             padding: const EdgeInsets.all(8.0),
