@@ -15,7 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -23,6 +23,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
   }
 
+  @override
+  bool get wantKeepAlive => true;
   late TabController tabController = TabController(length: 2, vsync: this);
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(

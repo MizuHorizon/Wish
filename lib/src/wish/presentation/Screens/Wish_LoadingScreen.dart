@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 
-class WishLoadingScreen extends StatefulWidget {
+class WishLoadingScreen extends ConsumerStatefulWidget {
   const WishLoadingScreen({super.key});
 
   @override
-  State<WishLoadingScreen> createState() => _WishLoadingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _WishLoadingScreenState();
 }
 
-class _WishLoadingScreenState extends State<WishLoadingScreen> {
+class _WishLoadingScreenState extends ConsumerState<WishLoadingScreen> {
   @override
   void initState() {
     super.initState();
     _checkTokenAndNavigate();
+  }
+
+  Future<void> _fetchUserProducts() async {
+    ref.read(productModelProvider.notifier).state =
+        await ref.read(productControllerProvider.notifier).getAllProducts();
   }
 
   Future<void> _checkTokenAndNavigate() async {
@@ -23,6 +32,7 @@ class _WishLoadingScreenState extends State<WishLoadingScreen> {
     final jwtToken = prefs.getString('jwtToken');
     // If JWT token is saved, navigate to home screen
     if (jwtToken != null && jwtToken.isNotEmpty) {
+      await _fetchUserProducts();
       Navigator.pushNamed(context, HomeScreen.routeName);
     } else {
       Navigator.pushNamed(context, SignInScreen.routeName);

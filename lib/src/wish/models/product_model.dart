@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final productModelProvider = StateProvider<List<Product>?>((ref) => null);
 
 class Product {
   final String userId;
@@ -9,9 +13,9 @@ class Product {
   final String url;
   final List<String> photos;
   final String company;
-  final double startPrice;
-  final double desiredPrice;
-  final bool tracker;
+  final dynamic startPrice;
+  final dynamic desiredPrice;
+  final bool? tracker;
   final String description;
   final List prices;
   final String createdAt;
@@ -66,17 +70,17 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      userId: map['user_id'] as String,
-      id: map['id'] as String,
-      name: map['name'] as String,
-      url: map['url'] as String,
-      photos: List<String>.from(map['photos'] as List<String>),
+      userId: map['user_id'],
+      id: map['id'],
+      name: map['name'],
+      url: map['url'],
+      photos: List.from(map['photos']),
       company: map['company'] as String,
-      startPrice: map['start_price'] as double,
-      desiredPrice: map['desiredPrice'] as double,
-      tracker: map['tracker'] as bool,
-      description: map['description'] as String,
-      prices: List.from(map['prices'] as List),
+      startPrice: map['start_price'],
+      desiredPrice: map['desiredPrice'],
+      tracker: map['tracker'],
+      description: map['description'],
+      prices: List.from(map['prices']),
       createdAt: map['created_at'] as String,
       updatedAt: map['updated_at'] as String,
     );
@@ -91,7 +95,7 @@ class Product {
       'photos': photos,
       'company': company,
       'start_price': startPrice,
-      'desiredPrice': desiredPrice,
+      'desired_price': desiredPrice,
       'tracker': tracker,
       'description': description,
       'prices': prices,
