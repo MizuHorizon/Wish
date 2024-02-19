@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
 class ProductItem extends StatefulWidget {
   final String name;
@@ -49,9 +51,10 @@ class _ProductState extends State<ProductItem> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                widget.imageUrl, // Replace with your image URL
-                fit: BoxFit.contain,
+              child: CachedNetworkImage(
+                imageUrl: widget.imageUrl,
+                placeholder: (context, url) => const ImageShimmer(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
             Positioned(
@@ -71,13 +74,13 @@ class _ProductState extends State<ProductItem> {
             Container(
               width: 100,
               child: Text(widget.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.appActiveColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w500)),
             ),
             Text(widget.price.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.greenDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w500))

@@ -100,7 +100,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  await Future.delayed(Duration(seconds: 3));
+                  //await Future.delayed(Duration(seconds: 3));
                   refreshProducts();
                 },
                 child: MasonryGridView.builder(

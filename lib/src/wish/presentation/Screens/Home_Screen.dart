@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/Screens/Product_Screen.dart';
+import 'package:wish/src/wish/presentation/Screens/Tracker_Product_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/homepage_drawer.dart';
 import 'package:wish/src/wish/presentation/utils/rectangular_indicator.dart';
@@ -92,9 +93,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               controller: tabController,
               children: [
                 ProductScreen(),
-                Container(
-                  color: Colors.orange,
-                ),
+                TrackedProducts(),
               ],
             ),
           ),
