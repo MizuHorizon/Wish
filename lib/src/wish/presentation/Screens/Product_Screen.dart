@@ -119,14 +119,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             child: ProductItem(
                               name: '${items[index].name.substring(0, 12)}...',
                               imageUrl: items[index].photos[0],
-                              price: items[index].startPrice,
-                              tags: [
+                              price: "₹${items[index].startPrice}",
+                              tags: const [
                                 "tshirt",
                                 "myntra",
                                 "love",
                                 "ok",
                                 "shirt thsirt"
                               ],
+                              productUrl: items[index].url,
                             ),
                           );
                   },

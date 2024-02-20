@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
+import 'package:wish/src/wish/presentation/utils/shimmer_trackedProduct.dart';
 import 'package:wish/src/wish/presentation/utils/tracked_product.dart';
 
 class TrackedProducts extends ConsumerStatefulWidget {
@@ -16,6 +18,7 @@ class TrackedProducts extends ConsumerStatefulWidget {
 
 class _TrackedProductsState extends ConsumerState<TrackedProducts> {
   List<Product> trackedPrroducts = [];
+  bool isLoading = false;
   void getTrackedProducts() {
     List<Product> allProducts =
         ref.read(productModelProvider.notifier).state ?? [];
@@ -26,11 +29,41 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
         }
       });
     }
+
+    print("this is the tracked product $trackedPrroducts");
+  }
+
+  void refreshProducts() async {
+    ref.read(productModelProvider.notifier).state =
+        await ref.read(productControllerProvider.notifier).getAllProducts();
+    List<Product> allProducts =
+        ref.read(productModelProvider.notifier).state ?? [];
+    List<Product> refreshedTrackedProducts = [];
+    if (allProducts.isNotEmpty) {
+      allProducts.forEach((product) {
+        if (product.tracker == true) {
+          refreshedTrackedProducts.add(product);
+        }
+      });
+    }
+    setState(() {
+      trackedPrroducts = refreshedTrackedProducts;
+      print("refreshed list is here $trackedPrroducts");
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTrackedProducts();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final productController = ref.watch(productControllerProvider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
@@ -61,7 +94,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                     onPressed: () {},
                     child: Container(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      width: size.width / 2.5,
+                      width: size.width / 2.8,
                       height: size.height / 18,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -103,32 +136,46 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                   )
                 ],
               ),
+              const SizedBox(height: 10),
               Container(
                 width: size.width,
-                height: size.height / 1.46,
+                height: size.height / 1.47,
                 child: RefreshIndicator(
                   color: AppColors.appActiveColor,
                   backgroundColor: AppColors.appBackgroundColor,
                   onRefresh: () async {
-                    await Future.delayed(Duration(seconds: 3));
-                    return null;
+                    setState(() {
+                      isLoading = true;
+                    });
+                    //await Future.delayed(Duration(seconds: 3));
+                    refreshProducts();
                   },
                   child: ListView.builder(
-                    itemCount: 20,
+                    itemCount: trackedPrroducts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return TrackedProduct(
-                        name: "Watch...",
-                        imageUrl:
-                            'https://m.media-amazon.com/images/I/61ybeKQto8L._SY500_.jpg',
-                        price: null,
-                        tags: [
-                          "tshirt",
-                          "myntra",
-                          "love",
-                          "ok",
-                          "shirt thsirt"
-                        ],
-                      );
+                      return productController.isLoading || isLoading
+                          ? const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: ShimmerTrackProduct(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              child: TrackedProductItem(
+                                name:
+                                    '${trackedPrroducts[index].name.substring(0, 12)}...',
+                                imageUrl: trackedPrroducts[index].photos[0],
+                                price: "${trackedPrroducts[index].prices.last}",
+                                startPrice: trackedPrroducts[index].prices[0],
+                                tags: const [
+                                  "tshirt",
+                                  "myntra",
+                                  "love",
+                                  "ok",
+                                  "shirt thsirt"
+                                ],
+                                productUrl: trackedPrroducts[index].url,
+                              ),
+                            );
                     },
                   ),
                 ),

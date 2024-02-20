@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
 class ProductItem extends StatefulWidget {
   final String name;
   final String imageUrl;
+  final String productUrl;
   final dynamic price;
   final List<String> tags;
 
@@ -13,6 +15,7 @@ class ProductItem extends StatefulWidget {
       {super.key,
       required this.name,
       required this.imageUrl,
+      required this.productUrl,
       required this.price,
       required this.tags});
 
@@ -21,6 +24,14 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductState extends State<ProductItem> {
+  Future<void> _launchUrl() async {
+    print(widget.productUrl);
+    final Uri _url = Uri.parse(widget.productUrl);
+    if (!await launchUrl(_url, mode: LaunchMode.inAppBrowserView)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
   List<Widget> _genrateTags() {
     List<Widget> tags = [];
 
@@ -93,7 +104,9 @@ class _ProductState extends State<ProductItem> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                _launchUrl();
+              },
               child: Container(
                 decoration: BoxDecoration(
                     gradient: const LinearGradient(
