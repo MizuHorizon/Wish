@@ -42,7 +42,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchProducts();
   }
@@ -92,7 +91,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 1.44,
+              height: MediaQuery.of(context).size.height / 1.34,
               child: RefreshIndicator(
                 color: AppColors.appActiveColor,
                 backgroundColor: AppColors.appBackgroundColor,
@@ -120,13 +119,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               name: '${items[index].name.substring(0, 12)}...',
                               imageUrl: items[index].photos[0],
                               price: "₹${items[index].startPrice}",
-                              tags: const [
-                                "tshirt",
-                                "myntra",
-                                "love",
-                                "ok",
-                                "shirt thsirt"
-                              ],
+                              tags: items[index].tags,
                               productUrl: items[index].url,
                             ),
                           );

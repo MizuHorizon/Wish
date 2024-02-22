@@ -17,10 +17,14 @@ class Product {
   final dynamic desiredPrice;
   final bool? tracker;
   final String description;
+  final String currency;
+  final List<String> tags;
   final List prices;
   final String createdAt;
   final String updatedAt;
   Product({
+    required this.currency,
+    required this.tags,
     required this.userId,
     required this.id,
     required this.name,
@@ -53,6 +57,8 @@ class Product {
   }) {
     return Product(
       userId: userId ?? this.userId,
+      currency: currency,
+      tags: tags ?? this.tags,
       id: id ?? this.id,
       name: name ?? this.name,
       url: url ?? this.url,
@@ -74,6 +80,8 @@ class Product {
       id: map['id'],
       name: map['name'],
       url: map['url'],
+      currency: map['currency'] ?? '₹',
+      tags: List.from(map['tags']) ?? [],
       photos: List.from(map['photos']),
       company: map['company'] as String,
       startPrice: map['start_price'],

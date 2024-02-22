@@ -139,7 +139,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
               const SizedBox(height: 10),
               Container(
                 width: size.width,
-                height: size.height / 1.47,
+                height: size.height / 1.38,
                 child: RefreshIndicator(
                   color: AppColors.appActiveColor,
                   backgroundColor: AppColors.appBackgroundColor,
@@ -166,13 +166,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                 imageUrl: trackedPrroducts[index].photos[0],
                                 price: "${trackedPrroducts[index].prices.last}",
                                 startPrice: trackedPrroducts[index].prices[0],
-                                tags: const [
-                                  "tshirt",
-                                  "myntra",
-                                  "love",
-                                  "ok",
-                                  "shirt thsirt"
-                                ],
+                                tags: trackedPrroducts[index].tags,
                                 productUrl: trackedPrroducts[index].url,
                               ),
                             );

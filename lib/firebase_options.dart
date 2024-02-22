@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBV8vkQO1x37oiBFyzpDi7cZeHMPkc-NAc',
+    appId: '1:903758254008:web:729c82f7b3d2111ea3894d',
+    messagingSenderId: '903758254008',
+    projectId: 'wish-3a906',
+    authDomain: 'wish-3a906.firebaseapp.com',
+    storageBucket: 'wish-3a906.appspot.com',
+    measurementId: 'G-BL45CL75PF',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDjCguFrPjQzc811mDb9ml2grjN4mhajW8',
     appId: '1:903758254008:android:66d374b223632fd5a3894d',
@@ -63,7 +67,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '903758254008',
     projectId: 'wish-3a906',
     storageBucket: 'wish-3a906.appspot.com',
+    androidClientId: '903758254008-u8bps64n3jht7imkj5322902cvuqipoi.apps.googleusercontent.com',
     iosClientId: '903758254008-hrfsvmm2j163v91p4l1s4k41lrfs2pgi.apps.googleusercontent.com',
     iosBundleId: 'com.example.wish',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyATuO15NrXo8WbSw4YuKJppR861TOZ0CgI',
+    appId: '1:903758254008:ios:4b590f91bed07501a3894d',
+    messagingSenderId: '903758254008',
+    projectId: 'wish-3a906',
+    storageBucket: 'wish-3a906.appspot.com',
+    androidClientId: '903758254008-u8bps64n3jht7imkj5322902cvuqipoi.apps.googleusercontent.com',
+    iosClientId: '903758254008-t0osa2dfpjnp9phmg4fcfl4omegpup6v.apps.googleusercontent.com',
+    iosBundleId: 'com.example.wish.RunnerTests',
   );
 }

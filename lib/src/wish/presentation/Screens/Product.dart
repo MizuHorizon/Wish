@@ -57,6 +57,7 @@ class _ProductState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Stack(
           children: [
@@ -98,7 +99,11 @@ class _ProductState extends State<ProductItem> {
           ],
         ),
         const SizedBox(height: 8),
-        Wrap(runSpacing: 3, spacing: 3, children: _genrateTags()),
+        Wrap(
+            spacing: 6, // Adjust as needed
+            runSpacing: 3, // Adjust as needed
+            alignment: WrapAlignment.start,
+            children: _genrateTags()),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

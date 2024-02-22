@@ -17,7 +17,7 @@ class ProductRepository {
       if (response.statusCode == 201) {
         //print("in the repo ${response.data}");
         var data = response.data['data'];
-        //print("funkink data $data");
+        print("funkink data $data");
         List<Product> products =
             List<Product>.from(data.map((json) => Product.fromMap(json)));
         // print("products : $products");
