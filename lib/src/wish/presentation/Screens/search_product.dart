@@ -92,6 +92,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
           children: [
             Text(
               widget.name,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                   color: AppColors.appActiveColor,
                   fontSize: 20,
@@ -113,12 +114,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
                 const SizedBox(width: 10),
               ],
             ),
-            Text(
-              "Your product is being tracked",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400, color: AppColors.appActiveColor),
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 20),
             Row(
               children: [
                 InkWell(

@@ -3,17 +3,27 @@ import 'package:wish/src/constants.dart';
 
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/search_product.dart';
-import 'package:wish/src/wish/presentation/utils/tracked_product.dart';
 
 class DataSearch extends SearchDelegate<String> {
   @override
   ThemeData appBarTheme(BuildContext context) {
     return Theme.of(context).copyWith(
-      primaryColor: AppColors.appActiveColor,
-      scaffoldBackgroundColor: AppColors.appBackgroundColor,
-      appBarTheme: const AppBarTheme(
-        color: Colors.black,
+      textTheme: const TextTheme(
+        titleMedium: TextStyle(color: Colors.black, fontSize: 20),
       ),
+      primaryColor: AppColors.appActiveColor,
+      indicatorColor: Colors.white,
+      textSelectionTheme:
+          const TextSelectionThemeData(cursorColor: AppColors.appActiveColor),
+      scaffoldBackgroundColor: AppColors.appBackgroundColor,
+      inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(color: AppColors.dividerColor),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.appActiveColor),
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+          color: Colors.black, surfaceTintColor: AppColors.appActiveColor),
     );
   }
 
@@ -40,7 +50,10 @@ class DataSearch extends SearchDelegate<String> {
           onPressed: () {
             query = "";
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(
+            Icons.clear,
+            color: AppColors.appActiveColor,
+          ))
     ];
   }
 
@@ -51,6 +64,7 @@ class DataSearch extends SearchDelegate<String> {
           close(context, "");
         },
         icon: AnimatedIcon(
+          color: AppColors.appActiveColor,
           icon: AnimatedIcons.menu_arrow,
           progress: transitionAnimation,
         ));
@@ -71,26 +85,41 @@ class DataSearch extends SearchDelegate<String> {
             final nameMatch =
                 element.name.toLowerCase().startsWith(lowerCaseQuery);
             final tagMatch = element.tags.contains(lowerCaseQuery);
-            final priceMatch = element.prices.contains(
-                lowerCaseQuery); // Assuming prices is a list of doubles
-
+            final priceMatch = element.prices
+                .any((price) => price.toString().startsWith(lowerCaseQuery));
             return nameMatch || tagMatch || priceMatch;
           }).toList();
 
-    return ListView.builder(
-      itemCount: suggestionList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 5, left: 5, right: 5),
-          child: SearchProductItem(
-            name: '${suggestionList[index].name.substring(0, 12)}...' ?? "",
-            imageUrl: suggestionList[index].photos[0] ?? "",
-            price: "${suggestionList[index].prices.last}" ?? "",
-            tags: suggestionList[index].tags ?? [],
-            productUrl: suggestionList[index].url ?? " ",
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Column(
+        children: [
+          const Divider(
+            thickness: 0.7,
+            color: AppColors.dividerColor,
           ),
-        );
-      },
+          const SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              itemCount: suggestionList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 5, left: 5, right: 5),
+                  child: SearchProductItem(
+                    name: '${suggestionList[index].name.substring(0, 20)}...' ??
+                        "",
+                    imageUrl: suggestionList[index].photos[0] ?? "",
+                    price: "${suggestionList[index].prices.last}" ?? "",
+                    tags: suggestionList[index].tags ?? [],
+                    productUrl: suggestionList[index].url ?? " ",
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

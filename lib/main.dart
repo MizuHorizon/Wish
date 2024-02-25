@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
-        colorSchemeSeed: Colors.green,
+        colorSchemeSeed: AppColors.appBackgroundColor,
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
