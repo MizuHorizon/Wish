@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/delete_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
 class ProductItem extends StatefulWidget {
@@ -73,7 +75,10 @@ class _ProductState extends State<ProductItem> {
               top: 8, // Adjust the top position of the button
               right: 8, // Adjust the right position of the button
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showDeleteDialog(context, "Delete", "Are you sure?",
+                      AppColors.appBackgroundColor);
+                },
                 child: Icon(Icons.delete),
               ),
             ),

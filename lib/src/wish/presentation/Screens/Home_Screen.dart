@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Product_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Tracker_Product_Screen.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/homepage_drawer.dart';
 import 'package:wish/src/wish/presentation/utils/rectangular_indicator.dart';
+import 'package:wish/src/wish/presentation/utils/search_delegate.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = "/home-screen";
@@ -51,7 +54,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text("Home"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                final List<Product> products =
+                    ref.watch(productModelProvider.notifier).state ?? [];
+                showSearch(
+                    context: context, delegate: DataSearch(products: products));
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: Column(
         children: [
