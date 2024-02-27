@@ -19,9 +19,12 @@ class GradientDialog extends ConsumerWidget {
       : super(key: key);
 
   void deleteProduct(WidgetRef ref) async {
-    ref.read(productControllerProvider.notifier).deleteProduct(productId);
+    await ref.read(productControllerProvider.notifier).deleteProduct(productId);
     ref.read(productModelProvider.notifier).state =
         await ref.read(productControllerProvider.notifier).getAllProducts();
+
+    print(
+        "new state after delete ${ref.read(productModelProvider.notifier).state}");
   }
 
   @override
@@ -79,9 +82,17 @@ class GradientDialog extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       print(productId);
-                      deleteProduct(ref);
+                      await ref
+                          .read(productControllerProvider.notifier)
+                          .deleteProduct(productId);
+                      ref.watch(productModelProvider.notifier).state = await ref
+                          .watch(productControllerProvider.notifier)
+                          .getAllProducts();
+
+                      // print(
+                      //     "new state after delete ${ref.read(productModelProvider.notifier).state}");
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     child: Container(

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/delete_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
-class ProductItem extends StatefulWidget {
+class ProductItem extends ConsumerStatefulWidget {
   final String name;
   final String imageUrl;
   final String productUrl;
@@ -24,10 +25,10 @@ class ProductItem extends StatefulWidget {
       required this.tags});
 
   @override
-  State<ProductItem> createState() => _ProductState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductState();
 }
 
-class _ProductState extends State<ProductItem> {
+class _ProductState extends ConsumerState<ProductItem> {
   Future<void> _launchUrl() async {
     print(widget.productUrl);
     final Uri _url = Uri.parse(widget.productUrl);
@@ -36,7 +37,7 @@ class _ProductState extends State<ProductItem> {
     }
   }
 
-  void deleteProduct(WidgetRef ref, String productId) async {}
+  // void deleteProduct(WidgetRef ref, String productId) async {}
 
   List<Widget> _genrateTags() {
     List<Widget> tags = [];
@@ -62,6 +63,8 @@ class _ProductState extends State<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
+    // final productController = ref.watch(productControllerProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
