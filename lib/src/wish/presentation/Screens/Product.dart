@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
@@ -33,6 +34,8 @@ class _ProductState extends State<ProductItem> {
       throw Exception('Could not launch $_url');
     }
   }
+
+  void deleteProduct(WidgetRef ref, String productId) async {}
 
   List<Widget> _genrateTags() {
     List<Widget> tags = [];

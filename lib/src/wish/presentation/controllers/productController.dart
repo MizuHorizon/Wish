@@ -16,6 +16,18 @@ class ProductController extends StateNotifier<AsyncValue<void>> {
   ProductController({required this.product}) : super(const AsyncData(null));
   final ProductRepository product;
 
+  Future<void> deleteProduct(String productId) async {
+    state = const AsyncLoading();
+    final newState = await AsyncValue.guard(() async {
+      print(" this is the productId $productId");
+      await product.deleteProduct(productId);
+    });
+
+    if (mounted) {
+      state = newState;
+    }
+  }
+
   Future<List<Product>?> getAllProducts() async {
     state = const AsyncLoading();
 

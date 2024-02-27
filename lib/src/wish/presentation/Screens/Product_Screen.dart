@@ -51,83 +51,86 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     final productController = ref.watch(productControllerProvider);
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    //two sorting buttons
-                  ],
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.only(left: 4, right: 4),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color.fromARGB(255, 66, 63, 63),
-                              Colors.black
-                            ]),
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(color: Colors.grey)),
-                    height: 35,
-                    child: const Center(
-                      child: Text(
-                        "+ Add Product",
-                        style: TextStyle(color: AppColors.appActiveColor),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      //two sorting buttons
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(left: 4, right: 4),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromARGB(255, 66, 63, 63),
+                                Colors.black
+                              ]),
+                          borderRadius: BorderRadius.circular(7),
+                          border: Border.all(color: Colors.grey)),
+                      height: 35,
+                      child: const Center(
+                        child: Text(
+                          "+ Add Product",
+                          style: TextStyle(color: AppColors.appActiveColor),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 1.34,
-              child: RefreshIndicator(
-                color: AppColors.appActiveColor,
-                backgroundColor: AppColors.appBackgroundColor,
-                onRefresh: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  //await Future.delayed(Duration(seconds: 3));
-                  refreshProducts();
-                },
-                child: MasonryGridView.builder(
-                  gridDelegate:
-                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return productController.isLoading || isLoading
-                        ? Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ShimmerProductItem(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ProductItem(
-                              name: '${items[index].name.substring(0, 12)}...',
-                              imageUrl: items[index].photos[0],
-                              price: "₹${items[index].startPrice}",
-                              tags: items[index].tags,
-                              productUrl: items[index].url,
-                            ),
-                          );
+                ],
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 1.34,
+                child: RefreshIndicator(
+                  color: AppColors.appActiveColor,
+                  backgroundColor: AppColors.appBackgroundColor,
+                  onRefresh: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    //await Future.delayed(Duration(seconds: 3));
+                    refreshProducts();
                   },
+                  child: MasonryGridView.builder(
+                    gridDelegate:
+                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return productController.isLoading || isLoading
+                          ? Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ShimmerProductItem(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ProductItem(
+                                name:
+                                    '${items[index].name.substring(0, 12)}...',
+                                imageUrl: items[index].photos[0],
+                                price: "₹${items[index].startPrice}",
+                                tags: items[index].tags,
+                                productUrl: items[index].url,
+                              ),
+                            );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

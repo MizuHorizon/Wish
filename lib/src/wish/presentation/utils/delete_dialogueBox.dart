@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 
-class GradientDialog extends StatelessWidget {
+class GradientDialog extends ConsumerWidget {
   final String title;
   final String message;
   final Color color;
+  final String productId;
 
   const GradientDialog(
       {Key? key,
       required this.title,
       required this.message,
-      required this.color})
+      required this.color,
+      required this.productId})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
+        width: 300,
+        height: 200,
         decoration: BoxDecoration(
           border: Border.all(
             color: AppColors.dividerColor,
             width: 1.5,
           ),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
@@ -46,33 +51,64 @@ class GradientDialog extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.appActiveColor,
                   fontSize: 22,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Did you buy the product? We can help you track and give the best price for it.",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+              Container(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: const Text(
+                  "Did you buy the product? We can help you track and give the best price for it.",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
-            
+              const SizedBox(height: 28),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 25,
-                    width: 100,
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      top: BorderSide(width: 2, color: AppColors.dividerColor),
-                    )),
-                    child: Text("OK"),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 60,
+                      width: 148,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        top:
+                            BorderSide(width: 2, color: AppColors.dividerColor),
+                        right:
+                            BorderSide(width: 2, color: AppColors.dividerColor),
+                      )),
+                      child: const Center(
+                          child: Text(
+                        "Delete",
+                        style: TextStyle(color: Colors.red, fontSize: 20),
+                      )),
+                    ),
                   ),
-                  Container()
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 148,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        top:
+                            BorderSide(width: 2, color: AppColors.dividerColor),
+                      )),
+                      child: const Center(
+                          child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: AppColors.appActiveColor, fontSize: 20),
+                      )),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -83,8 +119,8 @@ class GradientDialog extends StatelessWidget {
   }
 }
 
-void showDeleteDialog(
-    BuildContext context, String title, String message, Color color) {
+void showDeleteDialog(BuildContext context, WidgetRef ref, String title,
+    String message, Color color, String productId) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -92,6 +128,7 @@ void showDeleteDialog(
         title: title,
         message: message,
         color: color,
+        productId: productId,
       );
     },
   );

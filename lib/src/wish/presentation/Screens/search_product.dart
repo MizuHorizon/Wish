@@ -81,7 +81,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
               right: 8, // Adjust the right position of the button
               child: InkWell(
                 onTap: () {},
-                child: Icon(Icons.delete),
+                child: const Icon(Icons.delete),
               ),
             ),
           ],

@@ -83,7 +83,10 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
               right: 8, // Adjust the right position of the button
               child: InkWell(
                 onTap: () {},
-                child: Icon(Icons.delete),
+                child: Icon(
+                  Icons.delete,
+                  color: AppColors.appBackgroundColor,
+                ),
               ),
             ),
           ],

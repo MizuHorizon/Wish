@@ -17,7 +17,7 @@ class ProductRepository {
       if (response.statusCode == 201) {
         //print("in the repo ${response.data}");
         var data = response.data['data'];
-        print("funkink data $data");
+        // print("funkink data $data");
         List<Product> products =
             List<Product>.from(data.map((json) => Product.fromMap(json)));
         // print("products : $products");
@@ -25,6 +25,28 @@ class ProductRepository {
       } else {
         throw response.data;
       }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.error is SocketException) {
+          throw ('Server is not reachable.');
+        } else if (e.response!.statusCode == 404) {
+          throw e.response!.data['message'];
+        } else {
+          print('Dio error: ${e.message}');
+          throw 'Dio error: ${e.message}';
+        }
+      } else {
+        print('Error: $e');
+        throw '$e';
+      }
+    }
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    try {
+      final Response response = await dio.delete(
+        "${baseUrl}product/$productId",
+      );
     } catch (e) {
       if (e is DioException) {
         if (e.error is SocketException) {
