@@ -13,9 +13,10 @@ class ProductItem extends StatefulWidget {
   final String productUrl;
   final dynamic price;
   final List<String> tags;
-
+  final String productId;
   ProductItem(
       {super.key,
+      required this.productId,
       required this.name,
       required this.imageUrl,
       required this.productUrl,
@@ -80,7 +81,7 @@ class _ProductState extends State<ProductItem> {
               child: InkWell(
                 onTap: () {
                   showDeleteDialog(context, "Delete", "Are you sure?",
-                      AppColors.appBackgroundColor);
+                      AppColors.appBackgroundColor, widget.productId);
                 },
                 child: Icon(Icons.delete),
               ),

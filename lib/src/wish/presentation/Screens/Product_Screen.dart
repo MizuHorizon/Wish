@@ -32,7 +32,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     ref.read(productModelProvider.notifier).state =
         await ref.read(productControllerProvider.notifier).getAllProducts();
     setState(() {
-      items = ref.read(productModelProvider.notifier).state ?? [];
+      items = ref.watch(productModelProvider.notifier).state ?? [];
       print("refreshed list is here $items");
       isLoading = false;
     });
@@ -123,6 +123,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 price: "₹${items[index].startPrice}",
                                 tags: items[index].tags,
                                 productUrl: items[index].url,
+                                productId: items[index].id,
                               ),
                             );
                     },

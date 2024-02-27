@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 
 class GradientDialog extends ConsumerWidget {
   final String title;
@@ -15,6 +17,12 @@ class GradientDialog extends ConsumerWidget {
       required this.color,
       required this.productId})
       : super(key: key);
+
+  void deleteProduct(WidgetRef ref) async {
+    ref.read(productControllerProvider.notifier).deleteProduct(productId);
+    ref.read(productModelProvider.notifier).state =
+        await ref.read(productControllerProvider.notifier).getAllProducts();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +79,11 @@ class GradientDialog extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      print(productId);
+                      deleteProduct(ref);
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
                     child: Container(
                       height: 60,
                       width: 148,
@@ -119,8 +131,8 @@ class GradientDialog extends ConsumerWidget {
   }
 }
 
-void showDeleteDialog(BuildContext context, WidgetRef ref, String title,
-    String message, Color color, String productId) {
+void showDeleteDialog(BuildContext context, String title, String message,
+    Color color, String productId) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
