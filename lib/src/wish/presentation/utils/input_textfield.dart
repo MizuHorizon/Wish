@@ -35,7 +35,7 @@ class _InputWishTextFieldState extends State<InputWishTextField> {
         hintText: widget.hintText,
 
         hintStyle:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+            const TextStyle(color: Colors.grey, fontWeight: FontWeight.w300),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         border: const OutlineInputBorder(
