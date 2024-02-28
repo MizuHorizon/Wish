@@ -12,7 +12,7 @@ import 'package:wish/src/wish/presentation/utils/search_delegate.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = "/home-screen";
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
@@ -29,7 +29,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   bool get wantKeepAlive => true;
-  late TabController tabController = TabController(length: 2, vsync: this);
+  late TabController tabController;
+
   @override
   void initState() {
     super.initState();
@@ -43,8 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
       drawer: HomePageDrawer(context, _selectedIndex, _onItemTapped),
@@ -56,13 +56,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         title: const Text("Home"),
         actions: [
           IconButton(
-              onPressed: () {
-                final List<Product> products =
-                    ref.watch(productModelProvider.notifier).state ?? [];
-                showSearch(
-                    context: context, delegate: DataSearch(products: products));
-              },
-              icon: const Icon(Icons.search))
+            onPressed: () {
+              final List<Product> products =
+                  ref.watch(productModelProvider.notifier).state ?? [];
+              showSearch(
+                context: context,
+                delegate: DataSearch(products: products),
+              );
+            },
+            icon: const Icon(Icons.search),
+          )
         ],
       ),
       body: Column(
@@ -85,10 +88,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 labelColor: AppColors.appActiveColor,
                 indicatorColor: const Color.fromRGBO(4, 2, 46, 1),
                 indicator: RectangularIndicator(
-                    topRightRadius: 20,
-                    topLeftRadius: 20,
-                    bottomRightRadius: 20,
-                    bottomLeftRadius: 20),
+                  topRightRadius: 20,
+                  topLeftRadius: 20,
+                  bottomRightRadius: 20,
+                  bottomLeftRadius: 20,
+                ),
                 indicatorSize: TabBarIndicatorSize.tab,
                 unselectedLabelColor: Colors.grey,
                 controller: tabController,
@@ -111,6 +115,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           ),
         ],
       ),
+      floatingActionButton: Positioned(
+          top: MediaQuery.of(context).size.height / 2 - 30,
+          left: 10,
+          child: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      height: size.height / 2.3,
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                      ),
+                    );
+                  });
+            },
+            elevation: 2.0, // Adjust elevation if needed
+            shape: CircleBorder(), // Make the button round
+            child: Container(
+              width: 58.0,
+              height: 58.0,
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.dividerColor),
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.centerRight,
+                    colors: [Color.fromARGB(255, 66, 63, 63), Colors.black]),
+              ),
+              child: Icon(Icons.add, color: Colors.white), // Add your icon here
+            ),
+          )),
     );
   }
 }
