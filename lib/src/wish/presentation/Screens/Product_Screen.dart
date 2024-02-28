@@ -59,37 +59,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    //two sorting buttons
-                  ],
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.only(left: 4, right: 4),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color.fromARGB(255, 66, 63, 63),
-                              Colors.black
-                            ]),
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(color: Colors.grey)),
-                    height: 35,
-                    child: const Center(
-                      child: Text(
-                        "+ Add Product",
-                        style: TextStyle(color: AppColors.appActiveColor),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              children: [],
             ),
             Container(
               width: MediaQuery.of(context).size.width,

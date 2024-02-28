@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -155,6 +157,11 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                     child: ListView.builder(
                       itemCount: trackedPrroducts.length,
                       itemBuilder: (BuildContext context, int index) {
+                        var kprice = jsonDecode(
+                            trackedPrroducts[index].prices.last)['price'];
+                        var startPrice = jsonDecode(
+                            trackedPrroducts[index].prices[0])['price'];
+                        print(kprice);
                         return productController.isLoading || isLoading
                             ? const Padding(
                                 padding: EdgeInsets.all(10),
@@ -167,9 +174,8 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                   name:
                                       '${trackedPrroducts[index].name.substring(0, 12)}...',
                                   imageUrl: trackedPrroducts[index].photos[0],
-                                  price:
-                                      "${trackedPrroducts[index].prices.last}",
-                                  startPrice: trackedPrroducts[index].prices[0],
+                                  price: "$kprice",
+                                  startPrice: "$startPrice",
                                   tags: trackedPrroducts[index].tags,
                                   productUrl: trackedPrroducts[index].url,
                                 ),
