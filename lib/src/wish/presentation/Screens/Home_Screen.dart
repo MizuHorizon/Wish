@@ -60,6 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   TextEditingController priceController = TextEditingController();
   TextEditingController tagController = TextEditingController();
   List<Widget> tags = [];
+  List<String> productTags = [];
   bool trackable = false;
   bool showDesiredPrice = false;
   bool emptyUrl = false;
@@ -349,6 +350,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   final tag = value.trim();
                                                   if (tag.isNotEmpty) {
                                                     mystate(() {
+                                                      productTags.add(tag);
                                                       tags.add(
                                                         Padding(
                                                           padding:
@@ -424,6 +426,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           emptyDesiredPrice = true;
                                         });
                                       } else {
+                                        print(
+                                            "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
+                                        double price;
+
+                                        if (priceController.text
+                                            .trim()
+                                            .isEmpty) {
+                                          // Handle the case where no price is entered
+                                          // For example, you can assign a default value of 0 or display a message to the user
+                                          price = 0;
+                                        } else {
+                                          try {
+                                            price = double.parse(
+                                                priceController.text.trim());
+                                          } catch (e) {
+                                            // Handle the parsing error gracefully
+                                            print("Error parsing price: $e");
+                                            // You can choose to assign a default value or handle the error in any other appropriate way
+                                            price = 0;
+                                          }
+                                        }
+                                        print(productTags);
+                                        ref
+                                            .read(productControllerProvider
+                                                .notifier)
+                                            .addProduct(
+                                                urlController.text.trim(),
+                                                trackable,
+                                                descController.text.trim(),
+                                                productTags,
+                                                price)
+                                            .then((value) =>
+                                                {productTags.clear()});
                                         mystate(() {
                                           emptyUrl = false;
                                           notValidUrl = false;
@@ -433,7 +468,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           urlController.clear();
                                           priceController.clear();
                                         });
-
                                         Navigator.of(context).pop();
                                       }
                                     },

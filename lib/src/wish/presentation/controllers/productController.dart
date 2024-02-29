@@ -28,6 +28,29 @@ class ProductController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  Future<dynamic> addProduct(String url, bool trackable, String description,
+      List<String> productTags, double desired_price) async {
+    try {
+      var data;
+      state = const AsyncLoading();
+      final newState = await AsyncValue.guard(() async {
+        final prefs = await SharedPreferences.getInstance();
+
+        String? userId = await prefs.getString('userId');
+        print("userId : $userId $url, $productTags");
+        data = await product.addProduct(userId as String, url, trackable,
+            description, productTags, desired_price);
+      });
+
+      if (mounted) {
+        state = newState;
+      }
+      return data;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<List<Product>?> getAllProducts() async {
     state = const AsyncLoading();
 
