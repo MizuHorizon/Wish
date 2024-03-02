@@ -54,9 +54,59 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
         padding: const EdgeInsets.only(left: 12, right: 12),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Container(
+                    child: const Center(
+                      child: Text(
+                        "Recent",
+                        style: TextStyle(
+                            color: AppColors.appActiveColor, fontSize: 15),
+                      ),
+                    ),
+                    width: 90,
+                    height: 32,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Color.fromARGB(255, 145, 148, 151),
+                        border: Border.all(
+                            color: AppColors.dividerColor, width: 1)),
+                  ),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: 100,
+                      height: 32,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: AppColors.appBackgroundColor,
+                          border: Border.all(
+                              color: AppColors.dividerColor, width: 1)),
+                      child: const Center(
+                        child: Row(
+                          children: [
+                            Center(
+                              child: Text(
+                                "  Platform",
+                                style: TextStyle(
+                                    color: AppColors.appActiveColor,
+                                    fontSize: 15),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: AppColors.appActiveColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
