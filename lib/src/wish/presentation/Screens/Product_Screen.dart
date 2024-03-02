@@ -35,6 +35,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     });
   }
 
+  String dropdownvalue = 'Platform';
+  var dropitems = [
+    'Platform',
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
   bool isLoading = false;
 
   @override
@@ -75,33 +84,33 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             color: AppColors.dividerColor, width: 1)),
                   ),
                   const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 100,
-                      height: 32,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: AppColors.appBackgroundColor,
-                          border: Border.all(
-                              color: AppColors.dividerColor, width: 1)),
-                      child: const Center(
-                        child: Row(
-                          children: [
-                            Center(
-                              child: Text(
-                                "  Platform",
-                                style: TextStyle(
-                                    color: AppColors.appActiveColor,
-                                    fontSize: 15),
-                              ),
+                  Container(
+                    width: 100,
+                    height: 32,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: AppColors.appBackgroundColor,
+                        border: Border.all(
+                            color: AppColors.dividerColor, width: 1)),
+                    child: Center(
+                      child: DropdownButton(
+                        underline: Container(),
+                        value: dropdownvalue,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        items: dropitems.map((String ditems) {
+                          return DropdownMenuItem(
+                            value: ditems,
+                            child: Text(
+                              ditems,
+                              style: TextStyle(color: AppColors.appActiveColor),
                             ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: AppColors.appActiveColor,
-                            )
-                          ],
-                        ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
                       ),
                     ),
                   ),
