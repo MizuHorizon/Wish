@@ -50,6 +50,7 @@ dependencies:
   cached_network_image: ^3.3.1
   url_launcher: ^6.2.4
   dropdown_button2: ^2.3.9
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

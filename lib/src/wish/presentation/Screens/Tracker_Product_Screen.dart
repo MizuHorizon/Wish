@@ -171,14 +171,16 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                 padding:
                                     const EdgeInsets.only(top: 5, bottom: 5),
                                 child: TrackedProductItem(
-                                  name:
-                                      '${trackedPrroducts[index].name.substring(0, 12)}...',
-                                  imageUrl: trackedPrroducts[index].photos[0],
-                                  price: "$kprice",
-                                  startPrice: "$startPrice",
-                                  tags: trackedPrroducts[index].tags,
-                                  productUrl: trackedPrroducts[index].url,
-                                ),
+                                    desiredPrice:
+                                        trackedPrroducts[index].desiredPrice ??
+                                            '0',
+                                    name: '${trackedPrroducts[index].name}',
+                                    imageUrl: trackedPrroducts[index].photos[0],
+                                    price: "$kprice",
+                                    startPrice: "$startPrice",
+                                    tags: trackedPrroducts[index].tags,
+                                    productUrl: trackedPrroducts[index].url,
+                                    priceList: trackedPrroducts[index].prices),
                               );
                       },
                     ),

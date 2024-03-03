@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
@@ -9,18 +10,22 @@ class TrackedProductItem extends StatefulWidget {
   String imageUrl;
   String name;
   String productUrl;
+  int desiredPrice;
   final dynamic price;
   final dynamic startPrice;
   final List<String> tags;
-  TrackedProductItem(
-      {Key? key,
-      required this.productUrl,
-      required this.imageUrl,
-      required this.name,
-      required this.price,
-      required this.tags,
-      required this.startPrice})
-      : super(key: key);
+  final List<dynamic> priceList;
+  TrackedProductItem({
+    Key? key,
+    required this.productUrl,
+    required this.desiredPrice,
+    required this.imageUrl,
+    required this.name,
+    required this.price,
+    required this.tags,
+    required this.startPrice,
+    required this.priceList,
+  }) : super(key: key);
 
   @override
   State<TrackedProductItem> createState() => _TrackedProductItemState();
@@ -96,7 +101,7 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.name,
+              "${widget.name.substring(0, 12)}...",
               style: const TextStyle(
                   color: AppColors.appActiveColor,
                   fontSize: 20,
@@ -163,7 +168,14 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                 ),
                 const SizedBox(width: 20),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, TrackProductScreen.routeName,
+                        arguments: {
+                          'name': widget.name,
+                          "desiredPrice": widget.desiredPrice,
+                          'prices': widget.priceList,
+                        });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),

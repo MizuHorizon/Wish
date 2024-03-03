@@ -85,7 +85,7 @@ class Product {
       photos: List.from(map['photos']),
       company: map['company'] as String,
       startPrice: map['start_price'],
-      desiredPrice: map['desiredPrice'],
+      desiredPrice: map['desired_price'],
       tracker: map['trackable'] as bool,
       description: map['description'],
       prices: List.from(map['prices']),

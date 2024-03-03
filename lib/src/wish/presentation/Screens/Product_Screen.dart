@@ -27,6 +27,28 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     });
   }
 
+  void sortProduct(String platform) {
+    print(platform);
+    platform = platform.toLowerCase();
+    var products = ref.read(productModelProvider.notifier).state ?? [];
+    print('products before $products');
+    products.sort((a, b) {
+      bool aHasTag = a.tags.contains(platform);
+      bool bHasTag = b.tags.contains(platform);
+
+      if (aHasTag && !bHasTag) {
+        return -1;
+      } else if (!aHasTag && bHasTag) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    ref.read(productModelProvider.notifier).state = products;
+    print('products after $products');
+  }
+
   void refreshProducts() async {
     ref.read(productModelProvider.notifier).state =
         await ref.read(productControllerProvider.notifier).getAllProducts();
@@ -34,6 +56,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       items = ref.watch(productModelProvider.notifier).state ?? [];
       print("refreshed list is here $items");
       isLoading = false;
+      dropdownvalue = "";
     });
   }
 
@@ -136,6 +159,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         setState(() {
                           dropdownvalue = value!;
                         });
+                        sortProduct(dropdownvalue);
                       },
                       menuItemStyleData: const MenuItemStyleData(
                         height: 40,
