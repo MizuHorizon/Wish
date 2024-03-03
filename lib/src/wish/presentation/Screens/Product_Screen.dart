@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -36,7 +37,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     });
   }
 
-  String dropdownvalue = '';
+  String dropdownvalue = "";
   var dropitems = [
     'Ajio',
     'Amazon',
@@ -81,6 +82,67 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           Border.all(color: AppColors.dividerColor, width: 1)),
                 ),
                 const SizedBox(width: 10),
+                Center(
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 200,
+                        width: 130,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: AppColors.appBackgroundColor,
+                            border: Border.all(
+                                color: AppColors.dividerColor, width: 1)),
+                        offset: const Offset(-10, -1),
+                        scrollbarTheme: ScrollbarThemeData(
+                          radius: const Radius.circular(40),
+                          thickness: MaterialStateProperty.all(6),
+                          thumbVisibility: MaterialStateProperty.all(true),
+                        ),
+                      ),
+                      buttonStyleData: ButtonStyleData(
+                        height: 32,
+                        width: 120,
+                        padding: const EdgeInsets.only(left: 14, right: 14),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: AppColors.dividerColor,
+                          ),
+                        ),
+                        elevation: 2,
+                      ),
+                      isExpanded: true,
+                      hint: const Text(
+                        'Platform',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.appActiveColor,
+                        ),
+                      ),
+                      items: dropitems
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: dropdownvalue.isEmpty ? null : dropdownvalue,
+                      onChanged: (String? value) {
+                        setState(() {
+                          dropdownvalue = value!;
+                        });
+                      },
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             Container(

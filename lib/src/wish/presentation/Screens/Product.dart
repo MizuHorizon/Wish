@@ -86,7 +86,10 @@ class _ProductState extends ConsumerState<ProductItem> {
                   showDeleteDialog(context, "Delete", "Are you sure?",
                       AppColors.appBackgroundColor, widget.productId);
                 },
-                child: Icon(Icons.delete),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.black,
+                ),
               ),
             ),
           ],
