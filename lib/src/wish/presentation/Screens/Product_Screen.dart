@@ -6,6 +6,7 @@ import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Product.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
 import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
@@ -35,14 +36,12 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     });
   }
 
-  String dropdownvalue = 'Platform';
+  String dropdownvalue = '';
   var dropitems = [
-    'Platform',
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+    'Ajio',
+    'Amazon',
+    'Flipkart',
+    'Myntra',
   ];
   bool isLoading = false;
 
@@ -63,59 +62,26 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
         padding: const EdgeInsets.only(left: 12, right: 12),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Container(
-                    child: const Center(
-                      child: Text(
-                        "Recent",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor, fontSize: 15),
-                      ),
-                    ),
-                    width: 90,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color.fromARGB(255, 145, 148, 151),
-                        border: Border.all(
-                            color: AppColors.dividerColor, width: 1)),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    width: 100,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: AppColors.appBackgroundColor,
-                        border: Border.all(
-                            color: AppColors.dividerColor, width: 1)),
-                    child: Center(
-                      child: DropdownButton(
-                        underline: Container(),
-                        value: dropdownvalue,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: dropitems.map((String ditems) {
-                          return DropdownMenuItem(
-                            value: ditems,
-                            child: Text(
-                              ditems,
-                              style: TextStyle(color: AppColors.appActiveColor),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                      ),
+            Row(
+              children: [
+                Container(
+                  child: const Center(
+                    child: Text(
+                      "Recent",
+                      style: TextStyle(
+                          color: AppColors.appActiveColor, fontSize: 15),
                     ),
                   ),
-                ],
-              ),
+                  width: 90,
+                  height: 32,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Color.fromARGB(255, 145, 148, 151),
+                      border:
+                          Border.all(color: AppColors.dividerColor, width: 1)),
+                ),
+                const SizedBox(width: 10),
+              ],
             ),
             Container(
               width: MediaQuery.of(context).size.width,

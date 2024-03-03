@@ -301,13 +301,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              InkWell(
-                onTap: () {},
-                child: const Center(
-                  child: Text(
-                    "Forgot Password ?",
-                    style: TextStyle(
-                        color: AppColors.appActiveColor, fontSize: 15),
+              Center(
+                child: Container(
+                  child: InkWell(
+                    onTap: () {},
+                    child: const Center(
+                      child: Text(
+                        "Forgot Password ?",
+                        style: TextStyle(
+                            color: AppColors.appActiveColor, fontSize: 15),
+                      ),
+                    ),
                   ),
                 ),
               )

@@ -103,7 +103,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           Center(
             child: Container(
               width: 234,
-              height: 38,
+              height: 35,
               decoration: BoxDecoration(
                 color: AppColors.appActiveColor,
                 border: Border.all(color: AppColors.dividerColor, width: 1),
