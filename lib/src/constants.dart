@@ -13,4 +13,4 @@ class AppColors {
 }
 
 //const String baseUrl = "http://10.0.2.2:4000/api/v1/";
-const String baseUrl = "http://192.168.108.90:4000/api/v1/";
+const String baseUrl = "http://192.168.244.90:4000/api/v1/";
