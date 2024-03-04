@@ -119,64 +119,103 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                           color: AppColors.greenDark,
                         ),
                       )),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    width: size.width,
-                    height: size.height / 2.3,
-                    child: LineChart(
-                      LineChartData(
-                          borderData: FlBorderData(show: false),
-                          minY: minY,
-                          maxY: maxY * 1.5,
-                          baselineY: 1000,
-                          lineTouchData: LineTouchData(
-                            enabled: true,
-                          ),
-                          gridData: const FlGridData(drawVerticalLine: false),
-                          showingTooltipIndicators: [],
-                          titlesData: const FlTitlesData(
-                            bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                            rightTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                            topTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                          ),
-                          lineBarsData: [
-                            LineChartBarData(
-                              spots: chartData,
-                              dotData: FlDotData(
-                                show: false,
-                                getDotPainter:
-                                    (spot, percent, barData, index) =>
-                                        FlDotCirclePainter(
-                                  radius: 8,
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                  strokeColor: AppColors.greenDark,
-                                ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      padding:
+                          const EdgeInsets.only(left: 8, top: 10, bottom: 10),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
+                      width: size.width,
+                      height: size.height / 2.3,
+                      child: LineChart(
+                        LineChartData(
+                            borderData: FlBorderData(show: false),
+                            minY: minY,
+                            maxY: maxY * 1.5,
+                            baselineY: 1000,
+                            lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor: Colors
+                                    .transparent, // Set background color of tooltip
+                                fitInsideHorizontally: true,
+                                fitInsideVertically: true,
+                                getTooltipItems: (touchedSpots) {
+                                  return touchedSpots
+                                      .map((LineBarSpot touchedSpot) {
+                                    // Determine the price change
+                                    double priceChange =
+                                        touchedSpot.y - widget.desiredPrice;
+                                    // Determine the color based on price change
+                                    Color tooltipColor = priceChange >= 0
+                                        ? Colors.green
+                                        : Colors.red;
+                                    // Determine the icon based on price change
+                                    IconData iconData = priceChange >= 0
+                                        ? Icons.arrow_upward
+                                        : Icons.arrow_downward;
+                                    // Build the tooltip item
+                                    return LineTooltipItem(
+                                      '${DateTime.fromMillisecondsSinceEpoch((touchedSpot.x * 1000).toInt()).toString()}',
+                                      TextStyle(color: tooltipColor),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              ' Price: ${touchedSpot.y.toStringAsFixed(2)}',
+                                          style: TextStyle(color: tooltipColor),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList();
+                                },
                               ),
-                              belowBarData: BarAreaData(
-                                spotsLine: const BarAreaSpotsLine(
-                                  show: true, // Whether to show the spots line
-                                  flLineStyle: FlLine(
-                                    color: AppColors
-                                        .greenDark, // Color of the line
-                                    strokeWidth: 0.2, // Width of the line
+                            ),
+                            gridData: const FlGridData(drawVerticalLine: false),
+                            showingTooltipIndicators: [],
+                            titlesData: const FlTitlesData(
+                              bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false)),
+                              rightTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false)),
+                              topTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false)),
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: chartData,
+                                dotData: FlDotData(
+                                  show: false,
+                                  getDotPainter:
+                                      (spot, percent, barData, index) =>
+                                          FlDotCirclePainter(
+                                    radius: 8,
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                    strokeColor: AppColors.greenDark,
                                   ),
                                 ),
-                                show: true,
-                                gradient: LinearGradient(
-                                  colors: gradientColors
-                                      .map((color) => color.withOpacity(0.19))
-                                      .toList(),
+                                belowBarData: BarAreaData(
+                                  spotsLine: const BarAreaSpotsLine(
+                                    show:
+                                        true, // Whether to show the spots line
+                                    flLineStyle: FlLine(
+                                      color: AppColors
+                                          .greenDark, // Color of the line
+                                      strokeWidth: 0.2, // Width of the line
+                                    ),
+                                  ),
+                                  show: true,
+                                  gradient: LinearGradient(
+                                    colors: gradientColors
+                                        .map((color) => color.withOpacity(0.19))
+                                        .toList(),
+                                  ),
                                 ),
+                                color: AppColors.greenDark,
                               ),
-                              color: AppColors.greenDark,
-                            ),
-                          ]),
-                      duration: const Duration(milliseconds: 1000),
-                      curve: Curves.easeIn,
+                            ]),
+                        duration: const Duration(milliseconds: 1000),
+                        curve: Curves.easeIn,
+                      ),
                     ),
                   ),
                   const Text(
