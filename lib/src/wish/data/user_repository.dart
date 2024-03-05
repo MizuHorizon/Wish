@@ -84,6 +84,16 @@ class UserRepository {
     }
   }
 
+  Future<dynamic> updateFCM(String id, String token) async {
+    final Response response = await dio
+        .post("${baseUrl}user/updatefcm/$id", data: {'fcmtoken': token});
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw "Something went wrong ${response.data}";
+    }
+  }
+
   Future<dynamic> getUserByEmail(String email) async {
     final Response response = await dio.get("${baseUrl}user/${email}");
     if (response.statusCode == 200) {

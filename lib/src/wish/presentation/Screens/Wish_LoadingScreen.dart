@@ -6,6 +6,7 @@ import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import 'package:wish/src/wish/services/firebase_notification_service.dart';
 
 class WishLoadingScreen extends ConsumerStatefulWidget {
   const WishLoadingScreen({super.key});
@@ -33,6 +34,9 @@ class _WishLoadingScreenState extends ConsumerState<WishLoadingScreen> {
     // If JWT token is saved, navigate to home screen
     if (jwtToken != null && jwtToken.isNotEmpty) {
       await _fetchUserProducts();
+      var fcm = ref.watch(firebaseMessagingProvider).then((value) {
+        value.getToken();
+      });
       Navigator.pushNamed(context, HomeScreen.routeName);
     } else {
       Navigator.pushNamed(context, SignInScreen.routeName);

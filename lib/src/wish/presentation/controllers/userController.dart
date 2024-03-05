@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
@@ -19,6 +21,20 @@ class UserController extends StateNotifier<AsyncValue<void>> {
         await AsyncValue.guard(() async => await firebase.signOut());
     if (mounted) {
       state = newState;
+    }
+  }
+
+  Future<MyAppUser?> currentUser() async {
+    MyAppUser? userData = await firebase.currentUser();
+    return userData;
+  }
+
+  Future<MyAppUser?> updateFCM(String fcmToken) async {
+    try {
+      MyAppUser? userData = await firebase.updateFcm(fcmToken);
+      return userData;
+    } catch (e) {
+      throw '$e';
     }
   }
 

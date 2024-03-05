@@ -1,6 +1,7 @@
+import 'package:wish/src/wish/models/user_model.dart';
 
 abstract class AuthService {
-  //Future<MyAppUser> currentUser();
+  Future<MyAppUser?> currentUser();
   Future signInWithGoogle();
   Future signInWithEmailAndPassword(String email, String password);
   Future<dynamic> createUserWithEmailAndPassword(

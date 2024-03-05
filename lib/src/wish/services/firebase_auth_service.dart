@@ -1,4 +1,5 @@
 import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,6 +63,21 @@ class FirebaseAuthService implements AuthService {
       sb.write(random.nextInt(16).toRadixString(16));
     }
     return sb.toString();
+  }
+
+  Future<MyAppUser?> updateFcm(String fcmToken) async {
+    try {
+      String? userID = await getUserId();
+      print("user id in the auth service $userID");
+      if (userID != null) {
+        final userDataFromBackend =
+            await userRepository.updateFCM(userID, fcmToken);
+        final MyAppUser user = MyAppUser.fromMap(userDataFromBackend['data']);
+        return user;
+      }
+    } catch (e) {
+      throw '$e';
+    }
   }
 
   @override
@@ -132,5 +148,20 @@ class FirebaseAuthService implements AuthService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     return _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<MyAppUser?> currentUser() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String userId = prefs.get('userId').toString();
+      final userFromBackend = await userRepository.getUserById(userId);
+      //print("funcking user : $userFromBackend");
+      MyAppUser user = MyAppUser.fromMap(userFromBackend['data']);
+      print("user $user");
+      return user;
+    } catch (e) {
+      print(e);
+    }
   }
 }
