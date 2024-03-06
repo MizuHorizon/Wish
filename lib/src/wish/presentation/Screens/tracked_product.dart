@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
+import 'package:wish/src/wish/presentation/utils/delete_dialogueBox.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
 class TrackedProductItem extends StatefulWidget {
   String imageUrl;
   String name;
+  String productId;
   String productUrl;
   int desiredPrice;
   final dynamic price;
@@ -18,6 +20,7 @@ class TrackedProductItem extends StatefulWidget {
   TrackedProductItem({
     Key? key,
     required this.productUrl,
+    required this.productId,
     required this.desiredPrice,
     required this.imageUrl,
     required this.name,
@@ -87,7 +90,11 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
               top: 8, // Adjust the top position of the button
               right: 8, // Adjust the right position of the button
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  //delete the product
+                  showDeleteDialog(context, "Delete", "Are you sure?",
+                      AppColors.appBackgroundColor, widget.productId);
+                },
                 child: Icon(
                   Icons.delete,
                   color: AppColors.appBackgroundColor,

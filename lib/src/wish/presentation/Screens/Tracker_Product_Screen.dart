@@ -8,7 +8,7 @@ import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
 import 'package:wish/src/wish/presentation/utils/shimmer_trackedProduct.dart';
-import 'package:wish/src/wish/presentation/utils/tracked_product.dart';
+import 'package:wish/src/wish/presentation/Screens/tracked_product.dart';
 
 class TrackedProducts extends ConsumerStatefulWidget {
   const TrackedProducts({super.key});
@@ -66,6 +66,13 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final productController = ref.watch(productControllerProvider);
+
+    if (productController.isLoading ||
+        productController.isReloading ||
+        productController.isRefreshing) {
+      refreshProducts();
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
@@ -78,15 +85,15 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Products (4/5)",
-                          style: TextStyle(
+                          "Products (${trackedPrroducts.length}/5)",
+                          style: const TextStyle(
                               color: AppColors.appActiveColor, fontSize: 20),
                         ),
-                        Text(
+                        const Text(
                           "list of your current products",
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
@@ -171,6 +178,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                 padding:
                                     const EdgeInsets.only(top: 5, bottom: 5),
                                 child: TrackedProductItem(
+                                    productId: trackedPrroducts[index].id,
                                     desiredPrice:
                                         trackedPrroducts[index].desiredPrice ??
                                             '0',
