@@ -7,7 +7,7 @@ import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {

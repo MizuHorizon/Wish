@@ -6,9 +6,9 @@ import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/user_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
-import 'package:wish/src/wish/presentation/utils/send_mail_success.dart';
+import 'package:wish/src/wish/presentation/utils/components/send_mail_success.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   static const routeName = "/signup-screen";

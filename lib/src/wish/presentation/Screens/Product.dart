@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/delete_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/delete_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/generic_dialogue.dart';
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
@@ -149,7 +150,24 @@ class _ProductState extends ConsumerState<ProductItem> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                showDialogeForTracker(
+                    context,
+                    "Enable",
+                    "Tracker",
+                    "Track the price of your product and get \nnotifications on price drops",
+                    Colors.green,
+                    () async => {
+                          Navigator.of(context).pop(),
+                          await ref
+                              .read(productControllerProvider.notifier)
+                              .enableProductTracker(widget.productId),
+                          ref.watch(productModelProvider.notifier).state =
+                              await ref
+                                  .watch(productControllerProvider.notifier)
+                                  .getAllProducts(),
+                        });
+              },
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),

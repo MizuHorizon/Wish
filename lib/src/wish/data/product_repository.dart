@@ -43,6 +43,36 @@ class ProductRepository {
     }
   }
 
+  Future<dynamic> enableTracker(String productId) async {
+    try {
+      final Response response =
+          await dio.patch("${baseUrl}product/enable/${productId}");
+      print("this is disabled data ${response.data}");
+      if (response.statusCode != 200) {
+        throw Exception("${response.data['error']}");
+      } else {
+        return "Successfully disabled ${response.data}";
+      }
+    } catch (e) {
+      throw Exception('$e');
+    }
+  }
+
+  Future<dynamic> disableTracker(String productId) async {
+    try {
+      final Response response =
+          await dio.patch("${baseUrl}product/disable/${productId}");
+      print("this is disabled data ${response.data}");
+      if (response.statusCode != 200) {
+        throw Exception("${response.data['error']}");
+      } else {
+        return "Successfully disabled ${response.data}";
+      }
+    } catch (e) {
+      throw Exception('$e');
+    }
+  }
+
   Future<dynamic> addProduct(String userId, String url, bool trackable,
       String description, List tags, double desired_price) async {
     try {

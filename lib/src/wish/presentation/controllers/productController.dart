@@ -28,6 +28,28 @@ class ProductController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  Future<void> disableProductTracker(String productId) async {
+    state = const AsyncLoading();
+    final newState = await AsyncValue.guard(() async {
+      print(" this is the productId $productId");
+      await product.disableTracker(productId);
+    });
+    if (mounted) {
+      state = newState;
+    }
+  }
+
+  Future<void> enableProductTracker(String productId) async {
+    state = const AsyncLoading();
+    final newState = await AsyncValue.guard(() async {
+      print(" this is the productId $productId");
+      await product.enableTracker(productId);
+    });
+    if (mounted) {
+      state = newState;
+    }
+  }
+
   Future<dynamic> addProduct(String url, bool trackable, String description,
       List<String> productTags, double desired_price) async {
     try {

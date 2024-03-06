@@ -7,7 +7,7 @@ import 'package:wish/src/wish/presentation/Screens/Product_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Tracker_Product_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/confirmation_dialgueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/confirmation_dialgueBox.dart';
 import 'package:wish/src/wish/presentation/utils/homepage_drawer.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 import 'package:wish/src/wish/presentation/utils/rectangular_indicator.dart';

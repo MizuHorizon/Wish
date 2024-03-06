@@ -9,6 +9,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import 'package:wish/src/wish/presentation/utils/components/generic_dialogue.dart';
 
 class TrackProductScreen extends ConsumerStatefulWidget {
   static const routeName = "/track-screen";
@@ -16,8 +18,10 @@ class TrackProductScreen extends ConsumerStatefulWidget {
   String name;
   int desiredPrice;
   String productUrl;
+  String productId;
   TrackProductScreen({
     required this.prices,
+    required this.productId,
     required this.productUrl,
     required this.name,
     required this.desiredPrice,
@@ -73,6 +77,9 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
     List<Color> gradientColors = [Colors.green, Colors.greenAccent];
     int currentPrice = jsonDecode(widget.prices.last)['price'];
     var size = MediaQuery.of(context).size;
+
+    final productProvider = ref.watch(productControllerProvider);
+
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
       appBar: AppBar(
@@ -262,6 +269,16 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                     },
                     controller: desired_price,
                     decoration: InputDecoration(
+                      suffix: productProvider.isLoading
+                          ? Container(
+                              width: 25,
+                              height: 25,
+                              child: const Center(
+                                  child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.dividerColor,
+                              )))
+                          : null,
                       prefixIcon: Icon(
                         Icons.edit_notifications,
                         color: _isFocused
@@ -332,7 +349,23 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          showDialogeForTracker(
+                              context,
+                              "Disable",
+                              "Disable Tracker?",
+                              "After disabling the tracker we can't send notifications to you!!\n Are you Sure?",
+                              Colors.red,
+                              () async => {
+                                    await ref
+                                        .read(
+                                            productControllerProvider.notifier)
+                                        .disableProductTracker(widget.productId)
+                                        .then((value) =>
+                                            Navigator.of(context).pop()),
+                                    Navigator.of(context).pop(),
+                                  });
+                        },
                         child: Container(
                           height: 55,
                           width: 150,

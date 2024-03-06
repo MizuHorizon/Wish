@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
-import 'package:wish/src/wish/presentation/utils/delete_dialogueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/delete_dialogueBox.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
@@ -203,6 +203,7 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                           "desiredPrice": widget.desiredPrice,
                           'prices': widget.priceList,
                           'productUrl': widget.productUrl,
+                          'productId': widget.productId
                         });
                   },
                   child: Container(

@@ -62,7 +62,7 @@ class GradientDialog extends ConsumerWidget {
                 style: TextStyle(
                   color: AppColors.appActiveColor,
                   fontSize: 22,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
               const SizedBox(height: 10),
