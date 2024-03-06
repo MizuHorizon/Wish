@@ -72,7 +72,9 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   @override
   void initState() {
     super.initState();
+    print("fetched product");
     fetchProducts();
+    print("fetched product2");
   }
 
   @override

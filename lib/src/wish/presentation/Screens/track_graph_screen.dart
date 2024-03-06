@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wish/src/constants.dart';
 
@@ -14,8 +15,10 @@ class TrackProductScreen extends ConsumerStatefulWidget {
   List prices;
   String name;
   int desiredPrice;
+  String productUrl;
   TrackProductScreen({
     required this.prices,
+    required this.productUrl,
     required this.name,
     required this.desiredPrice,
   });
@@ -30,6 +33,15 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
   TextEditingController desired_price = TextEditingController();
   List<FlSpot> chartData = [];
   double maxY = 0, minY = 1e9;
+
+  Future<void> _launchUrl() async {
+    print(widget.productUrl);
+    final Uri _url = Uri.parse(widget.productUrl);
+    if (!await launchUrl(_url, mode: LaunchMode.inAppBrowserView)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
   void _generateCharData() {
     List priceData = widget.prices;
     chartData = priceData.map((data) {
@@ -279,13 +291,17 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                   Container(
                     margin: const EdgeInsets.only(top: 8, bottom: 8),
                     child: Text(
-                        "${widget.name} price is currently being tracked per hour.\nCheck the best price and get notifications about the price drops."),
+                      "${widget.name} price is currently being tracked per hour.\nCheck the best price and get notifications about the price drops.",
+                      style: TextStyle(color: AppColors.appActiveColor),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      MaterialButton(
-                        onPressed: () {},
+                      InkWell(
+                        onTap: () {
+                          _launchUrl();
+                        },
                         child: Container(
                           height: 50,
                           width: 150,
@@ -315,8 +331,8 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                           ),
                         ),
                       ),
-                      MaterialButton(
-                        onPressed: () {},
+                      InkWell(
+                        onTap: () {},
                         child: Container(
                           height: 55,
                           width: 150,

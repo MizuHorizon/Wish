@@ -14,6 +14,7 @@ class ProductRepository {
           await dio.get("${baseUrl}product/", queryParameters: {
         'id': userId,
       });
+      print("response in fetching product $response");
       if (response.statusCode == 201) {
         //print("in the repo ${response.data}");
         var data = response.data['data'];
@@ -23,21 +24,21 @@ class ProductRepository {
         // print("products : $products");
         return products;
       } else {
-        throw response.data;
+        throw Exception(response.data);
       }
-    } catch (e) {
+    } on DioException catch (e) {
       if (e is DioException) {
         if (e.error is SocketException) {
-          throw ('Server is not reachable.');
+          throw Exception('Server is not reachable.');
         } else if (e.response!.statusCode == 404) {
-          throw e.response!.data['message'];
+          throw Exception(e.response!.data['message']);
         } else {
           print('Dio error: ${e.message}');
-          throw 'Dio error: ${e.message}';
+          throw Exception('Dio error: ${e.message}');
         }
       } else {
         print('Error: $e');
-        throw '$e';
+        throw Exception('$e');
       }
     }
   }
@@ -70,21 +71,21 @@ class ProductRepository {
         // print("products : $products");
         return " ";
       } else {
-        throw response.data;
+        throw Exception(response.data);
       }
     } catch (e) {
       if (e is DioException) {
         if (e.error is SocketException) {
-          throw ('Server is not reachable.');
+          throw Exception('Server is not reachable.');
         } else if (e.response!.statusCode == 404) {
-          throw e.response!.data['message'];
+          throw Exception(e.response!.data['message']);
         } else {
           print('Dio error: ${e.message}');
-          throw 'Dio error: ${e.message}';
+          throw Exception('Dio error: ${e.message}');
         }
       } else {
         print('Error: $e');
-        throw '$e';
+        throw Exception('$e');
       }
     }
   }
@@ -97,16 +98,16 @@ class ProductRepository {
     } catch (e) {
       if (e is DioException) {
         if (e.error is SocketException) {
-          throw ('Server is not reachable.');
+          throw Exception('Server is not reachable.');
         } else if (e.response!.statusCode == 404) {
-          throw e.response!.data['message'];
+          throw Exception(e.response!.data['message']);
         } else {
           print('Dio error: ${e.message}');
-          throw 'Dio error: ${e.message}';
+          throw Exception('Dio error: ${e.message}');
         }
       } else {
         print('Error: $e');
-        throw '$e';
+        throw Exception('$e');
       }
     }
   }

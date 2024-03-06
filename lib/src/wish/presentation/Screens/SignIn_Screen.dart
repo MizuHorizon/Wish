@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/models/user_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
@@ -35,7 +37,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         await ref.read(userControllerProvider.notifier).signIn(email, password);
     ref.read(userModelProvider.notifier).update((state) => user);
 
-    Future.delayed(const Duration(milliseconds: 3000));
+    // Future.delayed(const Duration(milliseconds: 3000));
 
     Navigator.pushNamed(context, HomeScreen.routeName);
   }
@@ -44,6 +46,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     MyAppUser? user =
         await ref.read(userControllerProvider.notifier).googleSigin();
     ref.read(userModelProvider.notifier).update((state) => user);
+
+    //fetching products
+
+    ref.read(productModelProvider.notifier).state =
+        await ref.read(productControllerProvider.notifier).getAllProducts();
+
     Navigator.pushNamed(context, HomeScreen.routeName);
   }
 

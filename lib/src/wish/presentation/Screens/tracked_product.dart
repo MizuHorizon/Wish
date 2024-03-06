@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -63,6 +65,25 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
     if (!await launchUrl(_url, mode: LaunchMode.inAppBrowserView)) {
       throw Exception('Could not launch $_url');
     }
+  }
+
+  String lastdate = "";
+  void getTheLatestTime() {
+    String lastProductDate = jsonDecode(widget.priceList.lastOrNull)['date'];
+    print(lastProductDate);
+    List<String> parts = lastProductDate.split('T');
+    String timePart = parts[1].split('.')[0];
+    List<String> timeParts = timePart.split(':');
+    setState(() {
+      lastdate = "${timeParts[0]}:${timeParts[1]}";
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTheLatestTime();
   }
 
   @override
@@ -137,7 +158,7 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                         fontSize: 17,
                         fontWeight: FontWeight.w500)),
                 const SizedBox(width: 10),
-                Text("(22:30)", style: TextStyle(color: Colors.grey)),
+                Text("($lastdate)", style: const TextStyle(color: Colors.grey)),
               ],
             ),
             Text(
@@ -181,6 +202,7 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                           'name': widget.name,
                           "desiredPrice": widget.desiredPrice,
                           'prices': widget.priceList,
+                          'productUrl': widget.productUrl,
                         });
                   },
                   child: Container(

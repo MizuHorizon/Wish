@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
+import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
 
@@ -10,8 +12,12 @@ Drawer HomePageDrawer(
   //UserController userController = UserController();
 
   Future<void> signOut(WidgetRef ref) async {
-    await ref.read(userControllerProvider.notifier).logout();
-    Navigator.pushNamed(context, SignInScreen.routeName);
+    await ref.read(userControllerProvider.notifier).logout().then((value) {
+      print("user state updated");
+      ref.read(productModelProvider.notifier).update((state) => []);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignInScreen()));
+    });
   }
 
   return Drawer(
@@ -100,9 +106,12 @@ Drawer HomePageDrawer(
                 const SizedBox(width: 10),
                 Container(
                   child: userController.isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.appActiveColor,
+                      ? const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.appActiveColor,
+                            ),
                           ),
                         )
                       : const Text(

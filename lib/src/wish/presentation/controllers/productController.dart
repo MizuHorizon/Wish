@@ -52,22 +52,26 @@ class ProductController extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<List<Product>?> getAllProducts() async {
-    state = const AsyncLoading();
+    try {
+      state = const AsyncLoading();
 
-    List<Product>? _userProducts;
-    final newState = await AsyncValue.guard(() async {
-      final prefs = await SharedPreferences.getInstance();
+      List<Product>? _userProducts;
+      final newState = await AsyncValue.guard(() async {
+        final prefs = await SharedPreferences.getInstance();
 
-      String? userId = await prefs.getString('userId');
-      print("userId : $userId");
-      _userProducts = await product.getAllProducts(userId!);
-      print("userProducts : $_userProducts");
-    });
-    if (mounted) {
-      state = newState;
+        String? userId = await prefs.getString('userId');
+        print("userId : $userId");
+        _userProducts = await product.getAllProducts(userId!);
+        print("userProducts : $_userProducts");
+      });
+      if (mounted) {
+        state = newState;
+      }
+
+      print("here is the products $_userProducts");
+      return _userProducts;
+    } catch (err) {
+      throw Exception(err);
     }
-
-    print("here is the products $_userProducts");
-    return _userProducts;
   }
 }

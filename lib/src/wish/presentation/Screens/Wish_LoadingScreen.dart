@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
+import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
@@ -24,20 +25,41 @@ class _WishLoadingScreenState extends ConsumerState<WishLoadingScreen> {
   }
 
   Future<void> _fetchUserProducts() async {
-    ref.read(productModelProvider.notifier).state =
-        await ref.read(productControllerProvider.notifier).getAllProducts();
+    try {
+      var products =
+          await ref.read(productControllerProvider.notifier).getAllProducts();
+      ref.read(productModelProvider.notifier).update((state) => products);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future<void> _checkTokenAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
     final jwtToken = prefs.getString('jwtToken');
+    print("JWT TOKEN : $jwtToken");
     // If JWT token is saved, navigate to home screen
     if (jwtToken != null && jwtToken.isNotEmpty) {
-      await _fetchUserProducts();
-      var fcm = ref.watch(firebaseMessagingProvider).then((value) {
-        value.getToken();
-      });
-      Navigator.pushNamed(context, HomeScreen.routeName);
+      try {
+        print("fetching products in loading screen");
+        await _fetchUserProducts();
+        await ref.watch(firebaseMessagingProvider).then((value) {
+          value.getToken();
+        }).onError(
+            (error, stackTrace) => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ErrorScreen(
+                    error: 'An error occurred: $error',
+                  ),
+                )));
+
+        Navigator.pushNamed(context, HomeScreen.routeName);
+      } catch (err) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ErrorScreen(
+            error: 'An error occurred: $err',
+          ),
+        ));
+      }
     } else {
       Navigator.pushNamed(context, SignInScreen.routeName);
     }

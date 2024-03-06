@@ -32,11 +32,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final String name = arguments['name'];
       final int desiredPrice = arguments['desiredPrice'];
       final List prices = arguments['prices'];
+      final String productUrl = arguments['productUrl'];
       return PageTransition(
         child: TrackProductScreen(
           prices: prices,
           name: name,
           desiredPrice: desiredPrice,
+          productUrl: productUrl,
         ),
         type: PageTransitionType.rightToLeft,
         settings: settings,
