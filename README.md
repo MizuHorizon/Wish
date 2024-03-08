@@ -13,12 +13,11 @@ Wish is a mobile application developed using Flutter and Riverpod, designed to h
 ## Screenshots
 
 | Screenshot 1 | Screenshot 2 | Screenshot 3 |
-|--------------|--------------|--------------|
-| ![Screenshot 1]!(https://github.com/MizuHorizon/Wish/assets/73778637/ab908c9e-edc4-4965-aaf5-2edb6f7670d9)
-(/) | ![Screenshot 2](/screenshots/screenshot2.png "Screenshot 2") | ![Screenshot 3](/screenshots/screenshot3.png "Screenshot 3") |
+|---------------|--------------|--------------|
+| ![Screenshot 1](https://github.com/MizuHorizon/Wish/assets/73778637/ab908c9e-edc4-4965-aaf5-2edb6f7670d9) | ![Screenshot 2](/screenshots/screenshot2.png "Screenshot 2") | ![Screenshot 3](/screenshots/screenshot3.png "Screenshot 3") |
 
 | Screenshot 4 | Screenshot 5 | Screenshot 6 |
-|--------------|--------------|--------------|
+|---------------|--------------|--------------|
 | ![Screenshot 4](/screenshots/screenshot4.png "Screenshot 4") | ![Screenshot 5](/screenshots/screenshot5.png "Screenshot 5") | ![Screenshot 6](/screenshots/screenshot6.png "Screenshot 6") |
 
 ## Tech Stack
