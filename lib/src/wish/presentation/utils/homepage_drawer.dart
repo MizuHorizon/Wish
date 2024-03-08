@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
+import 'package:wish/src/wish/presentation/Screens/developers_screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
 import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
@@ -87,7 +88,7 @@ Drawer HomePageDrawer(
           selected: _selectedIndex == 1,
           onTap: () {
             _onItemTapped(1);
-            Navigator.pop(context);
+            Navigator.pushNamed(context, DevelopersScreen.routename);
           },
         ),
         const Padding(

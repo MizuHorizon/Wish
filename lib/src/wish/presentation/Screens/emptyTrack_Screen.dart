@@ -3,7 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wish/src/constants.dart';
 
 class EmptyTrackedProductScreen extends StatefulWidget {
-  const EmptyTrackedProductScreen({super.key});
+  TabController tabController;
+  EmptyTrackedProductScreen({super.key, required this.tabController});
 
   @override
   State<EmptyTrackedProductScreen> createState() =>
@@ -43,7 +44,9 @@ class _EmptyTrackedProductScreenState extends State<EmptyTrackedProductScreen> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                widget.tabController.animateTo(0);
+              },
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Container(
@@ -65,7 +68,7 @@ class _EmptyTrackedProductScreenState extends State<EmptyTrackedProductScreen> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Add Product",
+                      "Start Tracking",
                       style: TextStyle(
                           color: AppColors.appActiveColor, fontSize: 18),
                     ),

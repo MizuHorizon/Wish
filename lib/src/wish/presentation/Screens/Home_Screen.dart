@@ -52,8 +52,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       backgroundColor: AppColors.appBackgroundColor,
       drawer: HomePageDrawer(context, _selectedIndex, _onItemTapped),
       appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.black,
+        elevation: 0,
+        backgroundColor: AppColors.appBackgroundColor,
         foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text("Home"),
@@ -112,7 +112,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               controller: tabController,
               children: [
                 ProductScreen(),
-                TrackedProducts(),
+                TrackedProducts(tabController: tabController),
               ],
             ),
           ),

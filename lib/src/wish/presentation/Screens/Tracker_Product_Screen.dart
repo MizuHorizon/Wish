@@ -12,7 +12,8 @@ import 'package:wish/src/wish/presentation/utils/shimmer_trackedProduct.dart';
 import 'package:wish/src/wish/presentation/Screens/tracked_product.dart';
 
 class TrackedProducts extends ConsumerStatefulWidget {
-  const TrackedProducts({super.key});
+  TabController tabController;
+  TrackedProducts({super.key, required this.tabController});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -78,7 +79,9 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
         body: trackedPrroducts.isEmpty
-            ? EmptyTrackedProductScreen()
+            ? EmptyTrackedProductScreen(
+                tabController: widget.tabController,
+              )
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(

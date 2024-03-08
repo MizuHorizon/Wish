@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
+import 'package:wish/src/wish/presentation/Screens/EmptyProduct_screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Product.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
@@ -112,168 +113,178 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     items = refItems;
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.appBackgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  child: const Center(
-                    child: Text(
-                      "Recent",
-                      style: TextStyle(
-                          color: AppColors.appActiveColor, fontSize: 15),
+        backgroundColor: AppColors.appBackgroundColor,
+        floatingActionButton: Positioned(
+            top: MediaQuery.of(context).size.height / 2 - 30,
+            left: 10,
+            child: FloatingActionButton(
+              onPressed: () {
+                try {
+                  showAddProductBottomSheet(context, size);
+                } catch (e) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ErrorScreen(
+                      error: "$e",
                     ),
-                  ),
-                  width: 90,
-                  height: 32,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Color.fromARGB(255, 145, 148, 151),
-                      border:
-                          Border.all(color: AppColors.dividerColor, width: 1)),
+                  ));
+                }
+              },
+              elevation: 2.0, // Adjust elevation if needed
+              shape: CircleBorder(), // Make the button round
+              child: Container(
+                width: 58.0,
+                height: 58.0,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.dividerColor),
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.centerRight,
+                      colors: [Color.fromARGB(255, 66, 63, 63), Colors.black]),
                 ),
-                const SizedBox(width: 10),
-                Center(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      dropdownStyleData: DropdownStyleData(
-                        maxHeight: 200,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: AppColors.appBackgroundColor,
-                            border: Border.all(
-                                color: AppColors.dividerColor, width: 1)),
-                        offset: const Offset(-10, -1),
-                        scrollbarTheme: ScrollbarThemeData(
-                          radius: const Radius.circular(40),
-                          thickness: MaterialStateProperty.all(6),
-                          thumbVisibility: MaterialStateProperty.all(true),
-                        ),
-                      ),
-                      buttonStyleData: ButtonStyleData(
-                        height: 32,
-                        width: 120,
-                        padding: const EdgeInsets.only(left: 14, right: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: AppColors.dividerColor,
+                child:
+                    Icon(Icons.add, color: Colors.white), // Add your icon here
+              ),
+            )),
+        body: RefreshIndicator(
+          color: AppColors.appActiveColor,
+          backgroundColor: AppColors.appBackgroundColor,
+          onRefresh: () async {
+            setState(() {
+              isLoading = true;
+            });
+            //await Future.delayed(Duration(seconds: 3));
+            refreshProducts();
+          },
+          child: items.isEmpty
+              ? EmptyProductScreen()
+              : Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 12),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            child: const Center(
+                              child: Text(
+                                "Recent",
+                                style: TextStyle(
+                                    color: AppColors.appActiveColor,
+                                    fontSize: 15),
+                              ),
+                            ),
+                            width: 90,
+                            height: 32,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Color.fromARGB(255, 145, 148, 151),
+                                border: Border.all(
+                                    color: AppColors.dividerColor, width: 1)),
                           ),
-                        ),
-                        elevation: 2,
-                      ),
-                      isExpanded: true,
-                      hint: const Text(
-                        'Platform',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.appActiveColor,
-                        ),
-                      ),
-                      items: dropitems
-                          .map((String item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                          const SizedBox(width: 10),
+                          Center(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2<String>(
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 200,
+                                  width: 130,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: AppColors.appBackgroundColor,
+                                      border: Border.all(
+                                          color: AppColors.dividerColor,
+                                          width: 1)),
+                                  offset: const Offset(-10, -1),
+                                  scrollbarTheme: ScrollbarThemeData(
+                                    radius: const Radius.circular(40),
+                                    thickness: MaterialStateProperty.all(6),
+                                    thumbVisibility:
+                                        MaterialStateProperty.all(true),
                                   ),
                                 ),
-                              ))
-                          .toList(),
-                      value: dropdownvalue.isEmpty ? null : dropdownvalue,
-                      onChanged: (String? value) {
-                        setState(() {
-                          dropdownvalue = value!;
-                        });
-                        sortProduct(dropdownvalue);
-                      },
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 1.34,
-              child: RefreshIndicator(
-                color: AppColors.appActiveColor,
-                backgroundColor: AppColors.appBackgroundColor,
-                onRefresh: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  //await Future.delayed(Duration(seconds: 3));
-                  refreshProducts();
-                },
-                child: MasonryGridView.builder(
-                  gridDelegate:
-                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return productController.isLoading || isLoading
-                        ? Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ShimmerProductItem(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ProductItem(
-                              name: '${items[index].name.substring(0, 12)}...',
-                              imageUrl: items[index].photos[0],
-                              price: "₹${items[index].startPrice}",
-                              tags: items[index].tags,
-                              productUrl: items[index].url,
-                              productId: items[index].id,
+                                buttonStyleData: ButtonStyleData(
+                                  height: 32,
+                                  width: 120,
+                                  padding: const EdgeInsets.only(
+                                      left: 14, right: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(
+                                      color: AppColors.dividerColor,
+                                    ),
+                                  ),
+                                  elevation: 2,
+                                ),
+                                isExpanded: true,
+                                hint: const Text(
+                                  'Platform',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.appActiveColor,
+                                  ),
+                                ),
+                                items: dropitems
+                                    .map((String item) =>
+                                        DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: dropdownvalue.isEmpty
+                                    ? null
+                                    : dropdownvalue,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    dropdownvalue = value!;
+                                  });
+                                  sortProduct(dropdownvalue);
+                                },
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 40,
+                                ),
+                              ),
                             ),
-                          );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Positioned(
-          top: MediaQuery.of(context).size.height / 2 - 30,
-          left: 10,
-          child: FloatingActionButton(
-            onPressed: () {
-              try {
-                showAddProductBottomSheet(context, size);
-              } catch (e) {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ErrorScreen(
-                    error: "$e",
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 1.34,
+                        child: MasonryGridView.builder(
+                          gridDelegate:
+                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            return productController.isLoading || isLoading
+                                ? Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ShimmerProductItem(),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ProductItem(
+                                      name:
+                                          '${items[index].name.substring(0, 12)}...',
+                                      imageUrl: items[index].photos[0],
+                                      price: "₹${items[index].startPrice}",
+                                      tags: items[index].tags,
+                                      productUrl: items[index].url,
+                                      productId: items[index].id,
+                                    ),
+                                  );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ));
-              }
-            },
-            elevation: 2.0, // Adjust elevation if needed
-            shape: CircleBorder(), // Make the button round
-            child: Container(
-              width: 58.0,
-              height: 58.0,
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.dividerColor),
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.centerRight,
-                    colors: [Color.fromARGB(255, 66, 63, 63), Colors.black]),
-              ),
-              child: Icon(Icons.add, color: Colors.white), // Add your icon here
-            ),
-          )),
-    );
+                ),
+        ));
   }
 
   Future<dynamic> showAddProductBottomSheet(BuildContext context, Size size) {

@@ -4,6 +4,7 @@ import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/SignIn_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:wish/src/wish/presentation/Screens/developers_screen.dart';
 import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -20,7 +21,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         type: PageTransitionType.rightToLeft,
         settings: settings,
       );
-
+    case DevelopersScreen.routename:
+      return PageTransition(
+          child: DevelopersScreen(), type: PageTransitionType.rightToLeft);
     case HomeScreen.routeName:
       return PageTransition(
         child: HomeScreen(),
@@ -45,6 +48,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         type: PageTransitionType.rightToLeft,
         settings: settings,
       );
+
     default:
       return PageTransition(
         child: Scaffold(
