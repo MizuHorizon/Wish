@@ -95,7 +95,7 @@ class FirebaseAuthService implements AuthService {
       return user;
     } catch (e) {
       print(e);
-      throw '$e';
+      throw Exception('$e');
     }
   }
 

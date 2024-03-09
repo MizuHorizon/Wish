@@ -29,6 +29,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   bool _isGoogleLoading = true;
   bool _isSignUpLoading = true;
+  bool _emptyFirstName = false;
+  bool _emptyLastName = false;
+  bool _emptyEmail = false;
+  bool _emptyPassword = false;
+  bool _emptyMobile = false;
+  bool validEmail = true;
+  bool validPhone = true;
+  bool validCountryCode = true;
 
   bool validateFields() {
     return fname.text.isNotEmpty &&
@@ -43,9 +51,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return emailRegex.hasMatch(email);
   }
 
-  bool isValidMobile(String mobile) {
-    final mobileRegex = RegExp(r'^[0-9]+$');
-    return mobileRegex.hasMatch(mobile);
+  bool validatePhoneNumber(String phoneNumber) {
+    RegExp phoneNumberRegExp =
+        RegExp(r'^\(?[0-9]{3}\)?[- ]?[0-9]{3}[- ]?[0-9]{4}$');
+    return phoneNumberRegExp.hasMatch(phoneNumber);
   }
 
   Future<void> doGoogleSignUp() async {
@@ -62,15 +71,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     String pass = password.text.trim();
     String phone = "(${_selectedCountry.phoneCode})${mobile.text.trim()}";
     print("$name,$emailInput,$pass,$phone");
-    MyAppUser? user = await ref
-        .read(userControllerProvider.notifier)
-        .doSignUp(name, emailInput, phone, pass);
-    ref.read(userModelProvider.notifier).update((state) => user);
-    showMailGradientDialog(
-        context,
-        "Verification Email Sent",
-        "We have sent you an email. Please verify your email to use our services and get updates about new products.",
-        Colors.white70);
+
+    try {
+      MyAppUser? user = await ref
+          .read(userControllerProvider.notifier)
+          .doSignUp(name, emailInput, phone, pass);
+      ref.read(userModelProvider.notifier).update((state) => user);
+      showMailGradientDialog(
+          context,
+          "Verification Email Sent",
+          "We have sent you an email. Please verify your email to use our services and get updates about new products.",
+          Colors.white70);
+    } catch (error) {
+      print("error in signup $error");
+    }
   }
 
   @override
@@ -79,7 +93,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final userController = ref.watch(userControllerProvider);
     ref.listen(userControllerProvider, (previous, next) {
       if (!next.isLoading && next.hasError) {
-        if (next.error.toString() != "Wrong Password or Email!!") {
+        if (next.error.toString() == "Account with Email Exists already!") {
           showGradientDialog(
               context, "Error", next.error.toString(), Colors.red);
         }
@@ -140,8 +154,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           controller: fname,
                           hintText: "Jane",
                           isPassword: false,
+                          onChanged: (value) {
+                            setState(() {
+                              _emptyFirstName = false;
+                            });
+                          },
                         ),
-                      )
+                      ),
+                      if (_emptyFirstName) ...[
+                        const Text(
+                          "Required*...",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      ]
                     ],
                   ),
                   Column(
@@ -161,8 +186,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           controller: lname,
                           hintText: "Smith",
                           isPassword: false,
+                          onChanged: (value) {
+                            setState(() {
+                              _emptyLastName = false;
+                            });
+                          },
                         ),
-                      )
+                      ),
+                      if (_emptyLastName) ...[
+                        const Text(
+                          "Required*...",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      ]
                     ],
                   )
                 ],
@@ -185,8 +221,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       controller: email,
                       hintText: "jsmith.aex3@gmail.com",
                       isPassword: false,
+                      onChanged: (value) {
+                        setState(() {
+                          _emptyEmail = false;
+                          validEmail = true;
+                        });
+                      },
                     ),
-                  )
+                  ),
+                  if (_emptyEmail) ...[
+                    const Text(
+                      "Required*...",
+                      style: TextStyle(color: Colors.red, fontSize: 15),
+                    )
+                  ],
+                  if (!validEmail) ...[
+                    const Center(
+                      child: Text(
+                        "Invalid Email",
+                        style: TextStyle(color: Colors.red, fontSize: 15),
+                      ),
+                    )
+                  ]
                 ],
               ),
               const SizedBox(height: 18),
@@ -207,8 +263,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       controller: password,
                       hintText: "Password",
                       isPassword: true,
+                      onChanged: (value) {
+                        setState(() {
+                          _emptyPassword = false;
+                        });
+                      },
                     ),
-                  )
+                  ),
+                  if (_emptyPassword) ...[
+                    const Text(
+                      "Required*...",
+                      style: TextStyle(color: Colors.red, fontSize: 15),
+                    )
+                  ]
                 ],
               ),
               const SizedBox(height: 18),
@@ -235,6 +302,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 print('Select country: ${country.displayName}');
                                 setState(() {
                                   _selectedCountry = country;
+                                  validCountryCode = true;
                                 });
                               },
                             );
@@ -262,7 +330,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      if (!validCountryCode) ...[
+                        const Text(
+                          "Required*...",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      ]
                     ],
                   ),
                   Column(
@@ -282,8 +356,26 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           controller: mobile,
                           hintText: "1234-123-123",
                           isPassword: false,
+                          onChanged: (value) {
+                            setState(() {
+                              _emptyMobile = false;
+                              validPhone = true;
+                            });
+                          },
                         ),
-                      )
+                      ),
+                      if (_emptyMobile) ...[
+                        const Text(
+                          "Required*...",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      ],
+                      if (!validPhone) ...[
+                        const Text(
+                          "Invalid Phone",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      ]
                     ],
                   )
                 ],
@@ -308,40 +400,47 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       : () {
                           if (!validateFields()) {
                             // Show warning dialog for empty fields
-                            String errorMessage =
-                                "Please fill in all required fields:\n";
-                            if (fname.text.isEmpty)
-                              errorMessage += "- First Name\n";
-                            if (lname.text.isEmpty)
-                              errorMessage += "- Last Name\n";
-                            if (email.text.isEmpty) errorMessage += "- Email\n";
-                            if (password.text.isEmpty)
-                              errorMessage += "- Password\n";
-                            if (mobile.text.isEmpty)
-                              errorMessage += "- Mobile Number\n";
+                            if (fname.text.isEmpty) {
+                              setState(() {
+                                _emptyFirstName = true;
+                              });
+                            }
+                            if (lname.text.isEmpty) {
+                              setState(() {
+                                _emptyLastName = true;
+                              });
+                            }
 
-                            showGradientDialog(
-                              context,
-                              "Fields Required",
-                              errorMessage,
-                              Colors.red, // Red neon color for warning
-                            );
+                            if (email.text.isEmpty) {
+                              setState(() {
+                                _emptyEmail = true;
+                              });
+                            }
+                            if (password.text.isEmpty) {
+                              setState(() {
+                                _emptyPassword = true;
+                              });
+                            }
+
+                            if (mobile.text.isEmpty) {
+                              setState(() {
+                                _emptyMobile = true;
+                              });
+                            }
                           } else if (!isValidEmail(email.text)) {
                             // Show warning dialog for invalid email
-                            showGradientDialog(
-                              context,
-                              "Invalid Email",
-                              "Please enter a valid email address.",
-                              Colors.red, // Red neon color for warning
-                            );
-                          } else if (!isValidMobile(mobile.text)) {
+                            setState(() {
+                              validEmail = false;
+                            });
+                          } else if (_selectedCountry.phoneCode.isEmpty) {
+                            setState(() {
+                              validCountryCode = false;
+                            });
+                          } else if (!validatePhoneNumber(mobile.text.trim())) {
                             // Show warning dialog for invalid mobile number
-                            showGradientDialog(
-                              context,
-                              "Invalid Mobile Number",
-                              "Please enter a valid mobile number.",
-                              Colors.red, // Red neon color for warning
-                            );
+                            setState(() {
+                              validPhone = false;
+                            });
                           } else {
                             _isSignUpLoading = false;
                             setState(() {

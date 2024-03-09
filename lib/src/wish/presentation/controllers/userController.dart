@@ -16,11 +16,16 @@ class UserController extends StateNotifier<AsyncValue<void>> {
   final FirebaseAuthService firebase;
 
   Future<void> logout() async {
-    state = const AsyncLoading();
-    final newState =
-        await AsyncValue.guard(() async => await firebase.signOut());
-    if (mounted) {
-      state = newState;
+    try {
+      state = const AsyncLoading();
+      final newState =
+          await AsyncValue.guard(() async => await firebase.signOut());
+      if (mounted) {
+        state = newState;
+      }
+    } catch (error) {
+      state = AsyncError(error, StackTrace.current);
+      throw Exception(error);
     }
   }
 
@@ -34,36 +39,53 @@ class UserController extends StateNotifier<AsyncValue<void>> {
       MyAppUser? userData = await firebase.updateFcm(fcmToken);
       return userData;
     } catch (e) {
-      throw '$e';
+      throw Exception('$e');
     }
   }
 
   Future<MyAppUser?> doSignUp(
       String name, String email, String phone, String password) async {
-    state = const AsyncLoading();
-    late MyAppUser userData;
-    final newState = await AsyncValue.guard(() async {
-      userData = await firebase.createUserWithEmailAndPassword(
-          name, password, email, phone);
-    });
-    if (mounted) {
-      state = newState;
+    try {
+      state = const AsyncLoading();
+      MyAppUser? userData;
+      final newState = await AsyncValue.guard(() async {
+        userData = await firebase.createUserWithEmailAndPassword(
+            name, password, email, phone);
+      });
+      if (mounted) {
+        state = newState;
+      }
+      print(userData);
+      if (userData == null) throw Exception("Something went wrong");
+      return userData;
+    } catch (error) {
+      state = AsyncError(error, StackTrace.current);
+      throw Exception(error);
     }
-    print(userData);
-    return userData;
   }
 
   Future<MyAppUser?> signIn(String email, String password) async {
-    state = const AsyncLoading();
-    late MyAppUser userData;
-    final newState = await AsyncValue.guard(() async {
-      userData = await firebase.signInWithEmailAndPassword(email, password);
-    });
-    if (mounted) {
-      state = newState;
+    try {
+      state = const AsyncLoading();
+      MyAppUser? userData;
+      final newState = await AsyncValue.guard(() async {
+        userData = await firebase.signInWithEmailAndPassword(email, password);
+      });
+      if (mounted) {
+        state = newState;
+      }
+      print(userData);
+
+      if (userData == null) {
+        throw Exception("Wrong Email and Password!!");
+      }
+
+      return userData;
+    } catch (error) {
+      state = AsyncError(error, StackTrace.current);
+      print(error);
+      throw Exception(error);
     }
-    print(userData);
-    return userData;
   }
 
   Future googleSigin() async {

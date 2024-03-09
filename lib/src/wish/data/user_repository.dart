@@ -46,10 +46,10 @@ class UserRepository {
       });
       if (response.statusCode == 201) {
         return response.data;
-      } else if (response.statusCode == 404) {
+      } else {
         print("hellloo");
         print(response.data);
-        throw response.data;
+        throw Exception(response.data);
       }
     } catch (e) {
       print("hellloo1");
@@ -57,9 +57,9 @@ class UserRepository {
         if (e.response!.data['message'] ==
                 "Account with Email Doesn't Exists!" &&
             e.response!.statusCode == 404) {
-          throw "Account with Email Doesn't Exists!";
+          throw Exception("Account with Email Doesn't Exists!");
         } else if (e.response!.statusCode == 501) {
-          throw "Wrong Password or Email!!";
+          throw Exception("Wrong Password or Email!!");
         }
         if (e.response != null) {
           print(e.response!.data); // Server error response data
@@ -71,7 +71,7 @@ class UserRepository {
       } else {
         print(e.toString()); // Other types of errors
       }
-      throw '$e';
+      throw Exception('$e');
     }
   }
 

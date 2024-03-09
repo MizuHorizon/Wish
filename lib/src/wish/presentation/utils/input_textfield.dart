@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:wish/src/constants.dart';
 
 class InputWishTextField extends StatefulWidget {
-  const InputWishTextField(
-      {super.key,
-      required TextEditingController controller,
-      required this.hintText,
-      required this.isNumerInput,
-      required this.isPassword})
-      : _controller = controller;
+  const InputWishTextField({
+    super.key,
+    required TextEditingController controller,
+    required this.hintText,
+    required this.isNumerInput,
+    required this.isPassword,
+    this.onChanged,
+  }) : _controller = controller;
 
   final TextEditingController _controller;
   final String hintText;
   final bool isPassword;
   final bool isNumerInput;
+  final void Function(String)? onChanged;
 
   @override
   State<InputWishTextField> createState() => _InputWishTextFieldState();
@@ -28,9 +30,7 @@ class _InputWishTextFieldState extends State<InputWishTextField> {
       keyboardType: widget.isNumerInput ? TextInputType.phone : null,
       obscureText: widget.isPassword && !_isPasswordVisible,
       cursorColor: AppColors.appActiveColor,
-      onChanged: (value) {
-        //Do something with the user input.
-      },
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: widget.hintText,
 

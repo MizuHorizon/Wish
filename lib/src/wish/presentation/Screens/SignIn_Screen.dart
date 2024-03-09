@@ -25,6 +25,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   bool _loginWithGoogle = true;
   bool _normalLogin = true;
+  bool validEmail = true;
+  bool validPassword = true;
+  bool wrongPassword = false;
 
   @override
   void dispose() {
@@ -34,13 +37,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   void doSignIn(String email, String password) async {
-    MyAppUser? user =
-        await ref.read(userControllerProvider.notifier).signIn(email, password);
-    ref.read(userModelProvider.notifier).update((state) => user);
-
-    // Future.delayed(const Duration(milliseconds: 3000));
-
-    Navigator.pushNamed(context, HomeScreen.routeName);
+    try {
+      MyAppUser? user = await ref
+          .read(userControllerProvider.notifier)
+          .signIn(email, password);
+      ref.read(userModelProvider.notifier).update((state) => user);
+      Navigator.pushNamed(context, HomeScreen.routeName);
+    } catch (e) {
+      print("funking $e");
+      setState(() {
+        wrongPassword = true;
+      });
+    }
   }
 
   void doGoogleSignIn() async {
@@ -131,7 +139,19 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 hintText: "Enter Your Email",
                 isPassword: false,
                 isNumerInput: false,
+                onChanged: (value) {
+                  setState(() {
+                    validEmail = true;
+                    wrongPassword = false;
+                  });
+                },
               ),
+              if (!validEmail) ...[
+                const Text(
+                  "Please! Check this email...",
+                  style: TextStyle(color: Colors.red, fontSize: 15),
+                )
+              ],
               const SizedBox(
                 height: 20,
               ),
@@ -150,38 +170,57 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 hintText: "Enter Your Password",
                 isPassword: true,
                 isNumerInput: false,
+                onChanged: (value) {
+                  setState(() {
+                    validPassword = true;
+                    wrongPassword = false;
+                  });
+                },
               ),
+              if (!validPassword) ...[
+                const Text(
+                  "Please! Fill this field...",
+                  style: TextStyle(color: Colors.red, fontSize: 15),
+                )
+              ],
+              if (wrongPassword) ...[
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Center(
+                    child: Text(
+                      "Wrong password!!!",
+                      style: TextStyle(color: Colors.red, fontSize: 15),
+                    ),
+                  ),
+                )
+              ],
               const SizedBox(
                 height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: MaterialButton(
-                  onPressed: !_normalLogin
+                child: InkWell(
+                  onTap: !_normalLogin
                       ? null
                       : () {
                           if (!_isValidEmail(_emailController.text)) {
                             // Show a warning or error message
-                            showGradientDialog(
-                                context,
-                                "Check Email",
-                                "Malformed Email Address",
-                                AppColors.appActiveColor);
+                            setState(() {
+                              validEmail = false;
+                            });
                           } else if (_emailController.text.isEmpty ||
                               _passwordController.text.isEmpty) {
                             // Show warning dialog for empty email or password
-                            showGradientDialog(
-                              context,
-                              "Fields Required",
-                              "Email and password can't be empty.",
-                              Colors.red, // Red neon color for warning
-                            );
+                            setState(() {
+                              validPassword = false;
+                            });
                           } else {
                             print("signIn");
                             _normalLogin = false;
                             setState(() {
                               _normalLogin = userController.isLoading;
                             });
+
                             doSignIn(_emailController.text.trim(),
                                 _passwordController.text.trim());
                           }
@@ -211,8 +250,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: MaterialButton(
-                  onPressed: !_loginWithGoogle
+                child: InkWell(
+                  onTap: !_loginWithGoogle
                       ? null
                       : () {
                           _loginWithGoogle = false;
@@ -294,8 +333,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: MaterialButton(
-                  onPressed: () {
+                child: InkWell(
+                  onTap: () {
                     Navigator.pushNamed(context, SignUpScreen.routeName);
                   },
                   child: Container(
