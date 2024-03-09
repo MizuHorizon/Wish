@@ -67,17 +67,22 @@ class UserController extends StateNotifier<AsyncValue<void>> {
   }
 
   Future googleSigin() async {
-    state = const AsyncLoading();
+    try {
+      state = const AsyncLoading();
 
-    MyAppUser? user;
+      MyAppUser? user;
 
-    final newState = await AsyncValue.guard(() async {
-      user = await firebase.signInWithGoogle();
-    });
-    if (mounted) {
-      state = newState;
+      final newState = await AsyncValue.guard(() async {
+        user = await firebase.signInWithGoogle();
+      });
+      if (mounted) {
+        state = newState;
+      }
+      print(user);
+      return user;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      throw Exception(e);
     }
-    print(user);
-    return user;
   }
 }

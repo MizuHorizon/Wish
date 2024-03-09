@@ -149,7 +149,7 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                       child: LineChart(
                         LineChartData(
                             borderData: FlBorderData(show: false),
-                            minY: minY,
+                            minY: minY != 0 ? minY - 50 : minY,
                             maxY: maxY * 1.5,
                             baselineY: 1000,
                             lineTouchData: LineTouchData(
@@ -258,6 +258,10 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                       });
                       print("onediting complete");
                       widget.desiredPrice = int.parse(desired_price.text);
+                      ref
+                          .watch(productControllerProvider.notifier)
+                          .changeDesiredPrice(
+                              widget.productId, desired_price.text.trim());
                       desired_price.clear();
                       FocusScope.of(context).unfocus();
                     },
@@ -396,7 +400,8 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 40),
                 ],
               ),
             )

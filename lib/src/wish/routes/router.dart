@@ -48,7 +48,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         type: PageTransitionType.rightToLeft,
         settings: settings,
       );
-
+    case ErrorScreen.routeName:
+      return PageTransition(
+        child: const ErrorScreen(
+          error: '',
+        ),
+        type: PageTransitionType.rightToLeft,
+        settings: settings,
+      );
     default:
       return PageTransition(
         child: Scaffold(

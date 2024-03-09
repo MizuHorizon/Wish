@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/models/user_model.dart';
+import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
@@ -43,16 +44,27 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   void doGoogleSignIn() async {
-    MyAppUser? user =
-        await ref.read(userControllerProvider.notifier).googleSigin();
-    ref.read(userModelProvider.notifier).update((state) => user);
+    try {
+      await ref
+          .read(userControllerProvider.notifier)
+          .googleSigin()
+          .then((value) async {
+        print("this is the value $value");
 
-    //fetching products
+        ref
+            .read(userModelProvider.notifier)
+            .update((state) => value as MyAppUser);
 
-    ref.read(productModelProvider.notifier).state =
-        await ref.read(productControllerProvider.notifier).getAllProducts();
+        //fetching products
+        ref.read(productModelProvider.notifier).state =
+            await ref.read(productControllerProvider.notifier).getAllProducts();
 
-    Navigator.pushNamed(context, HomeScreen.routeName);
+        Navigator.pushNamed(context, HomeScreen.routeName);
+      });
+    } catch (e) {
+      print(e);
+      //  Navigator.pushNamed(context, ErrorScreen.routeName);
+    }
   }
 
   bool _isValidEmail(String email) {
@@ -65,15 +77,22 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final userController = ref.watch(userControllerProvider);
     var width = MediaQuery.of(context).size.width;
     ref.listen(userControllerProvider, (previous, next) {
+      if (next.hasError) {
+        setState(() {
+          _loginWithGoogle = true;
+        });
+      }
       if (!next.isLoading && next.hasError) {
-        if (next.error.toString() == "Account with Email Doesn't Exists!") {
-          showGradientDialog(
-              context, "Error", next.error.toString(), Colors.red);
-        } else if (next.error.toString() !=
-            "Account with Email Exists already!") {
-          showGradientDialog(
-              context, "Error", next.error.toString(), Colors.red);
-        }
+        // if (next.error.toString() == "Account with Email Doesn't Exists!") {
+        //   print("error 1");
+        //   showGradientDialog(
+        //       context, "Error", next.error.toString(), Colors.red);
+        // } else if (next.error.toString() !=
+        //     "Account with Email Exists already!") {
+        //   print("error 2");
+        //   showGradientDialog(
+        //       context, "Error", next.error.toString(), Colors.red);
+        // }
         setState(() {
           _normalLogin = true;
         });

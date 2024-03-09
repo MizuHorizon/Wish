@@ -176,7 +176,10 @@ class DevelopersScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: 20),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                _launchUrl(
+                                    "https://www.linkedin.com/in/sakcham-singh-b45a7721a/");
+                              },
                               child: Container(
                                 height: 25,
                                 width: 25,

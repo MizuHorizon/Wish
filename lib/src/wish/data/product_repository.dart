@@ -73,6 +73,23 @@ class ProductRepository {
     }
   }
 
+  Future<dynamic> updateDesiredPrice(
+      String productId, String desriredPrice) async {
+    try {
+      final Response response = await dio.patch(
+          "${baseUrl}product/price/$productId",
+          data: {'desired_price': desriredPrice});
+      print("this is updated data ${response.data}");
+      if (response.statusCode != 200) {
+        throw Exception("${response.data['error']}");
+      } else {
+        return "Successfully updated ${response.data}";
+      }
+    } catch (e) {
+      throw Exception('$e');
+    }
+  }
+
   Future<dynamic> addProduct(String userId, String url, bool trackable,
       String description, List tags, double desired_price) async {
     try {

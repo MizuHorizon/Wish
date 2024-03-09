@@ -104,27 +104,29 @@ class FirebaseAuthService implements AuthService {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
+      if (googleUser == null) {
+        throw Exception();
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-        final UserCredential userCredential = await _firebaseAuth
-            .signInWithCredential(GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken,
-          accessToken: googleAuth.accessToken,
-        ));
-        var userdata = userCredential.user;
-        print("  ${userdata!.displayName}");
-        print("  ${userdata!.email}");
-        print("  ${userdata!.phoneNumber}");
-        print("  ${userdata!.photoURL}");
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      ));
+      var userdata = userCredential.user;
+      print("  ${userdata!.displayName}");
+      print("  ${userdata!.email}");
+      print("  ${userdata!.phoneNumber}");
+      print("  ${userdata!.photoURL}");
 
+      try {
         final userDataFromBackend = await userRepository.googlesSignUp(
             userdata!.displayName as String,
             userdata.email as String,
             userdata.phoneNumber ?? "null",
             userdata.photoURL as String);
-
         // print("user from back $userDataFromBackend");
         String token = userDataFromBackend['data']['token'];
         String userId = userDataFromBackend['data']['userId'];
@@ -134,10 +136,12 @@ class FirebaseAuthService implements AuthService {
             MyAppUser.fromMap(userDataFromBackend['data']['userData']);
         //print("Serialized $user");
         return user;
+      } catch (e) {
+        throw Exception(e);
       }
     } catch (e) {
       print(e);
-      throw "$e";
+      throw Exception(e);
     }
   }
 

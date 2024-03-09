@@ -50,6 +50,18 @@ class ProductController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  Future<dynamic> changeDesiredPrice(
+      String productId, String desiredPrice) async {
+    state = const AsyncLoading();
+    final newState = await AsyncValue.guard(() async {
+      print(" this is the productId $productId");
+      await product.updateDesiredPrice(productId, desiredPrice);
+    });
+    if (mounted) {
+      state = newState;
+    }
+  }
+
   Future<dynamic> addProduct(String url, bool trackable, String description,
       List<String> productTags, double desired_price) async {
     try {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wish/src/constants.dart';
 
 class ErrorScreen extends StatelessWidget {
+  static const String routeName = "error-screen";
   final String error;
   const ErrorScreen({super.key, required this.error});
 
