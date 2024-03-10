@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -58,6 +60,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var lastPrice = jsonDecode(widget.price)['price'];
     return Row(
       children: [
         Stack(
@@ -76,14 +79,17 @@ class _SearchProductItemState extends State<SearchProductItem> {
                 ),
               ),
             ),
-            Positioned(
-              top: 8, // Adjust the top position of the button
-              right: 8, // Adjust the right position of the button
-              child: InkWell(
-                onTap: () {},
-                child: const Icon(Icons.delete),
-              ),
-            ),
+            // Positioned(
+            //   top: 8, // Adjust the top position of the button
+            //   right: 8, // Adjust the right position of the button
+            //   child: InkWell(
+            //     onTap: () {},
+            //     child: const Icon(
+            //       Icons.delete,
+            //       color: Colors.black,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         const SizedBox(width: 10),
@@ -106,7 +112,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
             Row(
               children: [
                 const SizedBox(width: 10),
-                Text("₹${widget.price.toString()}",
+                Text("₹${lastPrice}",
                     style: const TextStyle(
                         color: AppColors.greenDark,
                         fontSize: 17,
@@ -151,7 +157,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
                         border: Border.all(color: Colors.grey)),
                     height: 25,
                     width: 70,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Tracker",
                         style: TextStyle(color: AppColors.appActiveColor),

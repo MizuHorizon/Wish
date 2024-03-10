@@ -294,124 +294,55 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter mystate) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Container(
-                height: size.height / 1.4,
-                decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Container(
+                  height: size.height / 1.4,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
                       ),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color.fromARGB(255, 65, 67, 70), // Top color
-                        Color.fromARGB(255, 12, 14, 12),
-                        Colors.black, // Bottom color
-                      ],
-                    ),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 25, left: 8, right: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Add Product",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25),
-                      ),
-                      const Divider(
-                        thickness: 2,
-                        indent: 0,
-                        endIndent: 230,
-                        color: AppColors.appActiveColor,
-                        height: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Paste your product url. Copy the product URL by \nselecting the share option on the product and paste it \nhere",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                color: AppColors.appActiveColor,
-                                fontSize: 13),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          InputWishTextField(
-                              controller: urlController,
-                              hintText: "Paste URL",
-                              isNumerInput: false,
-                              isPassword: false),
-                          if (emptyUrl) ...[
-                            Text("Url cant be empty",
-                                style: TextStyle(color: Colors.red)),
-                          ],
-                          if (notValidUrl) ...[
-                            Text("Not Valid Url!!!, Please check the url",
-                                style: TextStyle(color: Colors.red)),
-                          ]
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(255, 65, 67, 70), // Top color
+                          Color.fromARGB(255, 12, 14, 12),
+                          Colors.black, // Bottom color
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          InputWishTextField(
-                              controller: descController,
-                              hintText: "description",
-                              isNumerInput: false,
-                              isPassword: false),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Trackable",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 132, 125, 125),
-                                fontSize: 15),
-                          ),
-                          Switch(
-                            // thumb color (round icon)
-                            activeColor: Colors.green.shade100,
-                            activeTrackColor: Colors.green,
-                            inactiveThumbColor: Colors.blueGrey.shade600,
-                            inactiveTrackColor: Colors.grey.shade400,
-                            splashRadius: 50.0,
-                            // boolean variable value
-                            value: trackable,
-                            // changes the state of the switch
-                            onChanged: (value) => mystate(() {
-                              trackable = value;
-                              showDesiredPrice = !showDesiredPrice;
-                              emptyDesiredPrice = false;
-                            }),
-                          )
-                        ],
-                      ),
-                      if (showDesiredPrice) ...[
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 25, left: 8, right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Add Product",
+                          style: TextStyle(
+                              color: AppColors.appActiveColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          indent: 0,
+                          endIndent: 230,
+                          color: AppColors.appActiveColor,
+                          height: 10,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "Desired Price at which you want to get notified",
+                              "Paste your product url. Copy the product URL by \nselecting the share option on the product and paste it \nhere",
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   color: AppColors.appActiveColor,
@@ -421,195 +352,269 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               height: 8,
                             ),
                             InputWishTextField(
-                              controller: priceController,
-                              hintText: "price",
-                              isNumerInput: true,
-                              isPassword: false,
-                            ),
+                                controller: urlController,
+                                hintText: "Paste URL",
+                                isNumerInput: false,
+                                isPassword: false),
+                            if (emptyUrl) ...[
+                              Text("Url cant be empty",
+                                  style: TextStyle(color: Colors.red)),
+                            ],
+                            if (notValidUrl) ...[
+                              Text("Not Valid Url!!!, Please check the url",
+                                  style: TextStyle(color: Colors.red)),
+                            ]
                           ],
                         ),
-                      ],
-                      const SizedBox(height: 8),
-                      Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: size.width,
-                            child: TextField(
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                hintText: "Enter tags...",
-
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w300),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 20.0),
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: AppColors.appActiveColor,
-                                      width: 1.0),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: AppColors.appActiveColor,
-                                      width: 2.0),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                filled: true,
-                                fillColor: AppColors.appBackgroundColor,
-                                // Set text color of entered text
-                              ),
-                              controller: tagController,
-                              onChanged: (value) {
-                                if (value.endsWith(" ")) {
-                                  final tag = value.trim();
-                                  if (tag.isNotEmpty) {
-                                    mystate(() {
-                                      productTags.add(tag);
-                                      tags.add(
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 6, top: 3, bottom: 3),
-                                          child: Container(
-                                              height: 25,
-                                              padding: const EdgeInsets.only(
-                                                  left: 5, right: 5, bottom: 2),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.white)),
-                                              child: Center(
-                                                child: Text(
-                                                  tag,
-                                                  style: const TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                              )),
-                                        ),
-                                      );
-                                    });
-                                  }
-                                  tagController.clear();
-                                }
-                              },
+                        const SizedBox(height: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 8,
                             ),
-                          ),
-                          if (emptyDesiredPrice) ...[
-                            Text("Desired Price Cant be empty!!!",
-                                style: TextStyle(color: Colors.red)),
-                          ]
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      if (tags.isNotEmpty) ...[
+                            InputWishTextField(
+                                controller: descController,
+                                hintText: "description",
+                                isNumerInput: false,
+                                isPassword: false),
+                          ],
+                        ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: tags),
-                      ],
-                      const SizedBox(height: 0),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: MaterialButton(
-                          onPressed: () {
-                            if (urlController.text.trim().isEmpty) {
-                              mystate(() {
-                                emptyUrl = true;
-                                notValidUrl = false;
-                              });
-                            } else if (!isValidUrl(urlController.text.trim())) {
-                              mystate(() {
-                                notValidUrl = true;
-                                emptyUrl = false;
-                              });
-                            } else if (showDesiredPrice == true &&
-                                priceController.text.trim().isEmpty) {
-                              mystate(() {
-                                emptyDesiredPrice = true;
-                              });
-                            } else {
-                              print(
-                                  "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
-                              double price;
-
-                              if (priceController.text.trim().isEmpty) {
-                                // Handle the case where no price is entered
-                                // For example, you can assign a default value of 0 or display a message to the user
-                                price = 0;
-                              } else {
-                                try {
-                                  price =
-                                      double.parse(priceController.text.trim());
-                                } catch (e) {
-                                  // Handle the parsing error gracefully
-                                  print("Error parsing price: $e");
-                                  // You can choose to assign a default value or handle the error in any other appropriate way
-                                  price = 0;
-                                }
-                              }
-                              print(productTags);
-                              ref
-                                  .read(productControllerProvider.notifier)
-                                  .addProduct(
-                                      urlController.text.trim(),
-                                      trackable,
-                                      descController.text.trim(),
-                                      productTags,
-                                      price)
-                                  .then((value) {
-                                productTags.clear();
-                                showConfirmationDialog(
-                                    context, "", "", Colors.black);
-                              });
-                              mystate(() {
-                                emptyUrl = false;
-                                notValidUrl = false;
-                                emptyDesiredPrice = false;
-                                tags.clear();
-                                descController.clear();
-                                urlController.clear();
-                                priceController.clear();
-                              });
-
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: Container(
-                            height: 65,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: const RadialGradient(
-                                  center: Alignment(-0, 2),
-                                  radius: 2.3,
-                                  colors: [
-                                    Color.fromARGB(255, 66, 61, 61),
-                                    Colors.black,
-                                  ]),
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  color: AppColors.dividerColor, width: 1.5),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Trackable",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 132, 125, 125),
+                                  fontSize: 15),
                             ),
-                            child: const Center(
-                              child: Center(
-                                child: Text(
-                                  "Add",
-                                  style: TextStyle(
-                                      color: AppColors.appActiveColor,
-                                      fontSize: 20),
+                            Switch(
+                              // thumb color (round icon)
+                              activeColor: Colors.green.shade100,
+                              activeTrackColor: Colors.green,
+                              inactiveThumbColor: Colors.blueGrey.shade600,
+                              inactiveTrackColor: Colors.grey.shade400,
+                              splashRadius: 50.0,
+                              // boolean variable value
+                              value: trackable,
+                              // changes the state of the switch
+                              onChanged: (value) => mystate(() {
+                                trackable = value;
+                                showDesiredPrice = !showDesiredPrice;
+                                emptyDesiredPrice = false;
+                              }),
+                            )
+                          ],
+                        ),
+                        if (showDesiredPrice) ...[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Desired Price at which you want to get notified",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    color: AppColors.appActiveColor,
+                                    fontSize: 13),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              InputWishTextField(
+                                controller: priceController,
+                                hintText: "price",
+                                isNumerInput: true,
+                                isPassword: false,
+                              ),
+                            ],
+                          ),
+                        ],
+                        const SizedBox(height: 8),
+                        Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: size.width,
+                              child: TextField(
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                  hintText: "Enter tags...",
+
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w300),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.appActiveColor,
+                                        width: 1.0),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.appActiveColor,
+                                        width: 2.0),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.appBackgroundColor,
+                                  // Set text color of entered text
+                                ),
+                                controller: tagController,
+                                onChanged: (value) {
+                                  if (value.endsWith(" ")) {
+                                    final tag = value.trim();
+                                    if (tag.isNotEmpty) {
+                                      mystate(() {
+                                        productTags.add(tag);
+                                        tags.add(
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 6, top: 3, bottom: 3),
+                                            child: Container(
+                                                height: 25,
+                                                padding: const EdgeInsets.only(
+                                                    left: 5,
+                                                    right: 5,
+                                                    bottom: 2),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.white)),
+                                                child: Center(
+                                                  child: Text(
+                                                    tag,
+                                                    style: const TextStyle(
+                                                        color: Colors.grey),
+                                                  ),
+                                                )),
+                                          ),
+                                        );
+                                      });
+                                    }
+                                    tagController.clear();
+                                  }
+                                },
+                              ),
+                            ),
+                            if (emptyDesiredPrice) ...[
+                              Text("Desired Price Cant be empty!!!",
+                                  style: TextStyle(color: Colors.red)),
+                            ]
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        if (tags.isNotEmpty) ...[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: tags),
+                        ],
+                        const SizedBox(height: 0),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 20),
+                          child: MaterialButton(
+                            onPressed: () {
+                              if (urlController.text.trim().isEmpty) {
+                                mystate(() {
+                                  emptyUrl = true;
+                                  notValidUrl = false;
+                                });
+                              } else if (!isValidUrl(
+                                  urlController.text.trim())) {
+                                mystate(() {
+                                  notValidUrl = true;
+                                  emptyUrl = false;
+                                });
+                              } else if (showDesiredPrice == true &&
+                                  priceController.text.trim().isEmpty) {
+                                mystate(() {
+                                  emptyDesiredPrice = true;
+                                });
+                              } else {
+                                print(
+                                    "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
+                                double price;
+
+                                if (priceController.text.trim().isEmpty) {
+                                  // Handle the case where no price is entered
+                                  // For example, you can assign a default value of 0 or display a message to the user
+                                  price = 0;
+                                } else {
+                                  try {
+                                    price = double.parse(
+                                        priceController.text.trim());
+                                  } catch (e) {
+                                    // Handle the parsing error gracefully
+                                    print("Error parsing price: $e");
+                                    // You can choose to assign a default value or handle the error in any other appropriate way
+                                    price = 0;
+                                  }
+                                }
+                                print(productTags);
+                                ref
+                                    .read(productControllerProvider.notifier)
+                                    .addProduct(
+                                        urlController.text.trim(),
+                                        trackable,
+                                        descController.text.trim(),
+                                        productTags,
+                                        price)
+                                    .then((value) {
+                                  productTags.clear();
+                                  showConfirmationDialog(
+                                      context, "", "", Colors.black);
+                                });
+                                mystate(() {
+                                  emptyUrl = false;
+                                  notValidUrl = false;
+                                  emptyDesiredPrice = false;
+                                  tags.clear();
+                                  descController.clear();
+                                  urlController.clear();
+                                  priceController.clear();
+                                });
+
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: Container(
+                              height: 65,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: const RadialGradient(
+                                    center: Alignment(-0, 2),
+                                    radius: 2.3,
+                                    colors: [
+                                      Color.fromARGB(255, 66, 61, 61),
+                                      Colors.black,
+                                    ]),
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                    color: AppColors.dividerColor, width: 1.5),
+                              ),
+                              child: const Center(
+                                child: Center(
+                                  child: Text(
+                                    "Add",
+                                    style: TextStyle(
+                                        color: AppColors.appActiveColor,
+                                        fontSize: 20),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

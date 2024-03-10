@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Product_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Tracker_Product_Screen.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/components/confirmation_dialgueBox.dart';
 import 'package:wish/src/wish/presentation/utils/homepage_drawer.dart';
-import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 import 'package:wish/src/wish/presentation/utils/rectangular_indicator.dart';
 import 'package:wish/src/wish/presentation/utils/search_delegate.dart';
 
@@ -88,8 +83,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TabBar(
+                dividerColor: Colors.transparent,
                 labelColor: AppColors.appActiveColor,
-                indicatorColor: const Color.fromRGBO(4, 2, 46, 1),
+                indicatorColor: Color.fromARGB(255, 0, 0, 0),
                 indicator: RectangularIndicator(
                   topRightRadius: 20,
                   topLeftRadius: 20,
