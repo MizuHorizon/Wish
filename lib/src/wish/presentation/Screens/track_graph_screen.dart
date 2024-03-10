@@ -64,18 +64,25 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
     }).toList();
   }
 
+  int currentPrice = -1;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _generateCharData();
     print("$minY $maxY");
+    print("xyz ${widget.prices.lastOrNull}");
+    setState(() {
+      currentPrice = jsonDecode(widget.prices.last)['price'];
+      print("xyz $currentPrice");
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<Color> gradientColors = [Colors.green, Colors.greenAccent];
-    int currentPrice = jsonDecode(widget.prices.last)['price'];
+
     var size = MediaQuery.of(context).size;
 
     final productProvider = ref.watch(productControllerProvider);
@@ -120,7 +127,9 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${widget.name}",
+                    widget.name.length >= 30
+                        ? "${widget.name.substring(0, 30)}..."
+                        : "${widget.name}",
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -131,7 +140,7 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                       height: 58,
                       width: 144,
                       child: Text(
-                        "₹${currentPrice}",
+                        "₹$currentPrice",
                         style: const TextStyle(
                           fontSize: 45,
                           fontWeight: FontWeight.bold,
@@ -311,9 +320,18 @@ class _TrackProductScreenState extends ConsumerState<TrackProductScreen> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      "${widget.name} price is currently being tracked per hour.\nCheck the best price and get notifications about the price drops.",
-                      style: TextStyle(color: AppColors.appActiveColor),
+                    child: Wrap(
+                      children: [
+                        Text(
+                          "${widget.name}",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 131, 137, 133)),
+                        ),
+                        Text(
+                          "price is currently being tracked per hour.\n\nCheck the best price and get notifications about the price drops.",
+                          style: TextStyle(color: AppColors.appActiveColor),
+                        ),
+                      ],
                     ),
                   ),
                   Row(

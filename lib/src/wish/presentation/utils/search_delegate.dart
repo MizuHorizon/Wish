@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 
 import 'package:wish/src/wish/models/product_model.dart';
+import 'package:wish/src/wish/presentation/Screens/NoProduct_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/search_product.dart';
+import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
+import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 
 class DataSearch extends SearchDelegate<String> {
   @override
@@ -72,8 +76,7 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildSuggestions
-    throw UnimplementedError();
+    return Container();
   }
 
   @override
@@ -90,36 +93,74 @@ class DataSearch extends SearchDelegate<String> {
             return nameMatch || tagMatch || priceMatch;
           }).toList();
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Column(
-        children: [
-          const Divider(
-            thickness: 0.7,
-            color: AppColors.dividerColor,
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              itemCount: suggestionList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20, bottom: 5, left: 5, right: 5),
-                  child: SearchProductItem(
-                    name: '${suggestionList[index].name.substring(0, 20)}...' ??
-                        "",
-                    imageUrl: suggestionList[index].photos[0] ?? "",
-                    price: "${suggestionList[index].prices.last}" ?? "",
-                    tags: suggestionList[index].tags ?? [],
-                    productUrl: suggestionList[index].url ?? " ",
+    return suggestionList.isEmpty
+        ? NoProductScreen()
+        : Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
+              children: [
+                const Divider(
+                  thickness: 0.7,
+                  color: AppColors.dividerColor,
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: suggestionList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20, bottom: 5, left: 5, right: 5),
+                        child: Consumer(builder: (context, ref, child) {
+                          return SearchProductItem(
+                            tracker: () {
+                              FocusScope.of(context).unfocus();
+                              var clickedProduct = suggestionList[index];
+                              if (clickedProduct.tracker == true) {
+                                Navigator.pushNamed(
+                                    context, TrackProductScreen.routeName,
+                                    arguments: {
+                                      'name': clickedProduct.name,
+                                      "desiredPrice":
+                                          clickedProduct.desiredPrice,
+                                      'prices': clickedProduct.prices,
+                                      'productUrl': clickedProduct.url,
+                                      'productId': clickedProduct.id
+                                    });
+                              } else {
+                                showGradientDialog(
+                                    context,
+                                    "Tracker",
+                                    "This product is not being Tracked. \n please turn of the tracker...",
+                                    AppColors.appActiveColor);
+                              }
+                            },
+                            view: () {
+                              var clickedProduct = suggestionList[index];
+                              products.removeWhere(
+                                  (element) => element.id == clickedProduct.id);
+                              products.insert(0, clickedProduct);
+
+                              ref
+                                  .watch(productModelProvider.notifier)
+                                  .update((state) => products);
+                              Navigator.of(context).pop();
+                            },
+                            name:
+                                '${suggestionList[index].name.substring(0, 20)}...' ??
+                                    "",
+                            imageUrl: suggestionList[index].photos[0] ?? "",
+                            price: "${suggestionList[index].prices.last}" ?? "",
+                            tags: suggestionList[index].tags ?? [],
+                            productUrl: suggestionList[index].url ?? " ",
+                          );
+                        }),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

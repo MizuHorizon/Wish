@@ -20,7 +20,7 @@ class GradientDialog extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
@@ -57,6 +57,7 @@ class GradientDialog extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,

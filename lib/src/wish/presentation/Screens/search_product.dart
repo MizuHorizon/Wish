@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
@@ -13,14 +12,18 @@ class SearchProductItem extends StatefulWidget {
   String productUrl;
   final dynamic price;
   final List<String> tags;
-  SearchProductItem({
-    Key? key,
-    required this.productUrl,
-    required this.imageUrl,
-    required this.name,
-    required this.price,
-    required this.tags,
-  }) : super(key: key);
+  final void Function()? view;
+  final void Function()? tracker;
+  SearchProductItem(
+      {Key? key,
+      required this.productUrl,
+      required this.imageUrl,
+      required this.name,
+      required this.price,
+      required this.tags,
+      this.view,
+      this.tracker})
+      : super(key: key);
 
   @override
   State<SearchProductItem> createState() => _SearchProductItemState();
@@ -47,14 +50,6 @@ class _SearchProductItemState extends State<SearchProductItem> {
     }
 
     return tags;
-  }
-
-  Future<void> _launchUrl() async {
-    print(widget.productUrl);
-    final Uri _url = Uri.parse(widget.productUrl);
-    if (!await launchUrl(_url, mode: LaunchMode.inAppBrowserView)) {
-      throw Exception('Could not launch $_url');
-    }
   }
 
   @override
@@ -124,9 +119,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
             Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    _launchUrl();
-                  },
+                  onTap: widget.view,
                   child: Container(
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(
@@ -150,7 +143,7 @@ class _SearchProductItemState extends State<SearchProductItem> {
                 ),
                 const SizedBox(width: 20),
                 InkWell(
-                  onTap: () {},
+                  onTap: widget.tracker,
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
