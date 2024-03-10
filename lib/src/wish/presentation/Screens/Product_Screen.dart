@@ -353,6 +353,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               height: 8,
                             ),
                             InputWishTextField(
+                                fillColour: Colors.transparent,
+                                borderColour: AppColors.dividerColor,
                                 controller: urlController,
                                 hintText: "Paste URL",
                                 isNumerInput: false,
@@ -375,6 +377,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               height: 8,
                             ),
                             InputWishTextField(
+                                fillColour: Colors.transparent,
+                                borderColour: AppColors.dividerColor,
                                 controller: descController,
                                 hintText: "description",
                                 isNumerInput: false,
@@ -423,6 +427,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 height: 8,
                               ),
                               InputWishTextField(
+                                fillColour: Colors.transparent,
+                                borderColour: AppColors.dividerColor,
                                 controller: priceController,
                                 hintText: "price",
                                 isNumerInput: true,
@@ -440,35 +446,34 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               child: TextField(
                                 style: const TextStyle(color: Colors.white),
                                 decoration: const InputDecoration(
-                                  hintText: "Enter tags...",
-
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w300),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 20.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.appActiveColor,
-                                        width: 1.0),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.appActiveColor,
-                                        width: 2.0),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  filled: true,
-                                  fillColor: AppColors.appBackgroundColor,
-                                  // Set text color of entered text
-                                ),
+                                    hintText: "Enter tags...",
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w300),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.dividerColor,
+                                          width: 1.0),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.appActiveColor,
+                                          width: 2.0),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.transparent
+                                    // Set text color of entered text
+                                    ),
                                 controller: tagController,
                                 onChanged: (value) {
                                   if (value.endsWith(" ")) {

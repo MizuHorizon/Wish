@@ -116,9 +116,27 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                   showDeleteDialog(context, "Delete", "Are you sure?",
                       AppColors.appBackgroundColor, widget.productId);
                 },
-                child: Icon(
-                  Icons.delete,
-                  color: AppColors.appBackgroundColor,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.grey,
+                              Colors.transparent,
+                            ]),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.delete,
+                      color: Colors.black,
+                    ),
+                  ],
                 ),
               ),
             ),

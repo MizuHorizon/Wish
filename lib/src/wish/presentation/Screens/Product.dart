@@ -83,15 +83,32 @@ class _ProductState extends ConsumerState<ProductItem> {
               top: 8, // Adjust the top position of the button
               right: 8, // Adjust the right position of the button
               child: InkWell(
-                onTap: () {
-                  showDeleteDialog(context, "Delete", "Are you sure?",
-                      AppColors.appBackgroundColor, widget.productId);
-                },
-                child: const Icon(
-                  Icons.delete,
-                  color: Colors.black,
-                ),
-              ),
+                  onTap: () {
+                    showDeleteDialog(context, "Delete", "Are you sure?",
+                        AppColors.appBackgroundColor, widget.productId);
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.grey,
+                                Colors.transparent,
+                              ]),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      Icon(
+                        Icons.delete,
+                        color: Colors.black,
+                      ),
+                    ],
+                  )),
             ),
           ],
         ),
