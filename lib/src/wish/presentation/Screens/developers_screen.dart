@@ -147,14 +147,12 @@ class DevelopersScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
                       ),
-                      Container(
-                        child: const Text(
-                          "UX/UI Designer and Frontend Developer\nwith 1 year of Experience",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 123, 119, 119),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
-                        ),
+                      const Text(
+                        "UX/UI Designer and Frontend \nDeveloper with 1 year of Experience",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 123, 119, 119),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

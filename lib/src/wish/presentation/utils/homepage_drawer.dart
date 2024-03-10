@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
+import 'package:wish/src/wish/presentation/Screens/Profile_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
 import 'package:wish/src/wish/presentation/Screens/developers_screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
@@ -64,7 +65,8 @@ Drawer HomePageDrawer(
           selected: _selectedIndex == 0,
           onTap: () {
             _onItemTapped(0);
-            Navigator.pop(context);
+            Navigator.pushNamed(context, ProfileScreen.routeName);
+            // Navigator.pop(context);
           },
         ),
         const Padding(

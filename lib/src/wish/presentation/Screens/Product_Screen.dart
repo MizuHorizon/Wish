@@ -165,14 +165,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                       Row(
                         children: [
                           Container(
-                            child: const Center(
-                              child: Text(
-                                "Recent",
-                                style: TextStyle(
-                                    color: AppColors.appActiveColor,
-                                    fontSize: 15),
-                              ),
-                            ),
                             width: 90,
                             height: 32,
                             decoration: BoxDecoration(
@@ -180,6 +172,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 color: Color.fromARGB(255, 145, 148, 151),
                                 border: Border.all(
                                     color: AppColors.dividerColor, width: 1)),
+                            child: const Center(
+                              child: Text(
+                                "Recent",
+                                style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    color: AppColors.appActiveColor,
+                                    fontSize: 15),
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Center(

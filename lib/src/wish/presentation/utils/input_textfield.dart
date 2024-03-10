@@ -9,6 +9,8 @@ class InputWishTextField extends StatefulWidget {
     required this.isNumerInput,
     required this.isPassword,
     this.onChanged,
+    this.borderColour = AppColors.appActiveColor,
+    this.fillColour = AppColors.appBackgroundColor,
   }) : _controller = controller;
 
   final TextEditingController _controller;
@@ -16,6 +18,8 @@ class InputWishTextField extends StatefulWidget {
   final bool isPassword;
   final bool isNumerInput;
   final void Function(String)? onChanged;
+  final Color borderColour;
+  final Color fillColour;
 
   @override
   State<InputWishTextField> createState() => _InputWishTextFieldState();
@@ -41,16 +45,16 @@ class _InputWishTextFieldState extends State<InputWishTextField> {
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.appActiveColor, width: 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: widget.borderColour, width: 1.0),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.appActiveColor, width: 2.0),
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         filled: true,
-        fillColor: AppColors.appBackgroundColor,
+        fillColor: widget.fillColour,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {

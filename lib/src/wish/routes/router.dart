@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
+import 'package:wish/src/wish/presentation/Screens/Profile_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/SignIn_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
 import 'package:page_transition/page_transition.dart';
@@ -48,12 +49,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         type: PageTransitionType.rightToLeft,
         settings: settings,
       );
+    case ProfileScreen.routeName:
+      return PageTransition(
+          child: const ProfileScreen(),
+          type: PageTransitionType.leftToRight,
+          settings: settings);
     case ErrorScreen.routeName:
       return PageTransition(
         child: const ErrorScreen(
           error: '',
         ),
-        type: PageTransitionType.rightToLeft,
+        type: PageTransitionType.leftToRight,
         settings: settings,
       );
     default:

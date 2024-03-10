@@ -107,11 +107,13 @@ class _ProductState extends ConsumerState<ProductItem> {
                       fontSize: 20,
                       fontWeight: FontWeight.w500)),
             ),
-            Text(widget.price.toString(),
-                style: const TextStyle(
-                    color: AppColors.greenDark,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500))
+            Expanded(
+              child: Text(widget.price.toString(),
+                  style: const TextStyle(
+                      color: AppColors.greenDark,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w400)),
+            )
           ],
         ),
         const SizedBox(height: 8),

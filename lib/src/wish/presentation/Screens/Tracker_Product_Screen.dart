@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,24 +109,25 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                               )
                             ],
                           ),
-                          MaterialButton(
-                            onPressed: () {},
+                          InkWell(
+                            onTap: () {},
                             child: Container(
+                              margin: const EdgeInsets.only(right: 10),
                               padding:
                                   const EdgeInsets.only(left: 10, right: 10),
                               width: size.width / 2.8,
-                              height: size.height / 18,
+                              height: 42,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
+                                      transform:
+                                          GradientRotation(45 * (pi / 180)),
                                       colors: [
-                                        Colors.grey.shade800,
-                                        Colors.black,
-                                        Colors.black,
-                                        Colors.black,
-                                        Colors.grey.shade800
+                                        Color(0xFF6D7178),
+                                        AppColors.appBackgroundColor,
+                                        Color(0xFF6D7178),
                                       ]),
                                   border:
                                       Border.all(color: Colors.grey, width: 2)),
@@ -134,7 +136,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    height: 40,
+                                    height: 32,
                                     width: 40,
                                     child: SvgPicture.asset(
                                       'assets/icons/f-icon.svg',
@@ -146,7 +148,7 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                                   const Text(
                                     "Upgrade",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: AppColors.appActiveColor,
                                       fontWeight: FontWeight.w600,
                                     ),

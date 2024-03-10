@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
+        fontFamily: "Inter",
         colorSchemeSeed: AppColors.appBackgroundColor,
         brightness: Brightness.dark,
         useMaterial3: true,
