@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
+import 'package:wish/src/wish/presentation/utils/company_container.dart';
 import 'package:wish/src/wish/presentation/utils/components/delete_dialogueBox.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
@@ -100,11 +101,11 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  imageUrl: widget.imageUrl,
-                  placeholder: (context, url) => const ImageShimmer(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+                    fit: BoxFit.fill,
+                    imageUrl: widget.imageUrl,
+                    placeholder: (context, url) => const ImageShimmer(),
+                    errorWidget: (context, url, error) =>
+                        CompanyContainer(brandName: widget.tags.last)),
               ),
             ),
             Positioned(

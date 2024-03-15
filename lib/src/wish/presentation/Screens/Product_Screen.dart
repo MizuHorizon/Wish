@@ -10,6 +10,7 @@ import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Product.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/utils/components/confirmation_dialgueBox.dart';
+import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
@@ -23,12 +24,53 @@ class ProductScreen extends ConsumerStatefulWidget {
 
 class _ProductScreenState extends ConsumerState<ProductScreen> {
   List<Product> items = [];
-
+  var dropitems = [
+    'Ajio',
+  ];
   void fetchProducts() async {
     setState(() {
       items = ref.read(productModelProvider.notifier).state ?? [];
+      for (int i = 0; i < items.length; i++) {
+        if (!dropitems.contains(items[i].tags.last)) {
+          dropitems.add(items[i].tags.last);
+        }
+      }
+
       print("list is here $items");
     });
+  }
+
+  bool extractCompany(String url) {
+    List<String> supportedCompany = [
+      "ajio",
+      "snitch",
+      "bewakoof",
+      "bonkerscorner"
+    ];
+
+    Uri uri = Uri.parse(url);
+    String host = uri.host;
+
+    // Check if the host starts with 'www.'
+    if (host.startsWith('www.')) {
+      host = host.substring(4); // Remove 'www.' prefix
+    }
+
+    // Remove 'http://' or 'https://' if present
+    if (host.startsWith('http://')) {
+      host = host.substring(7);
+    } else if (host.startsWith('https://')) {
+      host = host.substring(8);
+    }
+
+    // Remove any path or query parameters
+    List<String> parts = host.split('/');
+    host = parts[0];
+    String company = host.toLowerCase();
+    //print(company);
+
+    if (supportedCompany.contains(company)) return true;
+    return false;
   }
 
   void sortProduct(String platform) {
@@ -36,6 +78,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     platform = platform.toLowerCase();
     var products = ref.read(productModelProvider.notifier).state ?? [];
     print('products before $products');
+
     products.sort((a, b) {
       bool aHasTag = a.tags.contains(platform);
       bool bHasTag = b.tags.contains(platform);
@@ -90,12 +133,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   bool notValidUrl = false;
 
   String dropdownvalue = "";
-  var dropitems = [
-    'Ajio',
-    'Amazon',
-    'Flipkart',
-    'Myntra',
-  ];
+
   bool isLoading = false;
 
   @override
@@ -114,38 +152,34 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
-        floatingActionButton: Positioned(
-            top: MediaQuery.of(context).size.height / 2 - 30,
-            left: 10,
-            child: FloatingActionButton(
-              onPressed: () {
-                try {
-                  showAddProductBottomSheet(context, size);
-                } catch (e) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ErrorScreen(
-                      error: "$e",
-                    ),
-                  ));
-                }
-              },
-              elevation: 2.0, // Adjust elevation if needed
-              shape: CircleBorder(), // Make the button round
-              child: Container(
-                width: 58.0,
-                height: 58.0,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.dividerColor),
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.centerRight,
-                      colors: [Color.fromARGB(255, 66, 63, 63), Colors.black]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            try {
+              showAddProductBottomSheet(context, size);
+            } catch (e) {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ErrorScreen(
+                  error: "$e",
                 ),
-                child:
-                    Icon(Icons.add, color: Colors.white), // Add your icon here
-              ),
-            )),
+              ));
+            }
+          },
+          elevation: 2.0, // Adjust elevation if needed
+          shape: CircleBorder(), // Make the button round
+          child: Container(
+            width: 58.0,
+            height: 58.0,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.dividerColor),
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.centerRight,
+                  colors: [Color.fromARGB(255, 66, 63, 63), Colors.black]),
+            ),
+            child: Icon(Icons.add, color: Colors.white), // Add your icon here
+          ),
+        ),
         body: RefreshIndicator(
           color: AppColors.appActiveColor,
           backgroundColor: AppColors.appBackgroundColor,
@@ -543,6 +577,22 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   priceController.text.trim().isEmpty) {
                                 mystate(() {
                                   emptyDesiredPrice = true;
+                                });
+                              } else if (!extractCompany(
+                                  urlController.text.trim())) {
+                                showGradientDialog(
+                                    context,
+                                    "Not Supported",
+                                    "Sorry! Currently we dont support this company!!",
+                                    Colors.red);
+                                mystate(() {
+                                  emptyUrl = false;
+                                  notValidUrl = false;
+                                  emptyDesiredPrice = false;
+                                  tags.clear();
+                                  descController.clear();
+                                  urlController.clear();
+                                  priceController.clear();
                                 });
                               } else {
                                 print(
