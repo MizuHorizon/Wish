@@ -136,6 +136,7 @@ class DataSearch extends SearchDelegate<String> {
                               }
                             },
                             view: () {
+                              FocusScope.of(context).unfocus();
                               var clickedProduct = suggestionList[index];
                               products.removeWhere(
                                   (element) => element.id == clickedProduct.id);

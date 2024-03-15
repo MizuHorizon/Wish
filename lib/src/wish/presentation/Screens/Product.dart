@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/product_model.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import 'package:wish/src/wish/presentation/utils/company_container.dart';
 import 'package:wish/src/wish/presentation/utils/components/delete_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/components/generic_dialogue.dart';
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
@@ -63,6 +64,13 @@ class _ProductState extends ConsumerState<ProductItem> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("snitch url ${widget.imageUrl}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final productController = ref.watch(productControllerProvider);
 
@@ -76,7 +84,9 @@ class _ProductState extends ConsumerState<ProductItem> {
               child: CachedNetworkImage(
                 imageUrl: widget.imageUrl,
                 placeholder: (context, url) => const ImageShimmer(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => CompanyContainer(
+                  brandName: widget.tags.last,
+                ),
               ),
             ),
             Positioned(

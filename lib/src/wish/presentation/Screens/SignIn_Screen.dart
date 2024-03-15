@@ -19,7 +19,8 @@ class SignInScreen extends ConsumerStatefulWidget {
   ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -29,11 +30,32 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   bool validPassword = true;
   bool wrongPassword = false;
 
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(minutes: 1),
+    );
+    _animation = Tween<double>(begin: 0.0, end: 100.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          print(_animation.value);
+        });
+      });
+    _controller.forward();
+  }
+
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _controller.dispose();
   }
 
   void doSignIn(String email, String password) async {
@@ -342,14 +364,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     width: width,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.dividerColor),
-                      gradient: const RadialGradient(
-                        center: Alignment(-0, 2),
+                      gradient: RadialGradient(
+                        center: Alignment(-0, _animation.value),
 
                         radius: 2.3,
                         // begin: Alignment(1, -0.00),
                         // end: Alignment(0, -1),
-                        colors: [
+                        transform:
+                            GradientRotation(100 * (_animation.value / 360)),
+                        colors: const [
+                          Color.fromARGB(255, 145, 147, 152),
                           Color(0xFF6D7178),
+                          Color.fromARGB(255, 53, 53, 55),
+                          Color.fromARGB(255, 20, 19, 19),
+                          Color.fromARGB(255, 11, 10, 10),
                           Color(0xFF000000),
                         ],
                         tileMode: TileMode.mirror,

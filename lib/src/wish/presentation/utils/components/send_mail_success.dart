@@ -73,8 +73,8 @@ class SuccessGradientDialog extends StatelessWidget {
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Colors.black,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                 ),
                 child: Text('OK'),
               ),

@@ -308,7 +308,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(19, 19, 21, 1),
+                            backgroundColor: Color.fromRGBO(19, 19, 21, 1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

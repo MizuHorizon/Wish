@@ -60,8 +60,8 @@ class GradientDialog extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Colors.black,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                 ),
                 child: Text('OK'),
               ),
