@@ -39,7 +39,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(minutes: 1),
+      duration: const Duration(minutes: 5),
     );
     _animation = Tween<double>(begin: 0.0, end: 100.0).animate(_controller)
       ..addListener(() {
@@ -47,7 +47,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
           print(_animation.value);
         });
       });
-    _controller.forward();
+    _controller.repeat();
   }
 
   @override

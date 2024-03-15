@@ -28,9 +28,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Inter",
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: AppColors.appBackgroundColor),
-        canvasColor: Colors.black,
+        colorSchemeSeed: AppColors.appBackgroundColor,
+        brightness: Brightness.dark,
         useMaterial3: true,
       ),
       darkTheme: ThemeData(

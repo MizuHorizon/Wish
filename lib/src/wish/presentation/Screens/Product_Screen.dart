@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -48,28 +49,20 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       "bonkerscorner"
     ];
 
-    Uri uri = Uri.parse(url);
-    String host = uri.host;
+    RegExp domainRegExp =
+        RegExp(r"(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.");
 
-    // Check if the host starts with 'www.'
-    if (host.startsWith('www.')) {
-      host = host.substring(4); // Remove 'www.' prefix
+    // Extract domain name from URL using RegExp
+    Match? match = domainRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      String host = match.group(1)!;
+
+      String company = host.toLowerCase();
+      print(company);
+
+      if (supportedCompany.contains(company)) return true;
+      return false;
     }
-
-    // Remove 'http://' or 'https://' if present
-    if (host.startsWith('http://')) {
-      host = host.substring(7);
-    } else if (host.startsWith('https://')) {
-      host = host.substring(8);
-    }
-
-    // Remove any path or query parameters
-    List<String> parts = host.split('/');
-    host = parts[0];
-    String company = host.toLowerCase();
-    //print(company);
-
-    if (supportedCompany.contains(company)) return true;
     return false;
   }
 
@@ -139,7 +132,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    print("fetched product");
+    // print("fetched product");
     fetchProducts();
     print("fetched product2");
   }
@@ -287,33 +280,36 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           ),
                         ],
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 1.34,
-                        child: MasonryGridView.builder(
-                          gridDelegate:
-                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return productController.isLoading || isLoading
-                                ? Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: ShimmerProductItem(),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ProductItem(
-                                      name:
-                                          '${items[index].name.substring(0, 12)}...',
-                                      imageUrl: items[index].photos[0],
-                                      price: "₹${items[index].startPrice}",
-                                      tags: items[index].tags,
-                                      productUrl: items[index].url,
-                                      productId: items[index].id,
-                                    ),
-                                  );
-                          },
+                      SingleChildScrollView(
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 10),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 1.34,
+                          child: MasonryGridView.builder(
+                            gridDelegate:
+                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return productController.isLoading || isLoading
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: ShimmerProductItem(),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ProductItem(
+                                        name:
+                                            '${items[index].name.substring(0, 12)}...',
+                                        imageUrl: items[index].photos[0],
+                                        price: "₹${items[index].startPrice}",
+                                        tags: items[index].tags,
+                                        productUrl: items[index].url,
+                                        productId: items[index].id,
+                                      ),
+                                    );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -334,6 +330,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Container(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
                   height: size.height / 1.4,
                   decoration: const BoxDecoration(
                       border: Border(
@@ -365,13 +362,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               color: AppColors.appActiveColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 25),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                          indent: 0,
-                          endIndent: 230,
-                          color: AppColors.appActiveColor,
-                          height: 10,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

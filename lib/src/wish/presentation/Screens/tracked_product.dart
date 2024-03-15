@@ -117,27 +117,23 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                   showDeleteDialog(context, "Delete", "Are you sure?",
                       AppColors.appBackgroundColor, widget.productId);
                 },
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 25,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.grey,
-                              Colors.transparent,
-                            ]),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.delete,
-                      color: Colors.black,
-                    ),
-                  ],
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.grey,
+                          Colors.transparent,
+                        ]),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -203,8 +199,8 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                             ]),
                         borderRadius: BorderRadius.circular(7),
                         border: Border.all(color: Colors.grey)),
-                    height: 25,
-                    width: 70,
+                    height: 30,
+                    width: 80,
                     child: const Center(
                       child: Text(
                         "View",
@@ -229,8 +225,8 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
                         border: Border.all(color: Colors.grey)),
-                    height: 25,
-                    width: 70,
+                    height: 30,
+                    width: 80,
                     child: Center(
                       child: Text(
                         "Tracker",

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wish/src/constants.dart';
+import 'package:wish/src/wish/presentation/utils/company_container.dart';
 
 import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
 
@@ -70,7 +71,8 @@ class _SearchProductItemState extends State<SearchProductItem> {
                   fit: BoxFit.fill,
                   imageUrl: widget.imageUrl,
                   placeholder: (context, url) => const ImageShimmer(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) =>
+                      CompanyContainer(brandName: widget.tags.last),
                 ),
               ),
             ),
@@ -131,8 +133,8 @@ class _SearchProductItemState extends State<SearchProductItem> {
                             ]),
                         borderRadius: BorderRadius.circular(7),
                         border: Border.all(color: Colors.grey)),
-                    height: 25,
-                    width: 70,
+                    height: 30,
+                    width: 80,
                     child: const Center(
                       child: Text(
                         "View",
@@ -148,8 +150,8 @@ class _SearchProductItemState extends State<SearchProductItem> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
                         border: Border.all(color: Colors.grey)),
-                    height: 25,
-                    width: 70,
+                    height: 30,
+                    width: 80,
                     child: const Center(
                       child: Text(
                         "Tracker",

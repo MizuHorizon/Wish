@@ -97,27 +97,23 @@ class _ProductState extends ConsumerState<ProductItem> {
                     showDeleteDialog(context, "Delete", "Are you sure?",
                         AppColors.appBackgroundColor, widget.productId);
                   },
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.grey,
-                                Colors.transparent,
-                              ]),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      Icon(
-                        Icons.delete,
-                        color: Colors.black,
-                      ),
-                    ],
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.grey,
+                            Colors.transparent,
+                          ]),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.black,
+                    ),
                   )),
             ),
           ],
@@ -168,8 +164,8 @@ class _ProductState extends ConsumerState<ProductItem> {
                         ]),
                     borderRadius: BorderRadius.circular(7),
                     border: Border.all(color: Colors.grey)),
-                height: 25,
-                width: 70,
+                height: 30,
+                width: 80,
                 child: const Center(
                   child: Text(
                     "View",
@@ -201,9 +197,9 @@ class _ProductState extends ConsumerState<ProductItem> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),
                     border: Border.all(color: Colors.grey)),
-                height: 25,
-                width: 70,
-                child: Center(
+                height: 30,
+                width: 80,
+                child: const Center(
                   child: Text(
                     "Tracker",
                     style: TextStyle(color: AppColors.appActiveColor),
