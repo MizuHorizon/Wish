@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
-import 'package:wish/src/constants.dart';
+import "package:wish/src/exports.dart";
 
 class CompanyContainer extends StatefulWidget {
   String brandName;

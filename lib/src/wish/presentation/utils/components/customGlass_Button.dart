@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
+import "package:wish/src/exports.dart";
 
-class GlassButton extends StatefulWidget {
+class CglassButton extends StatefulWidget {
   final void Function()? onTap;
   final Widget widget;
   final double border;
-  const GlassButton(
+  const CglassButton(
       {super.key, required this.onTap, required this.widget, this.border = 0});
+
   @override
-  State<GlassButton> createState() => _GlassButtonState();
+  State<CglassButton> createState() => _CglassButtonState();
 }
 
-class _GlassButtonState extends State<GlassButton> {
+class _CglassButtonState extends State<CglassButton> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

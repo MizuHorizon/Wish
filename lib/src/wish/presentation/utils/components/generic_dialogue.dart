@@ -1,17 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import "package:wish/src/exports.dart";
 
-class GradientDialog extends ConsumerWidget {
+class GenericGradientDialog extends ConsumerWidget {
   final String title;
   final String message;
   final Color color;
   final String leftMessage;
   final void Function()? onTap;
 
-  const GradientDialog(
+  const GenericGradientDialog(
       {Key? key,
       required this.title,
       required this.message,
@@ -129,7 +125,7 @@ void showDialogeForTracker(BuildContext context, String leftMessage,
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return GradientDialog(
+      return GenericGradientDialog(
         title: title,
         message: message,
         color: color,

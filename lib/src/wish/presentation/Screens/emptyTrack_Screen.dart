@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wish/src/constants.dart';
+import "package:wish/src/exports.dart";
 
 class EmptyTrackedProductScreen extends StatefulWidget {
   TabController tabController;

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import "package:wish/src/exports.dart";
 
 class ShimmerTrackProduct extends StatefulWidget {
   const ShimmerTrackProduct({super.key});

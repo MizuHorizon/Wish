@@ -1,15 +1,4 @@
-import 'package:country_picker/country_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/user_model.dart';
-import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
-import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/components/customGlass_Button.dart';
-import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
-import 'package:wish/src/wish/presentation/utils/components/send_mail_success.dart';
+import "package:wish/src/exports.dart";
 
 class SignUpScreen extends ConsumerStatefulWidget {
   static const routeName = "/signup-screen";
@@ -393,7 +382,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                 ),
               ),
-              GlassButton(
+              CglassButton(
                 onTap: !_isSignUpLoading
                     ? null
                     : () {
@@ -486,7 +475,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-              GlassButton(
+              CglassButton(
                 border: 0.7,
                 onTap: !_isGoogleLoading
                     ? null

@@ -1,16 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/utils/components/generic_dialogue.dart';
+import "package:wish/src/exports.dart";
 
 class TrackProductScreen extends ConsumerStatefulWidget {
   static const routeName = "/track-screen";

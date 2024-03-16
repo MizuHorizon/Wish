@@ -1,10 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
+import "package:wish/src/exports.dart";
 
 class ProfileScreen extends ConsumerStatefulWidget {
   static const String routeName = "profile-route";

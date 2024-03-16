@@ -1,11 +1,4 @@
-import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/presentation/utils/company_container.dart';
-
-import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
+import "package:wish/src/exports.dart";
 
 class SearchProductItem extends StatefulWidget {
   String imageUrl;

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import "package:wish/src/exports.dart";
 
 class ImageShimmer extends StatefulWidget {
   const ImageShimmer({super.key});

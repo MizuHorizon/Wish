@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import "package:wish/src/exports.dart";
 
 class ConfirmationDialog extends ConsumerWidget {
   final String title;

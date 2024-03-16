@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/NoProduct_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/search_product.dart';
-import 'package:wish/src/wish/presentation/Screens/track_graph_screen.dart';
-import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
+import "package:wish/src/exports.dart";
 
 class DataSearch extends SearchDelegate<String> {
   @override

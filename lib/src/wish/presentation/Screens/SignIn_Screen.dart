@@ -1,16 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/models/user_model.dart';
-import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/components/customGlass_Button.dart';
-import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
+import "package:wish/src/exports.dart";
 
 class SignInScreen extends ConsumerStatefulWidget {
   static const routeName = "/signin-screen";
@@ -140,254 +128,262 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Email",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                    color: AppColors.appActiveColor),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              InputWishTextField(
-                controller: _emailController,
-                hintText: "Enter Your Email",
-                isPassword: false,
-                isNumerInput: false,
-                onChanged: (value) {
-                  setState(() {
-                    validEmail = true;
-                    wrongPassword = false;
-                  });
-                },
-              ),
-              if (!validEmail) ...[
+      body: PopScope(
+        canPop: false, // Disable predictive back for now
+        onPopInvoked: (didPop) async {
+          if (!didPop) {
+            exit(0);
+          }
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 const Text(
-                  "Please! Check this email...",
-                  style: TextStyle(color: Colors.red, fontSize: 15),
-                )
-              ],
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Password",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                    color: AppColors.appActiveColor),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              InputWishTextField(
-                controller: _passwordController,
-                hintText: "Enter Your Password",
-                isPassword: true,
-                isNumerInput: false,
-                onChanged: (value) {
-                  setState(() {
-                    validPassword = true;
-                    wrongPassword = false;
-                  });
-                },
-              ),
-              if (!validPassword) ...[
-                const Text(
-                  "Please! Fill this field...",
-                  style: TextStyle(color: Colors.red, fontSize: 15),
-                )
-              ],
-              if (wrongPassword) ...[
-                const Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Center(
-                    child: Text(
-                      "Wrong password!!!",
-                      style: TextStyle(color: Colors.red, fontSize: 15),
-                    ),
-                  ),
-                )
-              ],
-              const SizedBox(
-                height: 15,
-              ),
-              GlassButton(
-                onTap: !_normalLogin
-                    ? null
-                    : () {
-                        if (!_isValidEmail(_emailController.text)) {
-                          // Show a warning or error message
-                          setState(() {
-                            validEmail = false;
-                          });
-                        } else if (_emailController.text.isEmpty ||
-                            _passwordController.text.isEmpty) {
-                          // Show warning dialog for empty email or password
-                          setState(() {
-                            validPassword = false;
-                          });
-                        } else {
-                          print("signIn");
-                          _normalLogin = false;
-                          setState(() {
-                            _normalLogin = userController.isLoading;
-                          });
-
-                          doSignIn(_emailController.text.trim(),
-                              _passwordController.text.trim());
-                        }
-                      },
-                widget: !_normalLogin
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                        color: AppColors.appActiveColor,
-                      ))
-                    : const Center(
-                        child: Text(
-                          "Log In",
-                          style: TextStyle(
-                              color: AppColors.appActiveColor, fontSize: 20),
-                        ),
-                      ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                      width: 130,
-                      child: Divider(
-                        color: AppColors.dividerColor,
-                      )),
-                  Text(
-                    "or",
-                    style: TextStyle(color: AppColors.dividerColor),
-                  ),
-                  SizedBox(
-                      width: 130,
-                      child: Divider(
-                        color: AppColors.dividerColor,
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Center(
-                child: Text(
-                  "Don't have an account ?",
+                  "Email",
                   style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.appActiveColor,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      color: AppColors.appActiveColor),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, SignUpScreen.routeName);
+                const SizedBox(
+                  height: 15,
+                ),
+                InputWishTextField(
+                  controller: _emailController,
+                  hintText: "Enter Your Email",
+                  isPassword: false,
+                  isNumerInput: false,
+                  onChanged: (value) {
+                    setState(() {
+                      validEmail = true;
+                      wrongPassword = false;
+                    });
                   },
-                  child: Container(
-                    height: 55,
-                    width: width,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.dividerColor),
-                      gradient: RadialGradient(
-                        center: Alignment(-0, _animation.value),
-
-                        radius: 2.3,
-                        // begin: Alignment(1, -0.00),
-                        // end: Alignment(0, -1),
-                        transform:
-                            GradientRotation(100 * (_animation.value / 360)),
-                        colors: const [
-                          Color.fromARGB(255, 145, 147, 152),
-                          Color(0xFF6D7178),
-                          Color.fromARGB(255, 53, 53, 55),
-                          Color.fromARGB(255, 20, 19, 19),
-                          Color.fromARGB(255, 11, 10, 10),
-                          Color(0xFF000000),
-                        ],
-                        tileMode: TileMode.mirror,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Create Account",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor, fontSize: 18),
-                      ),
-                    ),
-                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Container(
-                  child: InkWell(
-                    onTap: () {},
-                    child: const Center(
+                if (!validEmail) ...[
+                  const Text(
+                    "Please! Check this email...",
+                    style: TextStyle(color: Colors.red, fontSize: 15),
+                  )
+                ],
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Password",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      color: AppColors.appActiveColor),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                InputWishTextField(
+                  controller: _passwordController,
+                  hintText: "Enter Your Password",
+                  isPassword: true,
+                  isNumerInput: false,
+                  onChanged: (value) {
+                    setState(() {
+                      validPassword = true;
+                      wrongPassword = false;
+                    });
+                  },
+                ),
+                if (!validPassword) ...[
+                  const Text(
+                    "Please! Fill this field...",
+                    style: TextStyle(color: Colors.red, fontSize: 15),
+                  )
+                ],
+                if (wrongPassword) ...[
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Center(
                       child: Text(
-                        "Forgot Password ?",
-                        style: TextStyle(
-                            color: AppColors.appActiveColor, fontSize: 15),
+                        "Wrong password!!!",
+                        style: TextStyle(color: Colors.red, fontSize: 15),
                       ),
                     ),
-                  ),
+                  )
+                ],
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              GlassButton(
-                border: 0.7,
-                onTap: !_loginWithGoogle
-                    ? null
-                    : () {
-                        _loginWithGoogle = false;
-                        setState(() {
-                          _loginWithGoogle = userController.isLoading;
-                        });
+                CglassButton(
+                  onTap: !_normalLogin
+                      ? null
+                      : () {
+                          if (!_isValidEmail(_emailController.text)) {
+                            // Show a warning or error message
+                            setState(() {
+                              validEmail = false;
+                            });
+                          } else if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            // Show warning dialog for empty email or password
+                            setState(() {
+                              validPassword = false;
+                            });
+                          } else {
+                            print("signIn");
+                            _normalLogin = false;
+                            setState(() {
+                              _normalLogin = userController.isLoading;
+                            });
 
-                        doGoogleSignIn();
-                      },
-                widget: !_loginWithGoogle
-                    ? const Center(
-                        child: CircularProgressIndicator(
+                            doSignIn(_emailController.text.trim(),
+                                _passwordController.text.trim());
+                          }
+                        },
+                  widget: !_normalLogin
+                      ? const Center(
+                          child: CircularProgressIndicator(
                           color: AppColors.appActiveColor,
+                        ))
+                      : const Center(
+                          child: Text(
+                            "Log In",
+                            style: TextStyle(
+                                color: AppColors.appActiveColor, fontSize: 20),
+                          ),
                         ),
-                      )
-                    : const Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: Image(
-                                    image: AssetImage(
-                                        "assets/images/google.png"))),
-                            Text(
-                              "Continue With Google",
-                              style: TextStyle(
-                                  color: AppColors.appActiveColor,
-                                  fontSize: 20),
-                            ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                        width: 130,
+                        child: Divider(
+                          color: AppColors.dividerColor,
+                        )),
+                    Text(
+                      "or",
+                      style: TextStyle(color: AppColors.dividerColor),
+                    ),
+                    SizedBox(
+                        width: 130,
+                        child: Divider(
+                          color: AppColors.dividerColor,
+                        )),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Center(
+                  child: Text(
+                    "Don't have an account ?",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: AppColors.appActiveColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, SignUpScreen.routeName);
+                    },
+                    child: Container(
+                      height: 55,
+                      width: width,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.dividerColor),
+                        gradient: RadialGradient(
+                          center: Alignment(-0, _animation.value),
+
+                          radius: 2.3,
+                          // begin: Alignment(1, -0.00),
+                          // end: Alignment(0, -1),
+                          transform:
+                              GradientRotation(100 * (_animation.value / 360)),
+                          colors: const [
+                            Color.fromARGB(255, 145, 147, 152),
+                            Color(0xFF6D7178),
+                            Color.fromARGB(255, 53, 53, 55),
+                            Color.fromARGB(255, 20, 19, 19),
+                            Color.fromARGB(255, 11, 10, 10),
+                            Color(0xFF000000),
                           ],
+                          tileMode: TileMode.mirror,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Create Account",
+                          style: TextStyle(
+                              color: AppColors.appActiveColor, fontSize: 18),
                         ),
                       ),
-              ),
-            ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Container(
+                    child: InkWell(
+                      onTap: () {},
+                      child: const Center(
+                        child: Text(
+                          "Forgot Password ?",
+                          style: TextStyle(
+                              color: AppColors.appActiveColor, fontSize: 15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                CglassButton(
+                  border: 0.7,
+                  onTap: !_loginWithGoogle
+                      ? null
+                      : () {
+                          _loginWithGoogle = false;
+                          setState(() {
+                            _loginWithGoogle = userController.isLoading;
+                          });
+
+                          doGoogleSignIn();
+                        },
+                  widget: !_loginWithGoogle
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.appActiveColor,
+                          ),
+                        )
+                      : const Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "assets/images/google.png"))),
+                              Text(
+                                "Continue With Google",
+                                style: TextStyle(
+                                    color: AppColors.appActiveColor,
+                                    fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

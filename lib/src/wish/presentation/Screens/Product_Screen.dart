@@ -1,17 +1,4 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/EmptyProduct_screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Error_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Product.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/utils/components/confirmation_dialgueBox.dart';
-import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
-import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
+import "package:wish/src/exports.dart";
 
 class ProductScreen extends ConsumerStatefulWidget {
   TabController tabController;

@@ -1,14 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/utils/company_container.dart';
-import 'package:wish/src/wish/presentation/utils/components/delete_dialogueBox.dart';
-import 'package:wish/src/wish/presentation/utils/components/generic_dialogue.dart';
-import 'package:wish/src/wish/presentation/utils/image_shimmer.dart';
+import "package:wish/src/exports.dart";
 
 class ProductItem extends ConsumerStatefulWidget {
   final String name;

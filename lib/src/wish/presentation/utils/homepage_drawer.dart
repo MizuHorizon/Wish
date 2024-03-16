@@ -1,13 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/Profile_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Signin_screen.dart';
-import 'package:wish/src/wish/presentation/Screens/developers_screen.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/controllers/userController.dart';
-import 'package:wish/src/wish/presentation/utils/dotted_line.dart';
+import "package:wish/src/exports.dart";
 
 Drawer HomePageDrawer(
     BuildContext context, int _selectedIndex, Function(int) _onItemTapped) {

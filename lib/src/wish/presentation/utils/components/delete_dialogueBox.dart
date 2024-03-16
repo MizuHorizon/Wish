@@ -1,16 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
+import "package:wish/src/exports.dart";
 
-class GradientDialog extends ConsumerWidget {
+class GradientDialogDelete extends ConsumerWidget {
   final String title;
   final String message;
   final Color color;
   final String productId;
 
-  const GradientDialog(
+  const GradientDialogDelete(
       {Key? key,
       required this.title,
       required this.message,
@@ -147,7 +143,7 @@ void showDeleteDialog(BuildContext context, String title, String message,
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return GradientDialog(
+      return GradientDialogDelete(
         title: title,
         message: message,
         color: color,

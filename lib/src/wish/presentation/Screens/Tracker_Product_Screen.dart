@@ -1,16 +1,4 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/emptyTrack_Screen.dart';
-import 'package:wish/src/wish/presentation/controllers/productController.dart';
-import 'package:wish/src/wish/presentation/utils/shimmer_product.dart';
-import 'package:wish/src/wish/presentation/utils/shimmer_trackedProduct.dart';
-import 'package:wish/src/wish/presentation/Screens/tracked_product.dart';
+import "package:wish/src/exports.dart";
 
 class TrackedProducts extends ConsumerStatefulWidget {
   TabController tabController;

@@ -1,14 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wish/src/constants.dart';
-import 'package:wish/src/wish/models/product_model.dart';
-import 'package:wish/src/wish/presentation/Screens/Product_Screen.dart';
-import 'package:wish/src/wish/presentation/Screens/Tracker_Product_Screen.dart';
-import 'package:wish/src/wish/presentation/utils/homepage_drawer.dart';
-import 'package:wish/src/wish/presentation/utils/rectangular_indicator.dart';
-import 'package:wish/src/wish/presentation/utils/search_delegate.dart';
+import "package:wish/src/exports.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = "/home-screen";
