@@ -116,7 +116,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  ProductScreen(),
+                  ProductScreen(tabController: tabController),
                   TrackedProducts(tabController: tabController),
                 ],
               ),

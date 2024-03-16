@@ -8,6 +8,7 @@ import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/Screens/Signup_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/productController.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
+import 'package:wish/src/wish/presentation/utils/components/customGlass_Button.dart';
 import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 
@@ -219,104 +220,44 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
               const SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: InkWell(
-                  onTap: !_normalLogin
-                      ? null
-                      : () {
-                          if (!_isValidEmail(_emailController.text)) {
-                            // Show a warning or error message
-                            setState(() {
-                              validEmail = false;
-                            });
-                          } else if (_emailController.text.isEmpty ||
-                              _passwordController.text.isEmpty) {
-                            // Show warning dialog for empty email or password
-                            setState(() {
-                              validPassword = false;
-                            });
-                          } else {
-                            print("signIn");
-                            _normalLogin = false;
-                            setState(() {
-                              _normalLogin = userController.isLoading;
-                            });
-
-                            doSignIn(_emailController.text.trim(),
-                                _passwordController.text.trim());
-                          }
-                        },
-                  child: Container(
-                    height: 55,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 19, 21, 1),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: !_normalLogin
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                            color: AppColors.appActiveColor,
-                          ))
-                        : const Center(
-                            child: Text(
-                              "Log In",
-                              style: TextStyle(
-                                  color: AppColors.appActiveColor,
-                                  fontSize: 20),
-                            ),
-                          ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: InkWell(
-                  onTap: !_loginWithGoogle
-                      ? null
-                      : () {
-                          _loginWithGoogle = false;
+              GlassButton(
+                onTap: !_normalLogin
+                    ? null
+                    : () {
+                        if (!_isValidEmail(_emailController.text)) {
+                          // Show a warning or error message
                           setState(() {
-                            _loginWithGoogle = userController.isLoading;
+                            validEmail = false;
+                          });
+                        } else if (_emailController.text.isEmpty ||
+                            _passwordController.text.isEmpty) {
+                          // Show warning dialog for empty email or password
+                          setState(() {
+                            validPassword = false;
+                          });
+                        } else {
+                          print("signIn");
+                          _normalLogin = false;
+                          setState(() {
+                            _normalLogin = userController.isLoading;
                           });
 
-                          doGoogleSignIn();
-                        },
-                  child: Container(
-                    height: 55,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 19, 21, 1),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: !_loginWithGoogle
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.appActiveColor,
-                            ),
-                          )
-                        : const Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                    height: 25,
-                                    width: 25,
-                                    child: Image(
-                                        image: AssetImage(
-                                            "assets/images/google.png"))),
-                                Text(
-                                  "Log In With Google",
-                                  style: TextStyle(
-                                      color: AppColors.appActiveColor,
-                                      fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                  ),
-                ),
+                          doSignIn(_emailController.text.trim(),
+                              _passwordController.text.trim());
+                        }
+                      },
+                widget: !_normalLogin
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        color: AppColors.appActiveColor,
+                      ))
+                    : const Center(
+                        child: Text(
+                          "Log In",
+                          style: TextStyle(
+                              color: AppColors.appActiveColor, fontSize: 20),
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 25,
@@ -352,7 +293,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: InkWell(
@@ -360,7 +300,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                     Navigator.pushNamed(context, SignUpScreen.routeName);
                   },
                   child: Container(
-                    height: 65,
+                    height: 55,
                     width: width,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.dividerColor),
@@ -408,7 +348,45 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                     ),
                   ),
                 ),
-              )
+              ),
+              GlassButton(
+                border: 0.7,
+                onTap: !_loginWithGoogle
+                    ? null
+                    : () {
+                        _loginWithGoogle = false;
+                        setState(() {
+                          _loginWithGoogle = userController.isLoading;
+                        });
+
+                        doGoogleSignIn();
+                      },
+                widget: !_loginWithGoogle
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.appActiveColor,
+                        ),
+                      )
+                    : const Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: Image(
+                                    image: AssetImage(
+                                        "assets/images/google.png"))),
+                            Text(
+                              "Continue With Google",
+                              style: TextStyle(
+                                  color: AppColors.appActiveColor,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+              ),
             ],
           ),
         ),

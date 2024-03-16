@@ -50,7 +50,7 @@ class _EmptyTrackedProductScreenState extends State<EmptyTrackedProductScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Container(
-                  height: 65,
+                  height: 55,
                   width: size.width,
                   decoration: BoxDecoration(
                     border: Border.all(color: AppColors.dividerColor),

@@ -6,6 +6,7 @@ import 'package:wish/src/constants.dart';
 import 'package:wish/src/wish/models/user_model.dart';
 import 'package:wish/src/wish/presentation/Screens/Home_Screen.dart';
 import 'package:wish/src/wish/presentation/controllers/userController.dart';
+import 'package:wish/src/wish/presentation/utils/components/customGlass_Button.dart';
 import 'package:wish/src/wish/presentation/utils/components/custom_dialogueBox.dart';
 import 'package:wish/src/wish/presentation/utils/input_textfield.dart';
 import 'package:wish/src/wish/presentation/utils/components/send_mail_success.dart';
@@ -392,85 +393,73 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: MaterialButton(
-                  onPressed: !_isSignUpLoading
-                      ? null
-                      : () {
-                          if (!validateFields()) {
-                            // Show warning dialog for empty fields
-                            if (fname.text.isEmpty) {
-                              setState(() {
-                                _emptyFirstName = true;
-                              });
-                            }
-                            if (lname.text.isEmpty) {
-                              setState(() {
-                                _emptyLastName = true;
-                              });
-                            }
-
-                            if (email.text.isEmpty) {
-                              setState(() {
-                                _emptyEmail = true;
-                              });
-                            }
-                            if (password.text.isEmpty) {
-                              setState(() {
-                                _emptyPassword = true;
-                              });
-                            }
-
-                            if (mobile.text.isEmpty) {
-                              setState(() {
-                                _emptyMobile = true;
-                              });
-                            }
-                          } else if (!isValidEmail(email.text)) {
-                            // Show warning dialog for invalid email
+              GlassButton(
+                onTap: !_isSignUpLoading
+                    ? null
+                    : () {
+                        if (!validateFields()) {
+                          // Show warning dialog for empty fields
+                          if (fname.text.isEmpty) {
                             setState(() {
-                              validEmail = false;
+                              _emptyFirstName = true;
                             });
-                          } else if (_selectedCountry.phoneCode.isEmpty) {
-                            setState(() {
-                              validCountryCode = false;
-                            });
-                          } else if (!validatePhoneNumber(mobile.text.trim())) {
-                            // Show warning dialog for invalid mobile number
-                            setState(() {
-                              validPhone = false;
-                            });
-                          } else {
-                            _isSignUpLoading = false;
-                            setState(() {
-                              _isSignUpLoading = userController.isLoading;
-                            });
-                            doSignUp();
                           }
-                        },
-                  child: Container(
-                    height: 65,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 19, 21, 1),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: !_isSignUpLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                                color: AppColors.appActiveColor),
-                          )
-                        : const Center(
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                  color: AppColors.appActiveColor,
-                                  fontSize: 20),
-                            ),
-                          ),
-                  ),
-                ),
+                          if (lname.text.isEmpty) {
+                            setState(() {
+                              _emptyLastName = true;
+                            });
+                          }
+
+                          if (email.text.isEmpty) {
+                            setState(() {
+                              _emptyEmail = true;
+                            });
+                          }
+                          if (password.text.isEmpty) {
+                            setState(() {
+                              _emptyPassword = true;
+                            });
+                          }
+
+                          if (mobile.text.isEmpty) {
+                            setState(() {
+                              _emptyMobile = true;
+                            });
+                          }
+                        } else if (!isValidEmail(email.text)) {
+                          // Show warning dialog for invalid email
+                          setState(() {
+                            validEmail = false;
+                          });
+                        } else if (_selectedCountry.phoneCode.isEmpty) {
+                          setState(() {
+                            validCountryCode = false;
+                          });
+                        } else if (!validatePhoneNumber(mobile.text.trim())) {
+                          // Show warning dialog for invalid mobile number
+                          setState(() {
+                            validPhone = false;
+                          });
+                        } else {
+                          _isSignUpLoading = false;
+                          setState(() {
+                            _isSignUpLoading = userController.isLoading;
+                          });
+                          doSignUp();
+                        }
+                      },
+                widget: !_isSignUpLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                            color: AppColors.appActiveColor),
+                      )
+                    : const Center(
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              color: AppColors.appActiveColor, fontSize: 20),
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 20,
@@ -497,54 +486,42 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: MaterialButton(
-                  onPressed: !_isGoogleLoading
-                      ? null
-                      : () {
-                          _isGoogleLoading = false;
-                          setState(() {
-                            _isGoogleLoading = userController.isLoading;
-                          });
-                          doGoogleSignUp();
-                        },
-                  child: Container(
-                    height: 65,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: AppColors.appBackgroundColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                      border:
-                          Border.all(color: AppColors.dividerColor, width: 1.5),
-                    ),
-                    child: !_isGoogleLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.appActiveColor,
+              GlassButton(
+                border: 0.7,
+                onTap: !_isGoogleLoading
+                    ? null
+                    : () {
+                        _isGoogleLoading = false;
+                        setState(() {
+                          _isGoogleLoading = userController.isLoading;
+                        });
+                        doGoogleSignUp();
+                      },
+                widget: !_isGoogleLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.appActiveColor,
+                        ),
+                      )
+                    : const Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: Image(
+                                    image: AssetImage(
+                                        "assets/images/google.png"))),
+                            Text(
+                              "Continue With Google",
+                              style: TextStyle(
+                                  color: AppColors.appActiveColor,
+                                  fontSize: 20),
                             ),
-                          )
-                        : const Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                    height: 25,
-                                    width: 25,
-                                    child: Image(
-                                        image: AssetImage(
-                                            "assets/images/google.png"))),
-                                Text(
-                                  "Continue With Google",
-                                  style: TextStyle(
-                                      color: AppColors.appActiveColor,
-                                      fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                  ),
-                ),
+                          ],
+                        ),
+                      ),
               ),
             ],
           ),

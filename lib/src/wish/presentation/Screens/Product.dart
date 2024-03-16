@@ -17,13 +17,17 @@ class ProductItem extends ConsumerStatefulWidget {
   final dynamic price;
   final List<String> tags;
   final String productId;
+  final bool trackable;
+  TabController tabController;
   ProductItem(
       {super.key,
+      required this.tabController,
       required this.productId,
       required this.name,
       required this.imageUrl,
       required this.productUrl,
       required this.price,
+      required this.trackable,
       required this.tags});
 
   @override
@@ -65,9 +69,8 @@ class _ProductState extends ConsumerState<ProductItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print("snitch url ${widget.imageUrl}");
+    // print("snitch url ${widget.imageUrl}");
   }
 
   @override
@@ -176,22 +179,26 @@ class _ProductState extends ConsumerState<ProductItem> {
             ),
             InkWell(
               onTap: () {
-                showDialogeForTracker(
-                    context,
-                    "Enable",
-                    "Tracker",
-                    "Track the price of your product and get \nnotifications on price drops",
-                    Colors.green,
-                    () async => {
-                          Navigator.of(context).pop(),
-                          await ref
-                              .read(productControllerProvider.notifier)
-                              .enableProductTracker(widget.productId),
-                          ref.watch(productModelProvider.notifier).state =
-                              await ref
-                                  .watch(productControllerProvider.notifier)
-                                  .getAllProducts(),
-                        });
+                if (widget.trackable == true) {
+                  setState(() {
+                    widget.tabController.animateTo(1);
+                  });
+                } else {
+                  showDialogeForTracker(
+                      context,
+                      "Enable",
+                      "Tracker",
+                      "Track the price of your product and get \nnotifications on price drops",
+                      Colors.green, () async {
+                    Navigator.of(context).pop();
+                    await ref
+                        .read(productControllerProvider.notifier)
+                        .enableProductTracker(widget.productId);
+                    ref.watch(productModelProvider.notifier).state = await ref
+                        .watch(productControllerProvider.notifier)
+                        .getAllProducts();
+                  });
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
