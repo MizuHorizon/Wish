@@ -10,6 +10,52 @@ Wish is a mobile application developed using Flutter and Riverpod, designed to h
 - **Multi-Platform Integration:** Wish integrates with multiple e-commerce platforms, allowing users to consolidate their wishlists from various sources into one convenient location.
 - **Search and Add:** Wish provides a user-friendly interface for users to search for products and add them to their wishlist from any supported e-commerce platform.
 
+
+## Supported Brands
+
+- [Ajio](https://www.ajio.com/) ✅
+- [Bewakoof](https://www.bewakoof.com/) ✅
+- [Bonkers Corner](https://www.bonkerscorner.com/) ✅
+- [Snitch](https://www.snitch.co.in/) ✅
+
+- [Amazon](https://www.amazon.com/) ☐
+- [Flipkart](https://www.flipkart.com/) ☐
+- [Myntra](https://www.myntra.com/) ☐
+- [Calvin Klein](https://ro.calvinklein.com) ☐
+- [Armani Exchange](https://armaniexchange.in/) ☐
+- [AND India](https://www.andindia.com/) ☐
+- [Michael Kors](https://www.michaelkors.global/en_IN/sale/view-all/_/N-voun1s) ☐
+- [Steve Madden](https://www.stevemadden.in/) ☐
+- [Latin Quarters](https://latin-quarters.com/) ☐
+- [Charles & Keith](https://www.charleskeith.in/in/curated/spring-summer) ☐
+- [Zara](https://www.zara.com/in/) ☐
+- [Aldo Shoes](https://www.aldoshoes.in/) ☐
+- [Forever New](https://www.forevernew.co.in/) ☐
+- [Scotch & Soda](https://scotchandsoda.com/) ☐
+- [Tommy Hilfiger](https://tommyhilfiger.nnnow.com/) ☐
+- [Estee Lauder](https://www.esteelauder.in/) ☐
+- [Cover Story](https://coverstory.co.in/) ☐
+- [Ritu Kumar](https://www.ritukumar.com/) ☐
+- [Dior](https://www.dior.com/en_int/fashion) ☐
+- [Superdry](https://www.superdry.in/) ☐
+- [Dune London](https://www.dunelondon.com/rw) ☐
+- [Vero Moda](https://www.veromoda.in/) ☐
+- [Mango](https://shop.mango.com/in) ☐
+- [Tarun Tahiliani](https://taruntahiliani.com) ☐
+- [Global Desi](https://www.globaldesi.in) ☐
+- [Prada](https://www.prada.com/ww/en.html) ☐
+- [Puma](https://in.puma.com/in/en) ☐
+- [Forever 21](https://forever21.abfrl.in) ☐
+- [Being Human Clothing](https://www.beinghumanclothing.com) ☐
+- [Marks & Spencer](https://www.marksandspencer.in/l/women/) ☐
+- [United Colors of Benetton](https://in.benetton.com) ☐
+- [Rosso Brunello](https://www.rossobrunello.com) ☐
+- [Nautica](https://www.nautica.com/mens-t-shirts/) ☐
+- [Jack & Jones](https://www.jackjones.in) ☐
+- [Satya Paul](https://in.satyapaul.com) ☐
+
+
+
 ## Screenshots
 
 | Screenshot 1 | Screenshot 2 | Screenshot 3 |

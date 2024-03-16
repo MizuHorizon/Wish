@@ -18,13 +18,14 @@ class GenericGradientDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var size = MediaQuery.of(context).size;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
-        width: 300,
-        height: 220,
+        width: size.width / 1.2,
+        height: size.height / 4.32,
         decoration: BoxDecoration(
           border: Border.all(
             color: AppColors.dividerColor,
@@ -74,8 +75,8 @@ class GenericGradientDialog extends ConsumerWidget {
                   InkWell(
                     onTap: onTap,
                     child: Container(
-                      height: 68,
-                      width: 148,
+                      height: size.height / 13.3,
+                      width: size.width / 1.2 / 2.06,
                       decoration: const BoxDecoration(
                           border: Border(
                         top:
@@ -95,8 +96,8 @@ class GenericGradientDialog extends ConsumerWidget {
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     child: Container(
-                      height: 68,
-                      width: 148,
+                      height: size.height / 13.3,
+                      width: size.width / 1.2 / 2.2,
                       decoration: const BoxDecoration(
                           border: Border(
                         top:
