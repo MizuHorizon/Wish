@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wish/src/constants.dart';
@@ -66,53 +68,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           )
         ],
       ),
-      body: Column(
-        children: [
-          const Divider(
-            thickness: 0.7,
-            color: AppColors.dividerColor,
-          ),
-          const SizedBox(height: 10),
-          Center(
-            child: Container(
-              width: 234,
-              height: 35,
-              decoration: BoxDecoration(
-                color: AppColors.appActiveColor,
-                border: Border.all(color: AppColors.dividerColor, width: 1),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: TabBar(
-                dividerColor: Colors.transparent,
-                labelColor: AppColors.appActiveColor,
-                indicatorColor: Color.fromARGB(255, 0, 0, 0),
-                indicator: RectangularIndicator(
-                  topRightRadius: 20,
-                  topLeftRadius: 20,
-                  bottomRightRadius: 20,
-                  bottomLeftRadius: 20,
+      body: PopScope(
+        canPop: false, // Disable predictive back for now
+        onPopInvoked: (didPop) async {
+          if (!didPop) {
+            exit(0);
+          }
+        },
+        child: Column(
+          children: [
+            const Divider(
+              thickness: 0.7,
+              color: AppColors.dividerColor,
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Container(
+                width: 234,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: AppColors.appActiveColor,
+                  border: Border.all(color: AppColors.dividerColor, width: 1),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                unselectedLabelColor: Colors.grey,
+                child: TabBar(
+                  dividerColor: Colors.transparent,
+                  labelColor: AppColors.appActiveColor,
+                  indicatorColor: Color.fromARGB(255, 0, 0, 0),
+                  indicator: RectangularIndicator(
+                    topRightRadius: 20,
+                    topLeftRadius: 20,
+                    bottomRightRadius: 20,
+                    bottomLeftRadius: 20,
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  unselectedLabelColor: Colors.grey,
+                  controller: tabController,
+                  tabs: const [
+                    Text('All Products'),
+                    Text('Tracked'),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+            Expanded(
+              child: TabBarView(
                 controller: tabController,
-                tabs: const [
-                  Text('All Products'),
-                  Text('Tracked'),
+                children: [
+                  ProductScreen(),
+                  TrackedProducts(tabController: tabController),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 32),
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                ProductScreen(),
-                TrackedProducts(tabController: tabController),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
