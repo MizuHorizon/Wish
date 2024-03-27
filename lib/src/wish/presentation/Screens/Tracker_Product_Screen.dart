@@ -1,4 +1,5 @@
 import "package:wish/src/exports.dart";
+import "package:wish/src/wish/presentation/Screens/comingSoon_screen.dart";
 
 class TrackedProducts extends ConsumerStatefulWidget {
   TabController tabController;
@@ -98,7 +99,10 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                             ],
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, ComingSoonScreen.routeName);
+                            },
                             child: Container(
                               margin: const EdgeInsets.only(right: 10),
                               padding:

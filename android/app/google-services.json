@@ -14,13 +14,65 @@
       },
       "oauth_client": [
         {
-          "client_id": "903758254008-u8bps64n3jht7imkj5322902cvuqipoi.apps.googleusercontent.com",
+          "client_id": "903758254008-g6b4v6t0rgt8p64thg59n2638gvo25ca.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.wish",
-            "certificate_hash": "d769f87692e9d9c780ff05e6ee843aefa9075d1c"
+            "certificate_hash": "6b04dcdbc2c0e2c97e5677c6fe8834c603c95326"
           }
         },
+        {
+          "client_id": "903758254008-pnl6gs28tf8sceg73pu4geh6cr95ublv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wish",
+            "certificate_hash": "b88f332704ad342378327fb882da57a35f617ab1"
+          }
+        },
+        {
+          "client_id": "903758254008-ueb1peq9ksrf105g9rnalltpoqn0vuo9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wish",
+            "certificate_hash": "1d9f379efbd4c778015ca042603b7a6db4e5c2dd"
+          }
+        },
+        {
+          "client_id": "903758254008-33959u06uihl88u7jftgtntek5qg54nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjCguFrPjQzc811mDb9ml2grjN4mhajW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903758254008-33959u06uihl88u7jftgtntek5qg54nh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "903758254008-hrfsvmm2j163v91p4l1s4k41lrfs2pgi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wish"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903758254008:android:33674c33531d825ba3894d",
+        "android_client_info": {
+          "package_name": "com.mizuhorizon.wish"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "903758254008-33959u06uihl88u7jftgtntek5qg54nh.apps.googleusercontent.com",
           "client_type": 3

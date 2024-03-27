@@ -134,7 +134,9 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${widget.name.substring(0, 12)}...",
+              (widget.name.length > 12)
+                  ? '${widget.name.substring(0, 9)}...'
+                  : '${widget.name}...',
               style: const TextStyle(
                   color: AppColors.appActiveColor,
                   fontSize: 20,

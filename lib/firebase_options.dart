@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDjCguFrPjQzc811mDb9ml2grjN4mhajW8',
-    appId: '1:903758254008:android:66d374b223632fd5a3894d',
+    appId: '1:903758254008:android:33674c33531d825ba3894d',
     messagingSenderId: '903758254008',
     projectId: 'wish-3a906',
     storageBucket: 'wish-3a906.appspot.com',
@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '903758254008',
     projectId: 'wish-3a906',
     storageBucket: 'wish-3a906.appspot.com',
-    androidClientId: '903758254008-u8bps64n3jht7imkj5322902cvuqipoi.apps.googleusercontent.com',
+    androidClientId: '903758254008-g6b4v6t0rgt8p64thg59n2638gvo25ca.apps.googleusercontent.com',
     iosClientId: '903758254008-hrfsvmm2j163v91p4l1s4k41lrfs2pgi.apps.googleusercontent.com',
     iosBundleId: 'com.example.wish',
   );
@@ -78,7 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '903758254008',
     projectId: 'wish-3a906',
     storageBucket: 'wish-3a906.appspot.com',
-    androidClientId: '903758254008-u8bps64n3jht7imkj5322902cvuqipoi.apps.googleusercontent.com',
+    androidClientId: '903758254008-g6b4v6t0rgt8p64thg59n2638gvo25ca.apps.googleusercontent.com',
     iosClientId: '903758254008-t0osa2dfpjnp9phmg4fcfl4omegpup6v.apps.googleusercontent.com',
     iosBundleId: 'com.example.wish.RunnerTests',
   );

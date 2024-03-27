@@ -265,39 +265,37 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           ),
                         ],
                       ),
-                      SingleChildScrollView(
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 10),
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 1.34,
-                          child: MasonryGridView.builder(
-                            gridDelegate:
-                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              return productController.isLoading || isLoading
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: ShimmerProductItem(),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ProductItem(
-                                        tabController: widget.tabController,
-                                        trackable:
-                                            items[index].tracker ?? false,
-                                        name:
-                                            '${items[index].name.substring(0, 12)}...',
-                                        imageUrl: items[index].photos[0],
-                                        price: "₹${items[index].startPrice}",
-                                        tags: items[index].tags,
-                                        productUrl: items[index].url,
-                                        productId: items[index].id,
-                                      ),
-                                    );
-                            },
-                          ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 1.34,
+                        child: MasonryGridView.builder(
+                          gridDelegate:
+                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            return productController.isLoading || isLoading
+                                ? Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ShimmerProductItem(),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ProductItem(
+                                      tabController: widget.tabController,
+                                      trackable: items[index].tracker ?? false,
+                                      name: (items[index].name.length > 9)
+                                          ? '${items[index].name.substring(0, 9)}...'
+                                          : '${items[index].name}...',
+                                      imageUrl: items[index].photos[0],
+                                      price: "₹${items[index].startPrice}",
+                                      tags: items[index].tags,
+                                      productUrl: items[index].url,
+                                      productId: items[index].id,
+                                    ),
+                                  );
+                          },
                         ),
                       ),
                     ],
@@ -310,13 +308,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext ctx) {
           return StatefulBuilder(
-              builder: (BuildContext context, StateSetter mystate) {
+              builder: (BuildContext ctx2, StateSetter mystate) {
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery.of(ctx2).viewInsets.bottom),
                 child: Container(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   height: size.height / 1.4,
@@ -539,7 +537,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 20),
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (urlController.text.trim().isEmpty) {
                                 mystate(() {
                                   emptyUrl = true;
@@ -573,8 +571,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   priceController.clear();
                                 });
                               } else {
-                                print(
-                                    "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
+                                // print(
+                                //     "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
                                 double price;
 
                                 if (priceController.text.trim().isEmpty) {
@@ -592,7 +590,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                     price = 0;
                                   }
                                 }
-                                print(productTags);
+
                                 ref
                                     .read(productControllerProvider.notifier)
                                     .addProduct(
@@ -602,12 +600,11 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                         productTags,
                                         price)
                                     .then((value) {
-                                  productTags.clear();
                                   showConfirmationDialog(
                                       context, "", "", Colors.black);
+                                  productTags.clear();
                                 });
                                 mystate(() {
-                                  emptyUrl = false;
                                   notValidUrl = false;
                                   emptyDesiredPrice = false;
                                   tags.clear();
@@ -615,7 +612,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   urlController.clear();
                                   priceController.clear();
                                 });
-
                                 Navigator.of(context).pop();
                               }
                             },

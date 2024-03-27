@@ -14,7 +14,7 @@ class ConfirmationDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 5), () {
       Navigator.of(context).pop();
     });
     return Dialog(

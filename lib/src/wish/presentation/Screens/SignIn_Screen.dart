@@ -24,7 +24,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -33,7 +32,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
     _animation = Tween<double>(begin: 0.0, end: 100.0).animate(_controller)
       ..addListener(() {
         setState(() {
-          print(_animation.value);
+          //  print(_animation.value);
         });
       });
     _controller.repeat();
