@@ -109,6 +109,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   bool emptyUrl = false;
   bool emptyDesiredPrice = false;
   bool notValidUrl = false;
+  bool duplicateUrl = false;
 
   String dropdownvalue = "";
 
@@ -367,11 +368,17 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 isNumerInput: false,
                                 isPassword: false),
                             if (emptyUrl) ...[
-                              Text("Url cant be empty",
+                              const Text("Url cant be empty",
                                   style: TextStyle(color: Colors.red)),
                             ],
                             if (notValidUrl) ...[
-                              Text("Not Valid Url!!!, Please check the url",
+                              const Text(
+                                  "Not Valid Url!!!, Please check the url",
+                                  style: TextStyle(color: Colors.red)),
+                            ],
+                            if (duplicateUrl) ...[
+                              const Text(
+                                  "This product already exits in your account.",
                                   style: TextStyle(color: Colors.red)),
                             ]
                           ],
@@ -567,9 +574,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   urlController.clear();
                                   priceController.clear();
                                 });
+                              } else if (checkDuplicate(
+                                  urlController.text.trim())) {
+                                print("already exists");
+                                mystate(() {
+                                  duplicateUrl = true;
+                                });
                               } else {
-                                // print(
-                                //     "${urlController.text.trim()}, ${trackable} ,${descController.text.trim()},${productTags} ,${priceController.text.trim()}");
                                 double price;
 
                                 if (priceController.text.trim().isEmpty) {
@@ -587,7 +598,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                     price = 0;
                                   }
                                 }
-
                                 ref
                                     .read(productControllerProvider.notifier)
                                     .addProduct(
@@ -613,7 +623,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               }
                             },
                             child: Container(
-                              height: 65,
+                              height: 55,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 gradient: const RadialGradient(
@@ -648,5 +658,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
             );
           });
         });
+  }
+
+  bool checkDuplicate(String url) {
+    var products = ref.read(productModelProvider.notifier).state;
+    for (var product in products!) {
+      if (product.url == url) {
+        return true;
+      }
+    }
+    return false;
   }
 }
