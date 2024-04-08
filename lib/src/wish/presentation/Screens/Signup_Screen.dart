@@ -1,3 +1,4 @@
+import "package:flutter/gestures.dart";
 import "package:wish/src/exports.dart";
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -371,17 +372,50 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 18),
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: const Center(
-                  child: Text(
-                    "By tapping sign Up, you consent to receiving a verification link via email on the provided email.",
-                    style: TextStyle(
-                        color: AppColors.appActiveColor,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-              ),
+              RichText(
+                  text: TextSpan(
+                      style: const TextStyle(
+                          color: AppColors.appActiveColor,
+                          fontWeight: FontWeight.w300),
+                      children: [
+                    const TextSpan(
+                        text:
+                            "By clicking on Sign Up, you agree to our, You agree to Our Terms of Service and that you have read our "),
+                    TextSpan(
+                      text: "Privacy And Policy.",
+                      style: const TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Action to perform when the button is clicked
+                          print('Button clicked!');
+                        },
+                    )
+                  ])),
+              // Container(
+              //   padding: const EdgeInsets.only(left: 20, right: 20),
+              //   child: Column(
+              //     children: [
+              //       const Center(
+              //         child: Text(
+              //           "By clicking on Sign Up, you agree to our, You agree to Our Terms of Service and that you have read our",
+              //           style: TextStyle(
+              //               color: AppColors.appActiveColor,
+              //               fontWeight: FontWeight.w300),
+              //         ),
+              //       ),
+              //       const Center(
+              //         child: Text(
+              //           "Privacy and Policy",
+              //           style: TextStyle(
+              //               color: AppColors.appActiveColor,
+              //               fontWeight: FontWeight.w300),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               CglassButton(
                 onTap: !_isSignUpLoading
                     ? null

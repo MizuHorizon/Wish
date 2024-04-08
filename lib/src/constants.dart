@@ -12,5 +12,5 @@ class AppColors {
   static const dividerColor = Color.fromARGB(255, 73, 72, 72);
 }
 
-const String baseUrl = "http://192.168.239.90:4000/api/v1/";
-// const String baseUrl = "https://api.mizuhorizon.com/api/v1/";
+// const String baseUrl = "http://192.168.239.90:4000/api/v1/";
+const String baseUrl = "https://api.mizuhorizon.com/api/v1/";

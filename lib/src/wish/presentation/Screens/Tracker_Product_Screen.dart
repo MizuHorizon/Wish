@@ -107,7 +107,6 @@ class _TrackedProductsState extends ConsumerState<TrackedProducts> {
                               margin: const EdgeInsets.only(right: 10),
                               padding:
                                   const EdgeInsets.only(left: 10, right: 10),
-                              width: size.width / 2.8,
                               height: 42,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),

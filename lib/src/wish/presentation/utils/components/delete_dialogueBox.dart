@@ -31,8 +31,8 @@ class GradientDialogDelete extends ConsumerWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
-        width: size.width / 1.2,
-        height: size.height / 4.32,
+        width: 350,
+        height: 200,
         decoration: BoxDecoration(
           border: Border.all(
             color: AppColors.dividerColor,

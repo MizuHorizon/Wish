@@ -265,10 +265,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           ),
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 10),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 1.34,
+                      Expanded(
                         child: MasonryGridView.builder(
                           gridDelegate:
                               const SliverSimpleGridDelegateWithFixedCrossAxisCount(
