@@ -51,7 +51,7 @@ class _TrackedProductItemState extends State<TrackedProductItem> {
   }
 
   Future<void> _launchUrl() async {
-    print(widget.productUrl);
+    // print(widget.productUrl);
     final Uri _url = Uri.parse(widget.productUrl);
     if (!await launchUrl(_url, mode: LaunchMode.inAppBrowserView)) {
       throw Exception('Could not launch $_url');

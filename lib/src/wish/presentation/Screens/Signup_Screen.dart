@@ -387,9 +387,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         decoration: TextDecoration.underline,
                       ),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Action to perform when the button is clicked
-                          print('Button clicked!');
+                        ..onTap = () async {
+                          final Uri _url =
+                              Uri.parse("http://wish.mizuhorizon.com/policy");
+                          if (!await launchUrl(_url,
+                              mode: LaunchMode.inAppBrowserView)) {
+                            throw Exception('Could not launch $_url');
+                          }
                         },
                     )
                   ])),
