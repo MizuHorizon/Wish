@@ -1,3 +1,4 @@
+import "package:flutter/rendering.dart";
 import "package:wish/src/exports.dart";
 
 class ProductScreen extends ConsumerStatefulWidget {
@@ -114,13 +115,38 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   String dropdownvalue = "";
 
   bool isLoading = false;
+  bool _isVisible = true;
+
+  ScrollController _scrollController = ScrollController();
+
+  void hideAppBar() {
+    _isVisible = true;
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      print("listener");
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(() {
+          _isVisible = false;
+          print("**** $_isVisible up");
+        });
+      }
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          _isVisible = true;
+          print("**** $_isVisible down");
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     // print("fetched product");
     fetchProducts();
-    print("fetched product2");
+    hideAppBar();
   }
 
   @override
@@ -175,99 +201,104 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   padding: const EdgeInsets.only(left: 12, right: 12),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 90,
-                            height: 32,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Color.fromARGB(255, 145, 148, 151),
-                                border: Border.all(
-                                    color: AppColors.dividerColor, width: 1)),
-                            child: const Center(
-                              child: Text(
-                                "Recent",
-                                style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: AppColors.appActiveColor,
-                                    fontSize: 15),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: _isVisible ? 40 : 0.0,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Color.fromARGB(255, 145, 148, 151),
+                                  border: Border.all(
+                                      color: AppColors.dividerColor, width: 1)),
+                              child: const Center(
+                                child: Text(
+                                  "Recent",
+                                  style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: AppColors.appActiveColor,
+                                      fontSize: 15),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Center(
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                dropdownStyleData: DropdownStyleData(
-                                  maxHeight: 200,
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: AppColors.appBackgroundColor,
-                                      border: Border.all(
-                                          color: AppColors.dividerColor,
-                                          width: 1)),
-                                  offset: const Offset(-10, -1),
-                                  scrollbarTheme: ScrollbarThemeData(
-                                    radius: const Radius.circular(40),
-                                    thickness: MaterialStateProperty.all(6),
-                                    thumbVisibility:
-                                        MaterialStateProperty.all(true),
-                                  ),
-                                ),
-                                buttonStyleData: ButtonStyleData(
-                                  height: 32,
-                                  width: 120,
-                                  padding: const EdgeInsets.only(
-                                      left: 14, right: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    border: Border.all(
-                                      color: AppColors.dividerColor,
+                            const SizedBox(width: 10),
+                            Center(
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 200,
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(14),
+                                        color: AppColors.appBackgroundColor,
+                                        border: Border.all(
+                                            color: AppColors.dividerColor,
+                                            width: 1)),
+                                    offset: const Offset(-10, -1),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      radius: const Radius.circular(40),
+                                      thickness: MaterialStateProperty.all(6),
+                                      thumbVisibility:
+                                          MaterialStateProperty.all(true),
                                     ),
                                   ),
-                                  elevation: 2,
-                                ),
-                                isExpanded: true,
-                                hint: const Text(
-                                  'Platform',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.appActiveColor,
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 32,
+                                    width: 120,
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: AppColors.dividerColor,
+                                      ),
+                                    ),
+                                    elevation: 2,
                                   ),
-                                ),
-                                items: dropitems
-                                    .map((String item) =>
-                                        DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                  isExpanded: true,
+                                  hint: const Text(
+                                    'Platform',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.appActiveColor,
+                                    ),
+                                  ),
+                                  items: dropitems
+                                      .map((String item) =>
+                                          DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
                                             ),
-                                          ),
-                                        ))
-                                    .toList(),
-                                value: dropdownvalue.isEmpty
-                                    ? null
-                                    : dropdownvalue,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    dropdownvalue = value!;
-                                  });
-                                  sortProduct(dropdownvalue);
-                                },
-                                menuItemStyleData: const MenuItemStyleData(
-                                  height: 40,
+                                          ))
+                                      .toList(),
+                                  value: dropdownvalue.isEmpty
+                                      ? null
+                                      : dropdownvalue,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      dropdownvalue = value!;
+                                    });
+                                    sortProduct(dropdownvalue);
+                                  },
+                                  menuItemStyleData: MenuItemStyleData(
+                                    height: _isVisible ? 40 : 0.0,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Expanded(
                         child: MasonryGridView.builder(
+                          controller: _scrollController,
                           gridDelegate:
                               const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
