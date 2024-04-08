@@ -389,7 +389,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           final Uri _url =
-                              Uri.parse("http://wish.mizuhorizon.com/policy");
+                              Uri.parse("https://wish.mizuhorizon.com/Policy");
                           if (!await launchUrl(_url,
                               mode: LaunchMode.inAppBrowserView)) {
                             throw Exception('Could not launch $_url');
