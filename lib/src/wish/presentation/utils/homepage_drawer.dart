@@ -1,4 +1,5 @@
 import "package:wish/src/exports.dart";
+import "package:wish/src/wish/presentation/Screens/support_screen.dart";
 
 Drawer HomePageDrawer(
     BuildContext context, int _selectedIndex, Function(int) _onItemTapped) {
@@ -6,7 +7,7 @@ Drawer HomePageDrawer(
 
   Future<void> signOut(WidgetRef ref) async {
     await ref.read(userControllerProvider.notifier).logout().then((value) {
-      print("user state updated");
+      // print("user state updated");
       ref.read(productModelProvider.notifier).update((state) => []);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => SignInScreen()));
@@ -68,6 +69,31 @@ Drawer HomePageDrawer(
           title: const Row(
             children: [
               Icon(
+                Icons.dns,
+                color: AppColors.appActiveColor,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Platforms',
+                style: TextStyle(color: AppColors.appActiveColor),
+              ),
+            ],
+          ),
+          selected: _selectedIndex == 1,
+          onTap: () {
+            _onItemTapped(1);
+            Navigator.pushNamed(context, SupportScreen.routeName);
+            // Navigator.pop(context);
+          },
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: MySeparator(color: AppColors.dividerColor),
+        ),
+        ListTile(
+          title: const Row(
+            children: [
+              Icon(
                 Icons.question_mark_rounded,
                 color: AppColors.appActiveColor,
               ),
@@ -78,9 +104,9 @@ Drawer HomePageDrawer(
               ),
             ],
           ),
-          selected: _selectedIndex == 1,
+          selected: _selectedIndex == 2,
           onTap: () {
-            _onItemTapped(1);
+            _onItemTapped(2);
             Navigator.pushNamed(context, DevelopersScreen.routename);
           },
         ),
@@ -115,9 +141,9 @@ Drawer HomePageDrawer(
                 )
               ],
             ),
-            selected: _selectedIndex == 2,
+            selected: _selectedIndex == 3,
             onTap: () async {
-              _onItemTapped(2);
+              _onItemTapped(3);
               signOut(ref);
             },
           );

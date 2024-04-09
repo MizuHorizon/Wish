@@ -1,6 +1,7 @@
 import "package:page_transition/page_transition.dart";
 import "package:wish/src/exports.dart";
 import "package:wish/src/wish/presentation/Screens/comingSoon_screen.dart";
+import "package:wish/src/wish/presentation/Screens/support_screen.dart";
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -61,6 +62,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return PageTransition(
           child: const ComingSoonScreen(),
           type: PageTransitionType.bottomToTop);
+
+    case SupportScreen.routeName:
+      return PageTransition(
+          child: const SupportScreen(), type: PageTransitionType.leftToRight);
     default:
       return PageTransition(
         child: Scaffold(
