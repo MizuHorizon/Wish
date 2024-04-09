@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:wish/src/exports.dart";
 
 class GradientDialogDelete extends ConsumerWidget {
@@ -38,15 +40,16 @@ class GradientDialogDelete extends ConsumerWidget {
             color: AppColors.dividerColor,
             width: 1.5,
           ),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 0.5,
             colors: [
-              Color(0xFF37393B),
-              Color(0xFF000000),
+              Colors.grey[800]!,
+              Colors.black,
             ],
+            stops: [0.0, 1.0],
           ),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
@@ -144,11 +147,14 @@ void showDeleteDialog(BuildContext context, String title, String message,
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return GradientDialogDelete(
-        title: title,
-        message: message,
-        color: color,
-        productId: productId,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: GradientDialogDelete(
+          title: title,
+          message: message,
+          color: color,
+          productId: productId,
+        ),
       );
     },
   );

@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:wish/src/exports.dart";
 
 class ConfirmationDialog extends ConsumerWidget {
@@ -103,10 +105,13 @@ void showConfirmationDialog(
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ConfirmationDialog(
-        title: title,
-        message: message,
-        color: color,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: ConfirmationDialog(
+          title: title,
+          message: message,
+          color: color,
+        ),
       );
     },
   );

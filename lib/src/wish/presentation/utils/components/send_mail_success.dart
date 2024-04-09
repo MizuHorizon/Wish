@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class SuccessGradientDialog extends StatelessWidget {
@@ -91,10 +93,13 @@ void showMailGradientDialog(
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return SuccessGradientDialog(
-        title: title,
-        message: message,
-        color: color,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: SuccessGradientDialog(
+          title: title,
+          message: message,
+          color: color,
+        ),
       );
     },
   );

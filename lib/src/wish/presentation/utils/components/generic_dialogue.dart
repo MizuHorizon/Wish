@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:wish/src/exports.dart";
 
 class GenericGradientDialog extends ConsumerWidget {
@@ -31,15 +33,16 @@ class GenericGradientDialog extends ConsumerWidget {
             color: AppColors.dividerColor,
             width: 1.5,
           ),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 0.5,
             colors: [
-              Color(0xFF37393B),
-              Color(0xFF000000),
+              Colors.grey[800]!,
+              Colors.black,
             ],
+            stops: [0.0, 1.0],
           ),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
@@ -61,7 +64,7 @@ class GenericGradientDialog extends ConsumerWidget {
                 child: Text(
                   message,
                   // "After disabling the tracker we can't send notifications to you!!\n Are you Sure?",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w300),
@@ -126,12 +129,15 @@ void showDialogeForTracker(BuildContext context, String leftMessage,
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return GenericGradientDialog(
-        title: title,
-        message: message,
-        color: color,
-        onTap: onTap,
-        leftMessage: leftMessage,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: GenericGradientDialog(
+          title: title,
+          message: message,
+          color: color,
+          onTap: onTap,
+          leftMessage: leftMessage,
+        ),
       );
     },
   );

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class GradientDialog extends StatelessWidget {
@@ -78,10 +80,13 @@ void showGradientDialog(
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return GradientDialog(
-        title: title,
-        message: message,
-        color: color,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: GradientDialog(
+          title: title,
+          message: message,
+          color: color,
+        ),
       );
     },
   );
