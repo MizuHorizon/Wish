@@ -101,7 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
             Expanded(
               child: TabBarView(
                 controller: tabController,

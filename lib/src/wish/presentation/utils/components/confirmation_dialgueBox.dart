@@ -14,9 +14,10 @@ class ConfirmationDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 6), () {
       Navigator.of(context).pop();
     });
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -54,11 +55,14 @@ class ConfirmationDialog extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Product is sucessfully added to the queue and \nsoon it will be shown in your cart. Now lets \nmove for its tracking option.",
-                style: TextStyle(
-                    color: AppColors.appActiveColor,
-                    fontWeight: FontWeight.w300),
+              const Padding(
+                padding: EdgeInsets.only(left: 8.0, right: 8),
+                child: Text(
+                  "Product is sucessfully added to the queue and soon it will be shown in your cart. Now lets move for its tracking option.",
+                  style: TextStyle(
+                      color: AppColors.appActiveColor,
+                      fontWeight: FontWeight.w300),
+                ),
               ),
               const SizedBox(height: 30),
               InkWell(

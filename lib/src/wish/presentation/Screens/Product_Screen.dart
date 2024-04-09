@@ -224,7 +224,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 12),
                             Center(
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2<String>(
@@ -336,6 +336,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   Future<dynamic> showAddProductBottomSheet(BuildContext context, Size size) {
     return showModalBottomSheet(
         isScrollControlled: true,
+        elevation: 4,
         context: context,
         builder: (BuildContext ctx) {
           return StatefulBuilder(
@@ -347,7 +348,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                 child: Container(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   height: size.height / 1.4,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                       border: Border(
                         top: BorderSide(
                           color: Colors.grey,
