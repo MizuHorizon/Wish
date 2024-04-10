@@ -20,14 +20,6 @@ class _CglassButtonState extends State<CglassButton> {
       child: InkWell(
         onTap: widget.onTap,
         child: GlassContainer(
-          // linearGradient: const LinearGradient(
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomCenter,
-          //     colors: [
-          //       Colors.black,
-          //       Color.fromARGB(255, 41, 40, 40),
-          //       Colors.black
-          //     ]),
           borderRadius: BorderRadius.circular(10),
           border: widget.border,
           blur: 100,
