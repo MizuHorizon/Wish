@@ -122,7 +122,13 @@ class SupportScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 CglassButton(
-                  onTap: () {},
+                  onTap: () async {
+                    final Uri _url = Uri.parse("https://wish.mizuhorizon.com/");
+                    if (!await launchUrl(_url,
+                        mode: LaunchMode.inAppBrowserView)) {
+                      throw Exception('Could not launch $_url');
+                    }
+                  },
                   widget: const Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
